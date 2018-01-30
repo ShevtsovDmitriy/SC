@@ -9,83 +9,104 @@
     <collation id="3" parent="1" name="BINARY"/>
     <collation id="4" parent="1" name="NOCASE"/>
     <collation id="5" parent="1" name="RTRIM"/>
-    <table id="6" parent="2" name="client"/>
-    <table id="7" parent="2" name="sqlite_master">
+    <table id="6" parent="2" name="clients"/>
+    <table id="7" parent="2" name="equipment_parts"/>
+    <table id="8" parent="2" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="8" parent="2" name="sqlite_sequence">
+    <table id="9" parent="2" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <table id="9" parent="2" name="test"/>
-    <column id="10" parent="6" name="id">
+    <table id="10" parent="2" name="test"/>
+    <column id="11" parent="6" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="11" parent="6" name="fio">
+    <column id="12" parent="6" name="fio">
       <Position>2</Position>
       <DataType>VARCHAR2(100)|0</DataType>
     </column>
-    <column id="12" parent="6" name="phone">
+    <column id="13" parent="6" name="phone">
       <Position>3</Position>
       <DataType>VARCHAR2(11)|0</DataType>
     </column>
-    <column id="13" parent="6" name="url">
+    <column id="14" parent="6" name="url">
       <Position>4</Position>
       <DataType>VARCHAR2(100)|0</DataType>
     </column>
-    <column id="14" parent="6" name="note">
+    <column id="15" parent="6" name="note">
       <Position>5</Position>
       <DataType>VARCHAR2(1000)|0</DataType>
     </column>
-    <index id="15" parent="6" name="client_id_uindex">
+    <index id="16" parent="6" name="client_id_uindex">
       <ColNames>id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="16" parent="6">
+    <key id="17" parent="6">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>client_id_uindex</UnderlyingIndexName>
     </key>
-    <column id="17" parent="7" name="type">
+    <column id="18" parent="7" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="19" parent="7" name="name">
+      <Position>2</Position>
+      <DataType>VARCHAR2(150)|0</DataType>
+    </column>
+    <index id="20" parent="7" name="table_name_id_uindex">
+      <ColNames>id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="21" parent="7">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>table_name_id_uindex</UnderlyingIndexName>
+    </key>
+    <column id="22" parent="8" name="type">
       <Position>1</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="18" parent="7" name="name">
+    <column id="23" parent="8" name="name">
       <Position>2</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="19" parent="7" name="tbl_name">
+    <column id="24" parent="8" name="tbl_name">
       <Position>3</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="20" parent="7" name="rootpage">
+    <column id="25" parent="8" name="rootpage">
       <Position>4</Position>
       <DataType>integer|0</DataType>
     </column>
-    <column id="21" parent="7" name="sql">
+    <column id="26" parent="8" name="sql">
       <Position>5</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="22" parent="8" name="name">
+    <column id="27" parent="9" name="name">
       <Position>1</Position>
     </column>
-    <column id="23" parent="8" name="seq">
+    <column id="28" parent="9" name="seq">
       <Position>2</Position>
     </column>
-    <column id="24" parent="9" name="id">
+    <column id="29" parent="10" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
     </column>
-    <column id="25" parent="9" name="textfield">
+    <column id="30" parent="10" name="textfield">
       <Position>2</Position>
     </column>
-    <column id="26" parent="9" name="intfield">
+    <column id="31" parent="10" name="intfield">
       <Position>3</Position>
     </column>
-    <key id="27" parent="9">
+    <key id="32" parent="10">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>

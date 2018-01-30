@@ -3,7 +3,7 @@ package entities;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "client")
+@DatabaseTable(tableName = "clients")
 public class Client {
 
     @DatabaseField(generatedId = true)

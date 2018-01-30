@@ -4,6 +4,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.jdbc.JdbcDatabaseConnection;
 import com.j256.ormlite.support.ConnectionSource;
 import entities.Client;
+import entities.EquipmentPart;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class TestForm extends JFrame {
@@ -25,20 +27,32 @@ public class TestForm extends JFrame {
     private JLabel label1;
     private JTable table1;
 
-    public TestForm() throws HeadlessException {
+    public TestForm() throws HeadlessException, ClassNotFoundException, SQLException {
         setContentPane(panel1);
         setVisible(true);
         setSize(640, 480);
         //setExtendedState(MAXIMIZED_BOTH);
         button1.addActionListener(new MyButtonListener());
 
-        ArrayList<Entity> entities = new ArrayList<>();
+        ArrayList<EquipmentPart> equipmentParts = new ArrayList<>();
+        Connection conn;
 
-        for (int i = 0; i < 30; i++) {
-            entities.add(new Entity("Имя " + i, "Описание " + i));
+        Class.forName("org.sqlite.JDBC");
+        conn = DriverManager.getConnection("jdbc:sqlite:D:/По ремонту/SC/sc.s3db");
+        Statement statmt = conn.createStatement();
+        //statmt.execute("INSERT INTO 'client' ('fio', 'phone') VALUES ('Petya', '125453'); ")
+        ConnectionSource connectionSource =
+                new JdbcConnectionSource("jdbc:sqlite:D:/По ремонту/SC/sc.s3db");
+        Dao<EquipmentPart, String> equipDao =
+                DaoManager.createDao(connectionSource, EquipmentPart.class);
+
+
+        for (Object anEquipDao : equipDao) {
+            equipmentParts.add((EquipmentPart) anEquipDao);
         }
 
-        TableModel model = new MyTableModel(entities);
+
+        TableModel model = new MyTableModel(equipmentParts);
         table1.setColumnSelectionAllowed(true);
         table1.setModel(model);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -46,17 +60,17 @@ public class TestForm extends JFrame {
 
     private class MyTableModel implements TableModel {
 
-        private Set<TableModelListener> listeners = new HashSet<TableModelListener>();
+        private Set<TableModelListener> listeners = new HashSet<>();
 
-        private ArrayList<Entity> entities;
+        private ArrayList<EquipmentPart> equipmentParts;
 
-        public MyTableModel(ArrayList<Entity> entities) {
-            this.entities = entities;
+        public MyTableModel(ArrayList<EquipmentPart> equipmentParts) {
+            this.equipmentParts = equipmentParts;
         }
 
         @Override
         public int getRowCount() {
-            return entities.size();
+            return equipmentParts.size();
         }
 
         @Override
@@ -87,19 +101,21 @@ public class TestForm extends JFrame {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            Entity entity = entities.get(rowIndex);
+            EquipmentPart entity = equipmentParts.get(rowIndex);
             switch (columnIndex) {
                 case 0:
-                    return entity.getName();
+                    return entity.getId();
                 case 1:
-                    return entity.getDescription();
+                    return entity.getName();
             }
             return "";
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            entities.get(rowIndex).setDescription(aValue.toString());
+            if (columnIndex == 1) {
+                equipmentParts.get(rowIndex).setName(aValue.toString());
+            }
         }
 
         @Override
@@ -123,21 +139,8 @@ public class TestForm extends JFrame {
     }
 
     public static void main(String[] args) {
-        new TestForm();
-        Connection conn = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:D:/По ремонту/SC/sc.s3db");
-            Statement statmt = conn.createStatement();
-            //statmt.execute("INSERT INTO 'client' ('fio', 'phone') VALUES ('Petya', '125453'); ")
-            ConnectionSource connectionSource =
-                    new JdbcConnectionSource("jdbc:sqlite:D:/По ремонту/SC/sc.s3db");
-            Dao<Client, String> clientDao =
-                    DaoManager.createDao(connectionSource, Client.class);
-            clientDao.create(new Client("test", "89056550654", "vk.com"));
-
-
-
+            new TestForm();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
