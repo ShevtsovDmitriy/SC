@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="sqlite-jdbc-3.8.10.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/sqlite-jdbc-3.8.10.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ormlite-jdbc-5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ormlite-core-5.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/sqlite-jdbc-3.8.10.1.jar!/" />
+    </SOURCES>
+  </library>
+</component>
