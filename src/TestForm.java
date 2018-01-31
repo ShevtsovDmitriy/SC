@@ -1,10 +1,8 @@
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.jdbc.JdbcDatabaseConnection;
 import com.j256.ormlite.support.ConnectionSource;
-import entities.Client;
-import entities.EquipmentPart;
+import entities.dictionary.EquipmentPart;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
@@ -18,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class TestForm extends JFrame {
@@ -37,10 +34,6 @@ public class TestForm extends JFrame {
         ArrayList<EquipmentPart> equipmentParts = new ArrayList<>();
         Connection conn;
 
-        Class.forName("org.sqlite.JDBC");
-        conn = DriverManager.getConnection("jdbc:sqlite:D:/По ремонту/SC/sc.s3db");
-        Statement statmt = conn.createStatement();
-        //statmt.execute("INSERT INTO 'client' ('fio', 'phone') VALUES ('Petya', '125453'); ")
         ConnectionSource connectionSource =
                 new JdbcConnectionSource("jdbc:sqlite:D:/По ремонту/SC/sc.s3db");
         Dao<EquipmentPart, String> equipDao =

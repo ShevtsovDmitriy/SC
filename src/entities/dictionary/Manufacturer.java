@@ -1,20 +1,20 @@
-package entities;
+package entities.dictionary;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "equipment_parts")
-public class EquipmentPart {
+@DatabaseTable(tableName = "manufacturers")
+public class Manufacturer {
 
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField
     private String name;
 
-    public EquipmentPart() {
+    public Manufacturer() {
     }
 
-    public EquipmentPart(String name) {
+    public Manufacturer(String name) {
         this.name = name;
     }
 
