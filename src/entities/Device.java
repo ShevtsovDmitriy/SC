@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.DeviceType;
 import entities.dictionary.Manufacturer;
-
+/* Устройство */
 @DatabaseTable(tableName = "devices")
 public class Device {
 

@@ -2,7 +2,7 @@ package entities.dictionary;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
+/* Деталь комплекта при приёмке */
 @DatabaseTable(tableName = "equipment_parts")
 public class EquipmentPart {
 

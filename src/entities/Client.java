@@ -2,7 +2,7 @@ package entities;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
+/* Клиент */
 @DatabaseTable(tableName = "clients")
 public class Client {
 

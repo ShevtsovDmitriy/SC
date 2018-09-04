@@ -2,7 +2,7 @@ package entities.dictionary;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
+/* Тип устройства */
 @DatabaseTable(tableName = "device_types")
 public class DeviceType {
 

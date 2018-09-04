@@ -3,32 +3,28 @@ package entities.dictionary;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.math.BigDecimal;
-/* Выполненная работа */
-@DatabaseTable(tableName = "jobs")
-public class Job {
+/* Запчасти */
+@DatabaseTable(tableName = "spare_parts")
+public class SparePart {
 
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField
     private String name;
     @DatabaseField
-    private BigDecimal price;
-    @DatabaseField
     private String category;
+    @DatabaseField
+    private float defaultPrice;
 
-    public Job() {
-    }
-
-    public Job(String name, BigDecimal price, String category) {
-        this.name = name;
-        this.price = price;
-        this.category = category;
-    }
-
-    public Job(String name, String category) {
+    public SparePart(String name, String category, float defaultPrice) {
         this.name = name;
         this.category = category;
+        this.defaultPrice = defaultPrice;
+    }
+
+    public SparePart(String name, float defaultPrice) {
+        this.name = name;
+        this.defaultPrice = defaultPrice;
     }
 
     public int getId() {
@@ -47,12 +43,12 @@ public class Job {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public float getDefaultPrice() {
+        return defaultPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setDefaultPrice(float defaultPrice) {
+        this.defaultPrice = defaultPrice;
     }
 
     public String getCategory() {

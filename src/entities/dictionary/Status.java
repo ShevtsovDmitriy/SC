@@ -2,7 +2,7 @@ package entities.dictionary;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
+/* Статус заявки */
 @DatabaseTable(tableName = "statuses")
 public class Status {
 
