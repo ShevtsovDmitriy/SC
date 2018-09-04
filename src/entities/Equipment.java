@@ -13,6 +13,9 @@ public class Equipment {
     @DatabaseField(columnName  = "equipmentPart", foreign = true, canBeNull = false, foreignAutoRefresh = true)
     private EquipmentPart equipmentPart;
 
+    public Equipment() {
+    }
+
     public Equipment(Order order, EquipmentPart equipmentPart) {
         this.order = order;
         this.equipmentPart = equipmentPart;

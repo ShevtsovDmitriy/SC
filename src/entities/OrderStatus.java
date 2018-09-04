@@ -5,7 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.Status;
 
 /* Статус заказа */
-@DatabaseTable(tableName = "device_defects")
+@DatabaseTable(tableName = "order_statuses")
 public class OrderStatus {
 
     @DatabaseField(columnName  = "order", foreign = true, canBeNull = false, foreignAutoRefresh = true)

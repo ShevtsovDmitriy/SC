@@ -1,6 +1,8 @@
 package entities;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.SparePart;
 
@@ -18,6 +20,8 @@ public class StoreEntity {
     private float buyPrice;
     @DatabaseField
     private float salePrice;
+    @ForeignCollectionField(eager = false)
+    private ForeignCollection<SparePhoto> photos;
 
     public StoreEntity() {
     }
@@ -68,4 +72,13 @@ public class StoreEntity {
     public void setSalePrice(float salePrice) {
         this.salePrice = salePrice;
     }
+
+    public ForeignCollection<SparePhoto> getPhotos() {
+        return photos;
+    }
+
+    public void addPhoto(SparePhoto photo) {
+        this.photos.add(photo);
+    }
+
 }

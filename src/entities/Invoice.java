@@ -19,7 +19,44 @@ public class Invoice {
     @DatabaseField
     private InvoiceType type;
     @ForeignCollectionField(eager = false)
-    ForeignCollection<InvoiceSpare> spares;
+    private ForeignCollection<InvoiceSpare> spares;
 
+    public Invoice() {
+    }
 
+    public Invoice(InvoiceType type) {
+        this.type = type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public InvoiceType getType() {
+        return type;
+    }
+
+    public void setType(InvoiceType type) {
+        this.type = type;
+    }
+
+    public ForeignCollection<InvoiceSpare> getSpares() {
+        return spares;
+    }
+
+    public void addSpare(InvoiceSpare spare) {
+        this.spares.add(spare);
+    }
 }

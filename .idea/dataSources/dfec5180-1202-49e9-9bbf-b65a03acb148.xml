@@ -9,291 +9,37 @@
     <collation id="3" parent="1" name="BINARY"/>
     <collation id="4" parent="1" name="NOCASE"/>
     <collation id="5" parent="1" name="RTRIM"/>
-    <table id="6" parent="2" name="clients"/>
-    <table id="7" parent="2" name="defects"/>
-    <table id="8" parent="2" name="device_types"/>
-    <table id="9" parent="2" name="devices"/>
-    <table id="10" parent="2" name="equipment_parts"/>
-    <table id="11" parent="2" name="jobs"/>
-    <table id="12" parent="2" name="manufacturers"/>
-    <table id="13" parent="2" name="orders"/>
-    <table id="14" parent="2" name="photos"/>
-    <table id="15" parent="2" name="sqlite_master">
+    <table id="6" parent="2" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="16" parent="2" name="sqlite_sequence">
+    <table id="7" parent="2" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <table id="17" parent="2" name="statuses"/>
-    <column id="18" parent="6" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="19" parent="6" name="fio">
-      <Position>2</Position>
-      <DataType>VARCHAR2(100)|0</DataType>
-    </column>
-    <column id="20" parent="6" name="phone">
-      <Position>3</Position>
-      <DataType>VARCHAR2(11)|0</DataType>
-    </column>
-    <column id="21" parent="6" name="url">
-      <Position>4</Position>
-      <DataType>VARCHAR2(100)|0</DataType>
-    </column>
-    <column id="22" parent="6" name="note">
-      <Position>5</Position>
-      <DataType>VARCHAR2(1000)|0</DataType>
-    </column>
-    <index id="23" parent="6" name="client_id_uindex">
-      <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
-      <Unique>1</Unique>
-    </index>
-    <key id="24" parent="6">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>client_id_uindex</UnderlyingIndexName>
-    </key>
-    <column id="25" parent="7" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="26" parent="7" name="name">
-      <Position>2</Position>
-      <DataType>VARCHAR2(200)|0</DataType>
-    </column>
-    <index id="27" parent="7" name="defects_id_uindex">
-      <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
-      <Unique>1</Unique>
-    </index>
-    <key id="28" parent="7">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>defects_id_uindex</UnderlyingIndexName>
-    </key>
-    <column id="29" parent="8" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="30" parent="8" name="name">
-      <Position>2</Position>
-      <DataType>VARCHAR2(100)|0</DataType>
-    </column>
-    <index id="31" parent="8" name="device_types_id_uindex">
-      <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
-      <Unique>1</Unique>
-    </index>
-    <key id="32" parent="8">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>device_types_id_uindex</UnderlyingIndexName>
-    </key>
-    <column id="33" parent="9" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="34" parent="9" name="manufacturer">
-      <Position>2</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="35" parent="9" name="type">
-      <Position>3</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="36" parent="9" name="model">
-      <Position>4</Position>
-      <DataType>VARCHAR2(100)|0</DataType>
-    </column>
-    <column id="37" parent="9" name="notes">
-      <Position>5</Position>
-      <DataType>VARCHAR2(1000)|0</DataType>
-    </column>
-    <column id="38" parent="9" name="condition">
-      <Position>6</Position>
-      <DataType>VARCHAR2(1000)|0</DataType>
-    </column>
-    <index id="39" parent="9" name="devices_id_uindex">
-      <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
-      <Unique>1</Unique>
-    </index>
-    <key id="40" parent="9">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>devices_id_uindex</UnderlyingIndexName>
-    </key>
-    <foreign-key id="41" parent="9" name="devices__manufacturer_fk">
-      <ColNames>manufacturer</ColNames>
-      <RefTableName>manufacturers</RefTableName>
-      <RefColNames>id</RefColNames>
-      <OnDelete>set-null</OnDelete>
-      <OnUpdate>set-null</OnUpdate>
-    </foreign-key>
-    <foreign-key id="42" parent="9" name="devices_device_types_fk">
-      <ColNames>type</ColNames>
-      <RefTableName>device_types</RefTableName>
-      <RefColNames>id</RefColNames>
-      <OnDelete>set-null</OnDelete>
-      <OnUpdate>set-null</OnUpdate>
-    </foreign-key>
-    <column id="43" parent="10" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="44" parent="10" name="name">
-      <Position>2</Position>
-      <DataType>VARCHAR2(150)|0</DataType>
-    </column>
-    <index id="45" parent="10" name="table_name_id_uindex">
-      <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
-      <Unique>1</Unique>
-    </index>
-    <key id="46" parent="10">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>table_name_id_uindex</UnderlyingIndexName>
-    </key>
-    <column id="47" parent="11" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="48" parent="11" name="name">
-      <Position>2</Position>
-      <DataType>VARCHAR2(200)|0</DataType>
-    </column>
-    <column id="49" parent="11" name="price">
-      <Position>3</Position>
-      <DataType>DECIMAL(10,2)|0</DataType>
-    </column>
-    <column id="50" parent="11" name="category">
-      <Position>4</Position>
-      <DataType>VARCHAR2(50)|0</DataType>
-    </column>
-    <index id="51" parent="11" name="jobs_id_uindex">
-      <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
-      <Unique>1</Unique>
-    </index>
-    <key id="52" parent="11">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>jobs_id_uindex</UnderlyingIndexName>
-    </key>
-    <column id="53" parent="12" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="54" parent="12" name="name">
-      <Position>2</Position>
-      <DataType>VARCHAR2(50)|0</DataType>
-    </column>
-    <index id="55" parent="12" name="manufacturers_id_uindex">
-      <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
-      <Unique>1</Unique>
-    </index>
-    <key id="56" parent="12">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>manufacturers_id_uindex</UnderlyingIndexName>
-    </key>
-    <column id="57" parent="13" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="58" parent="13" name="client">
-      <Position>2</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="59" parent="13" name="device">
-      <Position>3</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="60" parent="13" name="notes">
-      <Position>4</Position>
-      <DataType>VARCHAR|0</DataType>
-    </column>
-    <key id="61" parent="13">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="62" parent="14" name="order">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="63" parent="14" name="link">
-      <Position>2</Position>
-      <DataType>VARCHAR|0</DataType>
-    </column>
-    <column id="64" parent="15" name="type">
+    <column id="8" parent="6" name="type">
       <Position>1</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="65" parent="15" name="name">
+    <column id="9" parent="6" name="name">
       <Position>2</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="66" parent="15" name="tbl_name">
+    <column id="10" parent="6" name="tbl_name">
       <Position>3</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="67" parent="15" name="rootpage">
+    <column id="11" parent="6" name="rootpage">
       <Position>4</Position>
       <DataType>integer|0</DataType>
     </column>
-    <column id="68" parent="15" name="sql">
+    <column id="12" parent="6" name="sql">
       <Position>5</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="69" parent="16" name="name">
+    <column id="13" parent="7" name="name">
       <Position>1</Position>
     </column>
-    <column id="70" parent="16" name="seq">
+    <column id="14" parent="7" name="seq">
       <Position>2</Position>
     </column>
-    <column id="71" parent="17" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="72" parent="17" name="name">
-      <Position>2</Position>
-      <DataType>VARCHAR2(50)|0</DataType>
-    </column>
-    <index id="73" parent="17" name="statuses_id_uindex">
-      <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
-      <Unique>1</Unique>
-    </index>
-    <key id="74" parent="17">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>statuses_id_uindex</UnderlyingIndexName>
-    </key>
   </database-model>
 </dataSource>

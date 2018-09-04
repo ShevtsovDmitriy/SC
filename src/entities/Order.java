@@ -24,15 +24,15 @@ public class Order {
     @DatabaseField
     private Date date;
     @ForeignCollectionField(eager = false)
-    ForeignCollection<Photo> photos;
+    private ForeignCollection<Photo> photos;
     @ForeignCollectionField(eager = false)
-    ForeignCollection<DeviceDefect> defects;
+    private ForeignCollection<DeviceDefect> defects;
     @ForeignCollectionField(eager = false)
-    ForeignCollection<OrderJob> jobs;
+    private ForeignCollection<OrderJob> jobs;
     @ForeignCollectionField(eager = false)
-    ForeignCollection<OrderSpare> spares;
+    private ForeignCollection<OrderSpare> spares;
     @ForeignCollectionField(eager = false)
-    ForeignCollection<OrderStatus> statuses;
+    private ForeignCollection<OrderStatus> statuses;
 
 
     public Order() {
@@ -97,7 +97,55 @@ public class Order {
         return photos;
     }
 
-    public void setPhotos(ForeignCollection<Photo> photos) {
-        this.photos = photos;
+    public void addPhoto(Photo photo) {
+        this.photos.add(photo);
+    }
+
+    public Boolean getWarranty() {
+        return warranty;
+    }
+
+    public void setWarranty(Boolean warranty) {
+        this.warranty = warranty;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public ForeignCollection<DeviceDefect> getDefects() {
+        return defects;
+    }
+
+    public void addDefect(DeviceDefect defect) {
+        this.defects.add(defect);
+    }
+
+    public ForeignCollection<OrderJob> getJobs() {
+        return jobs;
+    }
+
+    public void addJob(OrderJob job) {
+        this.jobs.add(job);
+    }
+
+    public ForeignCollection<OrderSpare> getSpares() {
+        return spares;
+    }
+
+    public void addSpare(OrderSpare spare) {
+        this.spares.add(spare);
+    }
+
+    public ForeignCollection<OrderStatus> getStatuses() {
+        return statuses;
+    }
+
+    public void addStatus(OrderStatus status) {
+        this.statuses.add(status);
     }
 }

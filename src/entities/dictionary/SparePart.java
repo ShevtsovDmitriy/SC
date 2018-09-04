@@ -16,6 +16,9 @@ public class SparePart {
     @DatabaseField
     private float defaultPrice;
 
+    public SparePart() {
+    }
+
     public SparePart(String name, String category, float defaultPrice) {
         this.name = name;
         this.category = category;
