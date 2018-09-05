@@ -4,7 +4,10 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+import entities.dictionary.Defect;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /* Заказ */
@@ -28,6 +31,8 @@ public class Order {
     @ForeignCollectionField(eager = false)
     private ForeignCollection<DeviceDefect> defects;
     @ForeignCollectionField(eager = false)
+    private ForeignCollection<Equipment> equipments;
+    @ForeignCollectionField(eager = false)
     private ForeignCollection<OrderJob> jobs;
     @ForeignCollectionField(eager = false)
     private ForeignCollection<OrderSpare> spares;
@@ -46,11 +51,18 @@ public class Order {
         this.device = device;
     }
 
-    public Order(Client client, Device device, ForeignCollection<DeviceDefect> defects) {
+    public Order(Client client, Device device, Collection<DeviceDefect> defects) {
         this();
         this.client = client;
         this.device = device;
-        this.defects = defects;
+        addAllDefects(defects);
+    }
+
+    public Order(Client client, Device device, Collection<DeviceDefect> defects, Collection<Equipment> equipments) {
+        this.client = client;
+        this.device = device;
+        addAllDefects(defects);
+        addAllEquipments(equipments);
     }
 
     public Order(Client client, Device device, String notes, ForeignCollection<Photo> photos) {
@@ -117,7 +129,11 @@ public class Order {
         this.date = date;
     }
 
-    public ForeignCollection<DeviceDefect> getDefects() {
+    public Collection<Defect> getDefects() {
+        ArrayList<Defect> defects = new ArrayList<>(5);
+        for (DeviceDefect defect: this.defects){
+            defects.add(defect.getDefect());
+        }
         return defects;
     }
 
@@ -147,5 +163,13 @@ public class Order {
 
     public void addStatus(OrderStatus status) {
         this.statuses.add(status);
+    }
+
+    private void addAllDefects(Collection<DeviceDefect> defects){
+        this.defects.addAll(defects);
+    }
+
+    private void addAllEquipments(Collection<Equipment> equipments){
+        this.equipments.addAll(equipments);
     }
 }

@@ -1,7 +1,3 @@
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.support.ConnectionSource;
 import entities.dictionary.EquipmentPart;
 
 import javax.swing.*;
@@ -11,9 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +27,7 @@ public class TestForm extends JFrame {
 
         ArrayList<EquipmentPart> equipmentParts = new ArrayList<>();
         Connection conn;
-
+/*
         ConnectionSource connectionSource =
                 new JdbcConnectionSource("jdbc:sqlite:D:/По ремонту/SC/sc.s3db");
         Dao<EquipmentPart, String> equipDao =
@@ -48,7 +42,7 @@ public class TestForm extends JFrame {
         TableModel model = new MyTableModel(equipmentParts);
         table1.setColumnSelectionAllowed(true);
         table1.setModel(model);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);*/
     }
 
     private class MyTableModel implements TableModel {

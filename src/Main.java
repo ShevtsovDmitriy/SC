@@ -1,8 +1,7 @@
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
-import entities.*;
-import entities.dictionary.*;
+import entities.Order;
+import entities.dictionary.Defect;
 
 import java.sql.SQLException;
 
@@ -13,6 +12,39 @@ public class Main {
                 null;
         try {
             connectionSource = new JdbcConnectionSource("jdbc:sqlite:sc.s3db");
+
+
+            ServiceCenter serviceCenter = new ServiceCenter();
+            /*int client = serviceCenter.createClient("Test Client", "123456789", "vk.com", "note");
+            DeviceType type = DaoHelper.getInstance().DEVICE_TYPE_DAO.queryForId("1");
+            Manufacturer manufacturer = DaoHelper.getInstance().MANUFACTURER_DAO.queryForId("1");
+            int device = serviceCenter.createDevice(type, manufacturer, "Iphone 5", "", null);
+            ArrayList<Integer> defects = new ArrayList<>(2);
+            defects.add(3);
+            defects.add(4);
+            ArrayList<Integer> equipments = new ArrayList<>(2);
+            equipments.add(1);
+            equipments.add(2);
+            serviceCenter.createOrder(client, device, defects, equipments);
+
+*/
+
+            Order order = serviceCenter.getOrder(1);
+            String s1 = order.getClient().getFio();
+            String s2 = order.getDevice().getManufacturer().getName();
+            String s3 = order.getDevice().getModel();
+            StringBuilder s4 = new StringBuilder();
+            for(Defect defect: order.getDefects()){
+                s4.append(defect.getName());
+                s4.append(", ");
+            }
+            System.out.print("Client: " + s1 + " Device: " + s2 + " " + s3 + " Defects: " + s4);
+
+
+
+
+
+
             /*Dao<Device, String> deviceDao =
                     DaoManager.createDao(connectionSource, Device.class);
             Device device = deviceDao.queryForId("1");
@@ -31,7 +63,7 @@ public class Main {
             client.setFio("test Client");
             clientDao.update(client);
 */
-            TableUtils.createTable(connectionSource, Defect.class);
+           /* TableUtils.createTable(connectionSource, Defect.class);
             TableUtils.createTable(connectionSource, DeviceType.class);
             TableUtils.createTable(connectionSource, EquipmentPart.class);
             TableUtils.createTable(connectionSource, Job.class);
@@ -50,7 +82,7 @@ public class Main {
             TableUtils.createTable(connectionSource, OrderStatus.class);
             TableUtils.createTable(connectionSource, Photo.class);
             TableUtils.createTable(connectionSource, SparePhoto.class);
-            TableUtils.createTable(connectionSource, StoreEntity.class);
+            TableUtils.createTable(connectionSource, StoreEntity.class);*/
 
 
         } catch (SQLException e) {
