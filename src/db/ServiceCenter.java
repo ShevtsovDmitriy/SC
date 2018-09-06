@@ -1,3 +1,5 @@
+package db;
+
 import entities.*;
 import entities.dictionary.DeviceType;
 import entities.dictionary.Manufacturer;
@@ -5,6 +7,8 @@ import entities.dictionary.SparePart;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 public class ServiceCenter {
 
@@ -12,12 +16,14 @@ public class ServiceCenter {
 
     public int createClient(String fio, String phone, String url, String note) throws SQLException {
         Client client = new Client(fio, phone, url, note);
-        return dao.CLIENT_DAO.create(client);
+        dao.CLIENT_DAO.create(client);
+        return  client.getId();
     }
 
     public int createDevice(DeviceType type, Manufacturer manufacturer, String model, String notes, String condition) throws SQLException {
         Device device = new Device(type, manufacturer, model, notes, condition);
-        return dao.DEVICE_DAO.create(device);
+        dao.DEVICE_DAO.create(device);
+        return device.getId();
     }
 
     public int createOrder(int clientId, int deviceId, Collection<Integer> defectIds, Collection<Integer> equipmentIds) throws SQLException {
@@ -32,6 +38,8 @@ public class ServiceCenter {
         for(Integer equipmentId: equipmentIds){
             dao.EQUIPMENT_DAO.create(new Equipment(order, dao.EQUIPMENT_PART_DAO.queryForId(equipmentId.toString())));
         }
+
+        dao.ORDER_STATUS_DAO.create(new OrderStatus(order, dao.STATUS_DAO.queryForId("1"), new Date()));
 
         return orderId;
     }
@@ -62,6 +70,10 @@ public class ServiceCenter {
 
     public Order getOrder(int id) throws SQLException {
         return dao.ORDER_DAO.queryForId(Integer.toString(id));
+    }
+
+    public List<Order> getAllOrders() throws SQLException {
+        return dao.ORDER_DAO.queryForAll();
     }
 
 }

@@ -1,9 +1,11 @@
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
-import entities.Order;
-import entities.dictionary.Defect;
+import db.ServiceCenter;
+import entities.dictionary.DeviceType;
+import entities.dictionary.Manufacturer;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -15,9 +17,9 @@ public class Main {
 
 
             ServiceCenter serviceCenter = new ServiceCenter();
-            /*int client = serviceCenter.createClient("Test Client", "123456789", "vk.com", "note");
-            DeviceType type = DaoHelper.getInstance().DEVICE_TYPE_DAO.queryForId("1");
-            Manufacturer manufacturer = DaoHelper.getInstance().MANUFACTURER_DAO.queryForId("1");
+            int client = serviceCenter.createClient("Test Client", "123456789", "vk.com", "note");
+            DeviceType type = db.DaoHelper.getInstance().DEVICE_TYPE_DAO.queryForId("1");
+            Manufacturer manufacturer = db.DaoHelper.getInstance().MANUFACTURER_DAO.queryForId("1");
             int device = serviceCenter.createDevice(type, manufacturer, "Iphone 5", "", null);
             ArrayList<Integer> defects = new ArrayList<>(2);
             defects.add(3);
@@ -27,8 +29,8 @@ public class Main {
             equipments.add(2);
             serviceCenter.createOrder(client, device, defects, equipments);
 
-*/
 
+/*
             Order order = serviceCenter.getOrder(1);
             String s1 = order.getClient().getFio();
             String s2 = order.getDevice().getManufacturer().getName();
@@ -41,28 +43,23 @@ public class Main {
             System.out.print("Client: " + s1 + " Device: " + s2 + " " + s3 + " Defects: " + s4);
 
 
-
-
-
+*/
 
             /*Dao<Device, String> deviceDao =
                     DaoManager.createDao(connectionSource, Device.class);
             Device device = deviceDao.queryForId("1");
             System.out.println(device.getType().getName());
-            System.out.println(device.getManufacturer().getName());*/
+            System.out.println(device.getManufacturer().getName());
 
-            /*
+
             Dao<Order, String> orderDao = DaoManager.createDao(connectionSource, Order.class);
-            Order o = new Order(new Client("test client fio"), new Device(), "note");
-            //orderDao.create(o);
-            Order order = orderDao.queryForId("1");
+            Order o = new Order(DaoHelper.getInstance().CLIENT_DAO.queryForId("1"), DaoHelper.getInstance().DEVICE_DAO.queryForId("1"));
+            orderDao.create(o);*/
+            //Order order = orderDao.queryForId("1");
             //order.getPhotos().add(new Photo("Link to Photo"));
 
-            Dao<Client, String> clientDao = DaoManager.createDao(connectionSource, Client.class);
-            Client client = clientDao.queryForId("1");
-            client.setFio("test Client");
-            clientDao.update(client);
-*/
+
+
            /* TableUtils.createTable(connectionSource, Defect.class);
             TableUtils.createTable(connectionSource, DeviceType.class);
             TableUtils.createTable(connectionSource, EquipmentPart.class);

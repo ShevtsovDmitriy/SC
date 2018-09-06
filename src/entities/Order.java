@@ -5,7 +5,9 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.Defect;
+import entities.dictionary.Status;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -45,20 +47,20 @@ public class Order {
         warranty = false;
     }
 
-    public Order(Client client, Device device) {
+    public Order(Client client, Device device) throws SQLException {
         this();
         this.client = client;
         this.device = device;
     }
 
-    public Order(Client client, Device device, Collection<DeviceDefect> defects) {
+    public Order(Client client, Device device, Collection<DeviceDefect> defects) throws SQLException {
         this();
         this.client = client;
         this.device = device;
         addAllDefects(defects);
     }
 
-    public Order(Client client, Device device, Collection<DeviceDefect> defects, Collection<Equipment> equipments) {
+    public Order(Client client, Device device, Collection<DeviceDefect> defects, Collection<Equipment> equipments) throws SQLException {
         this.client = client;
         this.device = device;
         addAllDefects(defects);
@@ -159,6 +161,10 @@ public class Order {
 
     public ForeignCollection<OrderStatus> getStatuses() {
         return statuses;
+    }
+
+    public Status getLastStatus(){
+        return  statuses.iterator().next().getStatus();
     }
 
     public void addStatus(OrderStatus status) {
