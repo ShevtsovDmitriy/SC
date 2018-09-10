@@ -1,6 +1,7 @@
 package forms;
 
 import db.DictionaryHelper;
+import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
 import entities.dictionary.Manufacturer;
 
@@ -12,18 +13,18 @@ import java.sql.SQLException;
 
 public class OrderCreationForm extends JFrame {
 
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JTextField clientNameTextField;
+    private JTextField clientPhoneTextField;
+    private JTextField clientUrlTextField;
     private JPanel pannel1;
-    private JButton button1;
+    private JButton FindInDictionaryButton;
     private JComboBox deviceTypeCombobox;
     private JLabel label1;
     private JComboBox manufacturerComboBox;
-    private JTextField textField4;
-    private JComboBox comboBox1;
-    private JTextArea textArea1;
-    private JComboBox comboBox2;
+    private JTextField modelTextField;
+    private JComboBox deviceComboBox;
+    private JTextArea defectsTextArea;
+    private JComboBox defectComboBox;
 
 
     public OrderCreationForm() throws HeadlessException {
@@ -33,14 +34,23 @@ public class OrderCreationForm extends JFrame {
         try {
             addAllDeviceTypes();
             addAllManufacturers();
+            addAllDefects();
             deviceTypeCombobox.setSelectedIndex(-1);
             manufacturerComboBox.setSelectedIndex(-1);
+            defectComboBox.setSelectedIndex(-1);
+            defectComboBox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    defectsTextArea.append(((JComboBox) e.getSource()).getSelectedItem().toString());
+                    defectsTextArea.append("\n");
+                }
+            });
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 
-        button1.addActionListener(new MyButtonListener());
+        FindInDictionaryButton.addActionListener(new MyButtonListener());
 
     }
 
@@ -57,6 +67,13 @@ public class OrderCreationForm extends JFrame {
         manufacturerComboBox.addItem("Добавить нового");
         for (Manufacturer manufacturer : DictionaryHelper.getInstance().getManufacturers()) {
             manufacturerComboBox.addItem(manufacturer.getName());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void addAllDefects() throws SQLException {
+        for (Defect defect : DictionaryHelper.getInstance().getDefects()) {
+            defectComboBox.addItem(defect.getName());
         }
     }
 

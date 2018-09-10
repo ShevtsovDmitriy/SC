@@ -1,5 +1,6 @@
 package db;
 
+import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
 import entities.dictionary.Manufacturer;
 
@@ -19,6 +20,7 @@ public class DictionaryHelper {
 
     private List<DeviceType> deviceTypes;
     private List<Manufacturer> manufacturers;
+    private List<Defect> defects;
 
     DaoHelper dao = DaoHelper.getInstance();
 
@@ -28,6 +30,10 @@ public class DictionaryHelper {
 
     public List<Manufacturer> getManufacturers() throws SQLException {
         return manufacturers == null?manufacturers = dao.MANUFACTURER_DAO.queryForAll():manufacturers;
+    }
+
+    public List<Defect> getDefects() throws SQLException {
+        return defects == null?defects = dao.DEFECT_DAO.queryForAll():defects;
     }
 
 
