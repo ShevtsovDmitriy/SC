@@ -54,7 +54,7 @@ public class OrderCreationForm extends JFrame {
 
     @SuppressWarnings("unchecked")
     private void addAllManufacturers() throws SQLException {
-        manufacturerComboBox.addItem("Добавить новый тип");
+        manufacturerComboBox.addItem("Добавить нового");
         for (Manufacturer manufacturer : DictionaryHelper.getInstance().getManufacturers()) {
             manufacturerComboBox.addItem(manufacturer.getName());
         }
