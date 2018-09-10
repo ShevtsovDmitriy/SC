@@ -5,6 +5,7 @@ import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
 import entities.dictionary.Manufacturer;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,26 +33,30 @@ public class OrderCreationForm extends JFrame {
         setSize(1200, 700);
 
         try {
-            addAllDeviceTypes();
-            addAllManufacturers();
-            addAllDefects();
-            deviceTypeCombobox.setSelectedIndex(-1);
-            manufacturerComboBox.setSelectedIndex(-1);
-            defectComboBox.setSelectedIndex(-1);
-            defectComboBox.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    defectsTextArea.append(((JComboBox) e.getSource()).getSelectedItem().toString());
-                    defectsTextArea.append("\n");
-                }
-            });
+            prepareComoBoxes();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
         FindInDictionaryButton.addActionListener(new MyButtonListener());
 
+    }
+
+    private void prepareComoBoxes() throws SQLException {
+        addAllDeviceTypes();
+        addAllManufacturers();
+        addAllDefects();
+        deviceTypeCombobox.setSelectedIndex(-1);
+        manufacturerComboBox.setSelectedIndex(-1);
+        defectComboBox.setSelectedIndex(-1);
+        defectComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                defectsTextArea.append(((JComboBox) e.getSource()).getSelectedItem().toString());
+                defectsTextArea.append("\n");
+
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -81,7 +86,12 @@ public class OrderCreationForm extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            label1.setText(Integer.toString(deviceTypeCombobox.getSelectedIndex()));
+            try {
+                label1.setText(DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()).iterator().next().getName() + " " +
+                        DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()).size());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
