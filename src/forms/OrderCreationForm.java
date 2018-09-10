@@ -1,7 +1,6 @@
 package forms;
 
 import db.DictionaryHelper;
-import de.wannawork.jcalendar.JCalendarPanel;
 import entities.dictionary.DeviceType;
 import entities.dictionary.Manufacturer;
 
@@ -23,11 +22,13 @@ public class OrderCreationForm extends JFrame {
     private JComboBox manufacturerComboBox;
     private JTextField textField4;
     private JComboBox comboBox1;
+    private JTextArea textArea1;
+    private JComboBox comboBox2;
 
 
     public OrderCreationForm() throws HeadlessException {
         setContentPane(pannel1);
-        setSize(640, 480);
+        setSize(1200, 700);
 
         try {
             addAllDeviceTypes();
