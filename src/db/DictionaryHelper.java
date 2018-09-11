@@ -56,6 +56,12 @@ public class DictionaryHelper {
         return dao.EQUIPMENT_PART_DAO.queryForAll();
     }
 
+    public List<EquipmentPart> getEquipmentParts(List<Integer> parts) throws SQLException {
+        QueryBuilder<EquipmentPart, String> queryBuilder = dao.EQUIPMENT_PART_DAO.queryBuilder();
+        queryBuilder.where().in("id", parts);
+        return dao.EQUIPMENT_PART_DAO.query(queryBuilder.prepare());
+    }
+
     /* private methods */
     private Defect createDefect(String defectName) throws SQLException {
         Defect defect = new Defect(defectName);

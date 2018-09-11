@@ -261,7 +261,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="83186" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+                      <component id="83186" class="javax.swing.JTextArea" binding="equipmentPartsTextArea">
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="50"/>

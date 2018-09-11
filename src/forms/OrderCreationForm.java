@@ -4,13 +4,17 @@ import controllers.OrderCreationController;
 import db.DictionaryHelper;
 import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
+import entities.dictionary.EquipmentPart;
 import entities.dictionary.Manufacturer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.List;
 
 public class OrderCreationForm extends JFrame {
 
@@ -31,7 +35,7 @@ public class OrderCreationForm extends JFrame {
     private JTable statusesTable;
     private JPanel statusesPannel;
     private JPanel equipmentsPannel;
-    private JTextArea textArea1;
+    private JTextArea equipmentPartsTextArea;
     private JButton addEquipmentButton;
     private JButton deleteEquipmentButton;
 
@@ -93,6 +97,16 @@ public class OrderCreationForm extends JFrame {
         }
     }
 
+    private void fillEquipmentParts() throws SQLException {
+        List<EquipmentPart> equipmentParts = DictionaryHelper.getInstance().getEquipmentParts(OrderCreationController.getController().getEquipments());
+        equipmentParts.forEach((e) -> {
+            equipmentPartsTextArea.append(e.getName());
+            equipmentPartsTextArea.append("\n");
+        });
+    }
+
+
+    /* Listeners */
     private class MyButtonListener implements ActionListener {
 
         @Override
@@ -112,6 +126,16 @@ public class OrderCreationForm extends JFrame {
             try {
                 AddEquipmentsForm addEquipmentsForm = new AddEquipmentsForm();
                 addEquipmentsForm.setVisible(true);
+                addEquipmentsForm.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        try {
+                            fillEquipmentParts();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -126,6 +150,5 @@ public class OrderCreationForm extends JFrame {
 
         }
     }
-
 
 }

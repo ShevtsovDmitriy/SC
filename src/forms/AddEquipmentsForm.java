@@ -16,16 +16,16 @@ import java.util.Map;
 public class AddEquipmentsForm extends JFrame {
 
     private JPanel panel1;
-    private JButton button1;
+    private JButton okButton;
     private JPanel checkBoxesPanel;
 
     private Map<Integer, JCheckBox> checkBoxes;
 
     public AddEquipmentsForm() throws HeadlessException, SQLException {
         setContentPane(panel1);
-        setSize(400, 700);
+        setSize(300, 700);
         fillCheckboxes();
-        button1.addActionListener(new AbstractAction() {
+        okButton.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 saveCheckedEquipments();
