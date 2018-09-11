@@ -3,6 +3,7 @@ package db;
 import com.j256.ormlite.stmt.QueryBuilder;
 import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
+import entities.dictionary.EquipmentPart;
 import entities.dictionary.Manufacturer;
 
 import java.sql.SQLException;
@@ -51,6 +52,9 @@ public class DictionaryHelper {
         return defects;
     }
 
+    public List<EquipmentPart> getAllEquipmentParts() throws SQLException {
+        return dao.EQUIPMENT_PART_DAO.queryForAll();
+    }
 
     /* private methods */
     private Defect createDefect(String defectName) throws SQLException {
