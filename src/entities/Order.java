@@ -178,4 +178,5 @@ public class Order {
     private void addAllEquipments(Collection<Equipment> equipments){
         this.equipments.addAll(equipments);
     }
+
 }

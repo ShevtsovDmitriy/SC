@@ -2,6 +2,7 @@ package forms;
 
 import controllers.OrderCreationController;
 import db.DictionaryHelper;
+import db.ServiceCenter;
 import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
 import entities.dictionary.EquipmentPart;
@@ -38,6 +39,11 @@ public class OrderCreationForm extends JFrame {
     private JTextArea equipmentPartsTextArea;
     private JButton addEquipmentButton;
     private JButton deleteEquipmentButton;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private JButton okButton;
+    private JButton button5;
 
 
     public OrderCreationForm() throws HeadlessException {
@@ -54,6 +60,7 @@ public class OrderCreationForm extends JFrame {
         findInDictionaryButton.addActionListener(new MyButtonListener());
         addEquipmentButton.addActionListener(new AddEquipmentButtonListener());
         deleteEquipmentButton.addActionListener(new DeleteEquipmentButtonListener());
+        okButton.addActionListener(new OkButtonListener());
 
     }
 
@@ -76,7 +83,6 @@ public class OrderCreationForm extends JFrame {
 
     @SuppressWarnings("unchecked")
     private void addAllDeviceTypes() throws SQLException {
-        deviceTypeCombobox.addItem("Добавить новый тип");
         for (DeviceType deviceType : DictionaryHelper.getInstance().getDeviceTypes()) {
             deviceTypeCombobox.addItem(deviceType.getName());
         }
@@ -84,7 +90,6 @@ public class OrderCreationForm extends JFrame {
 
     @SuppressWarnings("unchecked")
     private void addAllManufacturers() throws SQLException {
-        manufacturerComboBox.addItem("Добавить нового");
         for (Manufacturer manufacturer : DictionaryHelper.getInstance().getManufacturers()) {
             manufacturerComboBox.addItem(manufacturer.getName());
         }
@@ -105,18 +110,55 @@ public class OrderCreationForm extends JFrame {
         });
     }
 
+    private boolean checkFields(){
+        Color red = new Color(255, 0, 40);
+        boolean flag = true;
+        if (clientNameTextField.getText().isEmpty()){
+            clientNameTextField.setBackground(red);
+            flag = false;
+        }
+        if (deviceTypeCombobox.getSelectedIndex() == -1){
+            deviceTypeCombobox.setBackground(red);
+            flag = false;
+        }
+        if (manufacturerComboBox.getSelectedIndex() == -1){
+            manufacturerComboBox.setBackground(red);
+            flag = false;
+        }
+
+        return flag;
+    }
+
+    private void saveChanges() throws SQLException {
+        if (!checkFields()){
+            return;
+        }
+        ServiceCenter sc = new ServiceCenter();
+        int client = sc.createClient(clientNameTextField.getText(), clientPhoneTextField.getText(), clientUrlTextField.getText(), "");
+
+        int device = sc.createDevice(DictionaryHelper.getInstance().getDeviceType(deviceTypeCombobox.getSelectedIndex()),
+                DictionaryHelper.getInstance().getManufacturer(manufacturerComboBox.getSelectedIndex()),
+                modelTextField.getText(),
+                "",
+                ""
+                );
+
+        int orderId = sc.createOrder(client,
+                device,
+                DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()),
+                OrderCreationController.getController().getEquipments()
+                );
+
+        dispose();
+
+    }
 
     /* Listeners */
     private class MyButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            try {
-                label1.setText(DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()).iterator().next().getName() + " " +
-                        DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()).size());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
@@ -148,6 +190,17 @@ public class OrderCreationForm extends JFrame {
         public void actionPerformed(ActionEvent e) {
             label1.setText(OrderCreationController.getController().getEquipments().toString());
 
+        }
+    }
+
+    private class OkButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                saveChanges();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 

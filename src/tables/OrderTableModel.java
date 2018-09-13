@@ -111,4 +111,8 @@ public class OrderTableModel implements TableModel {
 
     }
 
+    public void refresh() throws SQLException {
+        this.orders = sc.getAllOrders();
+    }
+
 }

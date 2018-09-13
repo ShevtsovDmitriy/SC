@@ -32,22 +32,30 @@ public class DictionaryHelper {
         return deviceTypes == null?deviceTypes = dao.DEVICE_TYPE_DAO.queryForAll():deviceTypes;
     }
 
+    public DeviceType getDeviceType(int id){
+        return deviceTypes.get(id);
+    }
+
     public List<Manufacturer> getManufacturers() throws SQLException {
         return manufacturers == null?manufacturers = dao.MANUFACTURER_DAO.queryForAll():manufacturers;
+    }
+
+    public Manufacturer getManufacturer(int id){
+        return manufacturers.get(id);
     }
 
     public List<Defect> getDefects() throws SQLException {
         return defects == null?defects = dao.DEFECT_DAO.queryForAll():defects;
     }
 
-    public List<Defect> getDefects(String defectsString) throws SQLException {
+    public List<Integer> getDefects(String defectsString) throws SQLException {
         String[] stringDefects = defectsString.split("\n");
-        List<Defect> defects = new ArrayList<>(stringDefects.length);
+        List<Integer> defects = new ArrayList<>(stringDefects.length);
         for (String stringDefect : stringDefects) {
             QueryBuilder<Defect, String> queryBuilder = dao.DEFECT_DAO.queryBuilder();
             queryBuilder.where().eq("name", stringDefect);
             Defect defect = dao.DEFECT_DAO.iterator(queryBuilder.prepare()).first();
-            defects.add(defect != null ? defect : createDefect(stringDefect));
+            defects.add(defect != null ? defect.getId() : createDefect(stringDefect).getId());
         }
         return defects;
     }

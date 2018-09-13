@@ -7,6 +7,8 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 public class TestForm extends JFrame {
@@ -41,9 +43,20 @@ public class TestForm extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            label1.setText("yeah");
             OrderCreationForm orderCreationForm = new OrderCreationForm();
             orderCreationForm.setVisible(true);
+            orderCreationForm.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    try {
+                        ((OrderTableModel)table1.getModel()).refresh();
+                        table1.revalidate();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+
+                }
+            });
         }
     }
 
