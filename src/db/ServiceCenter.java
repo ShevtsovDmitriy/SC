@@ -1,11 +1,11 @@
 package db;
 
+import com.j256.ormlite.stmt.QueryBuilder;
 import entities.*;
-import entities.dictionary.DeviceType;
-import entities.dictionary.Manufacturer;
-import entities.dictionary.SparePart;
+import entities.dictionary.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -74,6 +74,25 @@ public class ServiceCenter {
 
     public List<Order> getAllOrders() throws SQLException {
         return dao.ORDER_DAO.queryForAll();
+    }
+
+    public void setNewEquipments(Order order, String equipmentsString) throws SQLException {
+        String[] stringEquipments = equipmentsString.split("\n");
+        List<EquipmentPart> equipments = new ArrayList<>(stringEquipments.length);
+        for (String stringEquipment : stringEquipments) {
+            QueryBuilder<EquipmentPart, String> queryBuilder = dao.EQUIPMENT_PART_DAO.queryBuilder();
+            queryBuilder.where().eq("name", stringEquipment);
+            EquipmentPart equipment = dao.EQUIPMENT_PART_DAO.iterator(queryBuilder.prepare()).first();
+            equipments.add(equipment);
+        }
+        for(EquipmentPart equipmentPart: equipments){
+            QueryBuilder<Equipment, String> queryBuilder = dao.EQUIPMENT_DAO.queryBuilder();
+            queryBuilder.where().eq("order", order.getId()).and().eq("equipmentPart", equipmentPart.getId());
+            if (dao.EQUIPMENT_DAO.iterator(queryBuilder.prepare()) == null) {
+                dao.EQUIPMENT_DAO.create(new Equipment(order, dao.EQUIPMENT_PART_DAO.queryForId(String.valueOf(equipmentPart.getId()))));
+            }
+        }
+
     }
 
 }

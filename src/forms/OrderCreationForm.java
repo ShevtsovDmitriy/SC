@@ -3,6 +3,8 @@ package forms;
 import controllers.OrderCreationController;
 import db.DictionaryHelper;
 import db.ServiceCenter;
+import entities.Client;
+import entities.Device;
 import entities.Order;
 import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
@@ -47,9 +49,12 @@ public class OrderCreationForm extends JFrame {
     private JButton button5;
 
     private int orderId;
+    private Order order;
 
-    public OrderCreationForm(int orderId) throws HeadlessException {
+    public OrderCreationForm(int orderId) throws HeadlessException, SQLException {
         this.orderId = orderId;
+        ServiceCenter sc = new ServiceCenter();
+        order = sc.getOrder(orderId);
         setContentPane(pannel1);
         setSize(1200, 700);
         OrderCreationController.getController().clearAll();
@@ -92,15 +97,25 @@ public class OrderCreationForm extends JFrame {
     }
 
     private void fillFields() throws SQLException {
-        ServiceCenter sc = new ServiceCenter();
-        Order order = sc.getOrder(orderId);
         clientNameTextField.setText(order.getClient().getFio());
         clientPhoneTextField.setText(order.getClient().getPhone());
         clientUrlTextField.setText(order.getClient().getUrl());
         deviceTypeCombobox.setSelectedIndex(DictionaryHelper.getInstance().getDeviceTypeIndex(order.getDevice().getType()));
         manufacturerComboBox.setSelectedIndex(DictionaryHelper.getInstance().getManufacturerIndex(order.getDevice().getManufacturer()));
         modelTextField.setText(order.getDevice().getModel());
-        //defectsTextArea.setText(order.getDefects().forEach());
+        StringBuilder defects = new StringBuilder();
+        order.getDefects().forEach(v -> {
+            defects.append(v.getName());
+            defects.append("\n");
+        });
+        defectsTextArea.setText(defects.toString());
+        StringBuilder equipments = new StringBuilder();
+        order.getEquipments().forEach(v -> {
+            OrderCreationController.getController().addEquipment(v.getEquipmentPart().getId());
+            equipments.append(v.getEquipmentPart().getName());
+            equipments.append("\n");
+        });
+        equipmentPartsTextArea.setText(equipments.toString());
 
     }
 
@@ -157,20 +172,37 @@ public class OrderCreationForm extends JFrame {
             return;
         }
         ServiceCenter sc = new ServiceCenter();
-        int client = sc.createClient(clientNameTextField.getText(), clientPhoneTextField.getText(), clientUrlTextField.getText(), "");
+        if (isCreation()) {
 
-        int device = sc.createDevice(DictionaryHelper.getInstance().getDeviceType(deviceTypeCombobox.getSelectedIndex()),
-                DictionaryHelper.getInstance().getManufacturer(manufacturerComboBox.getSelectedIndex()),
-                modelTextField.getText(),
-                "",
-                ""
-                );
+            int client = sc.createClient(clientNameTextField.getText(), clientPhoneTextField.getText(), clientUrlTextField.getText(), "");
 
-        int orderId = sc.createOrder(client,
-                device,
-                DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()),
-                OrderCreationController.getController().getEquipments()
-                );
+            int device = sc.createDevice(DictionaryHelper.getInstance().getDeviceType(deviceTypeCombobox.getSelectedIndex()),
+                    DictionaryHelper.getInstance().getManufacturer(manufacturerComboBox.getSelectedIndex()),
+                    modelTextField.getText(),
+                    "",
+                    ""
+            );
+
+            sc.createOrder(client,
+                    device,
+                    DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()),
+                    OrderCreationController.getController().getEquipments()
+            );
+        } else {
+            Client client = order.getClient();
+            client.setFio(clientNameTextField.getText());
+            client.setPhone(clientPhoneTextField.getText());
+            client.setUrl(clientUrlTextField.getText());
+
+            Device device = order.getDevice();
+            device.setType(DictionaryHelper.getInstance().getDeviceType(deviceTypeCombobox.getSelectedIndex()));
+            device.setManufacturer(DictionaryHelper.getInstance().getManufacturer(manufacturerComboBox.getSelectedIndex()));
+            device.setModel(modelTextField.getText());
+
+            sc.setNewEquipments(order, equipmentPartsTextArea.getText());
+
+
+        }
 
         dispose();
 
@@ -207,6 +239,11 @@ public class OrderCreationForm extends JFrame {
 
         }
     }
+
+    private boolean isCreation(){
+        return orderId < 0;
+    }
+
 
     private class DeleteEquipmentButtonListener implements ActionListener{
         @Override

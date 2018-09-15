@@ -179,4 +179,11 @@ public class Order {
         this.equipments.addAll(equipments);
     }
 
+    public ForeignCollection<Equipment> getEquipments() {
+        return equipments;
+    }
+
+    public void setEquipments(ForeignCollection<Equipment> equipments) {
+        this.equipments = equipments;
+    }
 }

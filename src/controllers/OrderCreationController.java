@@ -27,11 +27,11 @@ public class OrderCreationController {
         this.equipments = equipments;
     }
 
-    public void addEquipment(int defect){
+    public void addEquipment(int equipment){
         if(equipments == null){
             equipments = new ArrayList<>(5);
         }
-        equipments.add(defect);
+        equipments.add(equipment);
     }
 
 
