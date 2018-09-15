@@ -5,19 +5,16 @@ import tables.OrderTableModel;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 
-public class TestForm extends JFrame {
+public class MainForm extends JFrame {
     private JButton button1;
     private JPanel panel1;
     private JLabel label1;
     private JTable table1;
 
-    public TestForm() throws HeadlessException, ClassNotFoundException, SQLException {
+    public MainForm() throws HeadlessException, ClassNotFoundException, SQLException {
         setContentPane(panel1);
         setVisible(true);
         setSize(640, 480);
@@ -26,7 +23,7 @@ public class TestForm extends JFrame {
 
         TableModel model = new OrderTableModel();
         table1.setModel(model);
-
+        table1.addMouseListener(new TableMouseListener());
 
         //getContentPane().add(new JScrollPane(table1));
 
@@ -43,7 +40,7 @@ public class TestForm extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            OrderCreationForm orderCreationForm = new OrderCreationForm();
+            OrderCreationForm orderCreationForm = new OrderCreationForm(-1);
             orderCreationForm.setVisible(true);
             orderCreationForm.addWindowListener(new WindowAdapter() {
                 @Override
@@ -60,9 +57,22 @@ public class TestForm extends JFrame {
         }
     }
 
+    private class TableMouseListener extends MouseAdapter
+    {
+        public void mouseClicked(MouseEvent e)
+        {
+            if (e.getClickCount() == 2){
+                OrderCreationForm orderCreationForm = new OrderCreationForm((Integer) table1.getValueAt(table1.getSelectedRow(), 0));
+                orderCreationForm.setVisible(true);
+            }
+
+
+        }
+    }
+
     public static void main(String[] args) {
         try {
-            new TestForm();
+            new MainForm();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

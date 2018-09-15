@@ -3,6 +3,7 @@ package forms;
 import controllers.OrderCreationController;
 import db.DictionaryHelper;
 import db.ServiceCenter;
+import entities.Order;
 import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
 import entities.dictionary.EquipmentPart;
@@ -45,40 +46,62 @@ public class OrderCreationForm extends JFrame {
     private JButton okButton;
     private JButton button5;
 
+    private int orderId;
 
-    public OrderCreationForm() throws HeadlessException {
+    public OrderCreationForm(int orderId) throws HeadlessException {
+        this.orderId = orderId;
         setContentPane(pannel1);
         setSize(1200, 700);
         OrderCreationController.getController().clearAll();
 
         try {
-            prepareComoBoxes();
+           fillForms();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        findInDictionaryButton.addActionListener(new MyButtonListener());
-        addEquipmentButton.addActionListener(new AddEquipmentButtonListener());
-        deleteEquipmentButton.addActionListener(new DeleteEquipmentButtonListener());
-        okButton.addActionListener(new OkButtonListener());
-
     }
 
-    private void prepareComoBoxes() throws SQLException {
+    private void fillForms() throws SQLException {
+        prepareComboBoxes();
+        setListeners();
+        if(orderId > -1){
+            fillFields();
+        }
+    }
+
+    private void prepareComboBoxes() throws SQLException {
         addAllDeviceTypes();
         addAllManufacturers();
         addAllDefects();
         deviceTypeCombobox.setSelectedIndex(-1);
         manufacturerComboBox.setSelectedIndex(-1);
         defectComboBox.setSelectedIndex(-1);
-        defectComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                defectsTextArea.append(((JComboBox) e.getSource()).getSelectedItem().toString());
-                defectsTextArea.append("\n");
+        defectComboBox.addActionListener(e -> {
+            defectsTextArea.append(((JComboBox) e.getSource()).getSelectedItem().toString());
+            defectsTextArea.append("\n");
 
-            }
         });
+    }
+
+    private void setListeners(){
+        findInDictionaryButton.addActionListener(new MyButtonListener());
+        addEquipmentButton.addActionListener(new AddEquipmentButtonListener());
+        deleteEquipmentButton.addActionListener(new DeleteEquipmentButtonListener());
+        okButton.addActionListener(new OkButtonListener());
+    }
+
+    private void fillFields() throws SQLException {
+        ServiceCenter sc = new ServiceCenter();
+        Order order = sc.getOrder(orderId);
+        clientNameTextField.setText(order.getClient().getFio());
+        clientPhoneTextField.setText(order.getClient().getPhone());
+        clientUrlTextField.setText(order.getClient().getUrl());
+        deviceTypeCombobox.setSelectedIndex(DictionaryHelper.getInstance().getDeviceTypeIndex(order.getDevice().getType()));
+        manufacturerComboBox.setSelectedIndex(DictionaryHelper.getInstance().getManufacturerIndex(order.getDevice().getManufacturer()));
+        modelTextField.setText(order.getDevice().getModel());
+        //defectsTextArea.setText(order.getDefects().forEach());
+
     }
 
     @SuppressWarnings("unchecked")

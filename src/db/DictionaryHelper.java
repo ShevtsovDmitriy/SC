@@ -36,12 +36,30 @@ public class DictionaryHelper {
         return deviceTypes.get(id);
     }
 
+    public int getDeviceTypeIndex(DeviceType deviceType){
+        for(int  i = 0; i < deviceTypes.size(); i++){
+            if (deviceTypes.get(i).getId() == deviceType.getId()){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public List<Manufacturer> getManufacturers() throws SQLException {
         return manufacturers == null?manufacturers = dao.MANUFACTURER_DAO.queryForAll():manufacturers;
     }
 
     public Manufacturer getManufacturer(int id){
         return manufacturers.get(id);
+    }
+
+    public int getManufacturerIndex(Manufacturer manufacturer){
+        for(int  i = 0; i < manufacturers.size(); i++){
+            if (manufacturers.get(i).getId() == manufacturer.getId()){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public List<Defect> getDefects() throws SQLException {
