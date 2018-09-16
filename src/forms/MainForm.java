@@ -40,20 +40,26 @@ public class MainForm extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            OrderCreationForm orderCreationForm = new OrderCreationForm(-1);
-            orderCreationForm.setVisible(true);
-            orderCreationForm.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    try {
-                        ((OrderTableModel)table1.getModel()).refresh();
-                        table1.revalidate();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
+            OrderCreationForm orderCreationForm = null;
+            try {
+                orderCreationForm = new OrderCreationForm(-1);
+                orderCreationForm.setVisible(true);
+                orderCreationForm.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        try {
+                            ((OrderTableModel)table1.getModel()).refresh();
+                            table1.revalidate();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
 
-                }
-            });
+                    }
+                });
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -62,8 +68,12 @@ public class MainForm extends JFrame {
         public void mouseClicked(MouseEvent e)
         {
             if (e.getClickCount() == 2){
-                OrderCreationForm orderCreationForm = new OrderCreationForm((Integer) table1.getValueAt(table1.getSelectedRow(), 0));
-                orderCreationForm.setVisible(true);
+                try {
+                    OrderCreationForm orderCreationForm = new OrderCreationForm((Integer) table1.getValueAt(table1.getSelectedRow(), 0));
+                    orderCreationForm.setVisible(true);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
             }
 
 

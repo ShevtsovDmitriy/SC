@@ -1,6 +1,7 @@
 package db;
 
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import entities.*;
 import entities.dictionary.*;
 
@@ -88,11 +89,24 @@ public class ServiceCenter {
         for(EquipmentPart equipmentPart: equipments){
             QueryBuilder<Equipment, String> queryBuilder = dao.EQUIPMENT_DAO.queryBuilder();
             queryBuilder.where().eq("order", order.getId()).and().eq("equipmentPart", equipmentPart.getId());
-            if (dao.EQUIPMENT_DAO.iterator(queryBuilder.prepare()) == null) {
+            if (dao.EQUIPMENT_DAO.iterator(queryBuilder.prepare()).first() == null) {
                 dao.EQUIPMENT_DAO.create(new Equipment(order, dao.EQUIPMENT_PART_DAO.queryForId(String.valueOf(equipmentPart.getId()))));
             }
         }
+    }
+
+    public void setNewDefects(Order order, String defectsString) throws SQLException {
+        List<Integer> defectIds = DictionaryHelper.getInstance().getDefects(defectsString);
+        for(Integer defectId: defectIds){
+            QueryBuilder<DeviceDefect, String> queryBuilder = dao.DEVICE_DEFECT_DAO.queryBuilder();
+            queryBuilder.where().eq("order", order.getId()).and().eq("defect", defectId);
+            if (dao.DEVICE_DEFECT_DAO.iterator(queryBuilder.prepare()).first() == null) {
+                dao.DEVICE_DEFECT_DAO.create(new DeviceDefect(order, dao.DEFECT_DAO.queryForId(defectId.toString())));
+            }
+        }
+
 
     }
+
 
 }

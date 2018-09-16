@@ -200,6 +200,7 @@ public class OrderCreationForm extends JFrame {
             device.setModel(modelTextField.getText());
 
             sc.setNewEquipments(order, equipmentPartsTextArea.getText());
+            sc.setNewDefects(order, defectsTextArea.getText());
 
 
         }
