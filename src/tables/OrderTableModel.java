@@ -88,7 +88,7 @@ public class OrderTableModel implements TableModel {
                 case 5:
                     return order.getDevice().getModel();
                 case 6:
-                    return order.getLastStatus().getName();
+                    return order.getLastStatus().getStatus().getName();
             }
 
 

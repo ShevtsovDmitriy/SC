@@ -10,6 +10,7 @@ import entities.dictionary.Defect;
 import entities.dictionary.DeviceType;
 import entities.dictionary.EquipmentPart;
 import entities.dictionary.Manufacturer;
+import tables.StatusesTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,6 +49,7 @@ public class OrderCreationForm extends JFrame {
     private JButton okButton;
     private JButton cancelButton;
     private JList equipmentPartsList;
+    private JFormattedTextField orderDateTextField;
 
     private int orderId;
     private Order order;
@@ -75,6 +77,9 @@ public class OrderCreationForm extends JFrame {
         if(orderId > -1){
             fillFields();
         }
+
+        orderDateTextField.setValue(order.getLastStatus().getDate());
+
     }
 
     private void prepareComboBoxes() throws SQLException {
@@ -97,6 +102,8 @@ public class OrderCreationForm extends JFrame {
         okButton.addActionListener(new OkButtonListener());
         cancelButton.addActionListener(new CancelButtonListener());
         deleteEquipmentButton.addActionListener(new RemoveEquipmentFromListButtonListener());
+
+        findInDictionaryButton.addActionListener(new TestListener());
     }
 
     private void fillFields() throws SQLException {
@@ -118,6 +125,10 @@ public class OrderCreationForm extends JFrame {
             listModel.addElement(v.getEquipmentPart());
             OrderCreationController.getController().addEquipment(v.getEquipmentPart().getId());
         });
+
+        StatusesTableModel tableModel = new StatusesTableModel(order);
+        statusesTable.setModel(tableModel);
+
 
 
 
@@ -333,6 +344,13 @@ public class OrderCreationForm extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             removeEquipmentFromList();
+        }
+    }
+
+    private class TestListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
         }
     }
 

@@ -107,6 +107,11 @@ public class ServiceCenter {
 
     public void setNewDefects(Order order, String defectsString) throws SQLException {
         List<Integer> defectIds = DictionaryHelper.getInstance().getDefects(defectsString);
+
+        DeleteBuilder<DeviceDefect, String> deleteBuilder = dao.DEVICE_DEFECT_DAO.deleteBuilder();
+        deleteBuilder.where().eq("order", order.getId()).and().notIn("defect", defectIds);
+        deleteBuilder.delete();
+
         for(Integer defectId: defectIds){
             QueryBuilder<DeviceDefect, String> queryBuilder = dao.DEVICE_DEFECT_DAO.queryBuilder();
             queryBuilder.where().eq("order", order.getId()).and().eq("defect", defectId);

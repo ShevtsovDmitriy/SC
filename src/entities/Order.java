@@ -5,12 +5,12 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.Defect;
-import entities.dictionary.Status;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /* Заказ */
 @DatabaseTable(tableName = "orders")
@@ -28,17 +28,17 @@ public class Order {
     private Boolean warranty;
     @DatabaseField
     private Date date;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField
     private ForeignCollection<Photo> photos;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField
     private ForeignCollection<DeviceDefect> defects;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField
     private ForeignCollection<Equipment> equipments;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField
     private ForeignCollection<OrderJob> jobs;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField
     private ForeignCollection<OrderSpare> spares;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField
     private ForeignCollection<OrderStatus> statuses;
 
 
@@ -159,12 +159,12 @@ public class Order {
         this.spares.add(spare);
     }
 
-    public ForeignCollection<OrderStatus> getStatuses() {
-        return statuses;
+    public List<OrderStatus> getStatuses() {
+        return new ArrayList<>(statuses);
     }
 
-    public Status getLastStatus(){
-        return  statuses.iterator().next().getStatus();
+    public OrderStatus getLastStatus(){
+        return  statuses.iterator().next();
     }
 
     public void addStatus(OrderStatus status) {
@@ -179,7 +179,7 @@ public class Order {
         this.equipments.addAll(equipments);
     }
 
-    public ForeignCollection<Equipment> getEquipments() {
+    public Collection<Equipment> getEquipments() {
         return equipments;
     }
 
