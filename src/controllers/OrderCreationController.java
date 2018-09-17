@@ -34,6 +34,9 @@ public class OrderCreationController {
         equipments.add(equipment);
     }
 
+    public void removeEquipment(int equipment){
+        equipments.removeIf(e -> e.equals(Integer.valueOf(equipment)));
+    }
 
 
 }

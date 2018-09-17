@@ -1,5 +1,6 @@
 package db;
 
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import entities.*;
 import entities.dictionary.DeviceType;
@@ -87,26 +88,13 @@ public class ServiceCenter {
         return dao.ORDER_DAO.queryForAll();
     }
 
-    public void setNewEquipments(Order order, String equipmentsString) throws SQLException {
-        String[] stringEquipments = equipmentsString.split("\n");
-        List<EquipmentPart> equipments = new ArrayList<>(stringEquipments.length);
-        for (String stringEquipment : stringEquipments) {
-            QueryBuilder<EquipmentPart, String> queryBuilder = dao.EQUIPMENT_PART_DAO.queryBuilder();
-            queryBuilder.where().eq("name", stringEquipment);
-            EquipmentPart equipment = dao.EQUIPMENT_PART_DAO.iterator(queryBuilder.prepare()).first();
-            equipments.add(equipment);
-        }
-        for(EquipmentPart equipmentPart: equipments){
-            QueryBuilder<Equipment, String> queryBuilder = dao.EQUIPMENT_DAO.queryBuilder();
-            queryBuilder.where().eq("order", order.getId()).and().eq("equipmentPart", equipmentPart.getId());
-            if (dao.EQUIPMENT_DAO.iterator(queryBuilder.prepare()).first() == null) {
-                dao.EQUIPMENT_DAO.create(new Equipment(order, dao.EQUIPMENT_PART_DAO.queryForId(String.valueOf(equipmentPart.getId()))));
-            }
-        }
-    }
-
-
     public void setNewEquipments(Order order, List<EquipmentPart> equipmentParts) throws SQLException {
+        List<Integer> equipmentPartIds = new ArrayList<>(equipmentParts.size());
+        equipmentParts.forEach(e -> equipmentPartIds.add(e.getId()));
+        DeleteBuilder<Equipment, String> deleteBuilder = dao.EQUIPMENT_DAO.deleteBuilder();
+        deleteBuilder.where().eq("order", order.getId()).and().notIn("equipmentPart", equipmentPartIds);
+        deleteBuilder.delete();
+
         for(EquipmentPart equipmentPart: equipmentParts){
             QueryBuilder<Equipment, String> queryBuilder = dao.EQUIPMENT_DAO.queryBuilder();
             queryBuilder.where().eq("order", order.getId()).and().eq("equipmentPart", equipmentPart.getId());

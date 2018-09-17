@@ -94,9 +94,9 @@ public class OrderCreationForm extends JFrame {
     private void setListeners(){
         findInDictionaryButton.addActionListener(new MyButtonListener());
         addEquipmentButton.addActionListener(new AddEquipmentButtonListener());
-        deleteEquipmentButton.addActionListener(new DeleteEquipmentButtonListener());
         okButton.addActionListener(new OkButtonListener());
         cancelButton.addActionListener(new CancelButtonListener());
+        deleteEquipmentButton.addActionListener(new RemoveEquipmentFromListButtonListener());
     }
 
     private void fillFields() throws SQLException {
@@ -249,6 +249,14 @@ public class OrderCreationForm extends JFrame {
         return dialog;
     }
 
+    private void removeEquipmentFromList(){
+        int selectedElement = equipmentPartsList.getSelectedIndex();
+        DefaultListModel listModel = (DefaultListModel) equipmentPartsList.getModel();
+        EquipmentPart selectedEquipmentPart = (EquipmentPart) listModel.getElementAt(selectedElement);
+        OrderCreationController.getController().removeEquipment(selectedEquipmentPart.getId());
+        listModel.remove(selectedElement);
+    }
+
     /* Listeners */
     private class MyButtonListener implements ActionListener {
 
@@ -285,15 +293,6 @@ public class OrderCreationForm extends JFrame {
         return orderId < 0;
     }
 
-
-    private class DeleteEquipmentButtonListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            label1.setText(OrderCreationController.getController().getEquipments().toString());
-
-        }
-    }
-
     private class OkButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -327,6 +326,13 @@ public class OrderCreationForm extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
+        }
+    }
+
+    private class RemoveEquipmentFromListButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            removeEquipmentFromList();
         }
     }
 
