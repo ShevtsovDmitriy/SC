@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderCreationForm extends JFrame {
@@ -39,17 +40,18 @@ public class OrderCreationForm extends JFrame {
     private JTable statusesTable;
     private JPanel statusesPannel;
     private JPanel equipmentsPannel;
-    private JTextArea equipmentPartsTextArea;
     private JButton addEquipmentButton;
     private JButton deleteEquipmentButton;
     private JButton button1;
     private JButton button2;
     private JButton button3;
     private JButton okButton;
-    private JButton button5;
+    private JButton cancelButton;
+    private JList equipmentPartsList;
 
     private int orderId;
     private Order order;
+    private boolean isChanged;
 
     public OrderCreationForm(int orderId) throws HeadlessException, SQLException {
         this.orderId = orderId;
@@ -58,7 +60,7 @@ public class OrderCreationForm extends JFrame {
         setContentPane(pannel1);
         setSize(1200, 700);
         OrderCreationController.getController().clearAll();
-
+        isChanged = false;
         try {
            fillForms();
         } catch (SQLException e) {
@@ -94,6 +96,7 @@ public class OrderCreationForm extends JFrame {
         addEquipmentButton.addActionListener(new AddEquipmentButtonListener());
         deleteEquipmentButton.addActionListener(new DeleteEquipmentButtonListener());
         okButton.addActionListener(new OkButtonListener());
+        cancelButton.addActionListener(new CancelButtonListener());
     }
 
     private void fillFields() throws SQLException {
@@ -109,13 +112,14 @@ public class OrderCreationForm extends JFrame {
             defects.append("\n");
         });
         defectsTextArea.setText(defects.toString());
-        StringBuilder equipments = new StringBuilder();
+        DefaultListModel listModel = new DefaultListModel();
+        equipmentPartsList.setModel(listModel);
         order.getEquipments().forEach(v -> {
+            listModel.addElement(v.getEquipmentPart());
             OrderCreationController.getController().addEquipment(v.getEquipmentPart().getId());
-            equipments.append(v.getEquipmentPart().getName());
-            equipments.append("\n");
         });
-        equipmentPartsTextArea.setText(equipments.toString());
+
+
 
     }
 
@@ -142,10 +146,8 @@ public class OrderCreationForm extends JFrame {
 
     private void fillEquipmentParts() throws SQLException {
         List<EquipmentPart> equipmentParts = DictionaryHelper.getInstance().getEquipmentParts(OrderCreationController.getController().getEquipments());
-        equipmentParts.forEach((e) -> {
-            equipmentPartsTextArea.append(e.getName());
-            equipmentPartsTextArea.append("\n");
-        });
+        DefaultListModel listModel = (DefaultListModel) equipmentPartsList.getModel();
+        equipmentParts.forEach(listModel::addElement);
     }
 
     private boolean checkFields(){
@@ -193,13 +195,22 @@ public class OrderCreationForm extends JFrame {
             client.setFio(clientNameTextField.getText());
             client.setPhone(clientPhoneTextField.getText());
             client.setUrl(clientUrlTextField.getText());
+            sc.updateClient(client);
 
             Device device = order.getDevice();
             device.setType(DictionaryHelper.getInstance().getDeviceType(deviceTypeCombobox.getSelectedIndex()));
             device.setManufacturer(DictionaryHelper.getInstance().getManufacturer(manufacturerComboBox.getSelectedIndex()));
             device.setModel(modelTextField.getText());
+            sc.updateDevice(device);
 
-            sc.setNewEquipments(order, equipmentPartsTextArea.getText());
+
+            DefaultListModel listModel = (DefaultListModel) equipmentPartsList.getModel();
+            int size = listModel.getSize();
+            List<EquipmentPart> equipmentParts = new ArrayList<>(size);
+            for (int i = 0; i < size; i++){
+                equipmentParts.add((EquipmentPart) listModel.get(i));
+            }
+            sc.setNewEquipments(order, equipmentParts);
             sc.setNewDefects(order, defectsTextArea.getText());
 
 
@@ -207,6 +218,35 @@ public class OrderCreationForm extends JFrame {
 
         dispose();
 
+    }
+
+    private void closeWindow(){
+        if (!isChanged){
+            JDialog dialog = createConfirmDialog();
+            dialog.setVisible(true);
+        }
+        dispose();
+    }
+
+    private JDialog createConfirmDialog(){
+        JDialog dialog = new JDialog(this, "Подтвердите закрытие", true);
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        dialog.setSize(200, 130);
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.add(new JLabel("Данные были изменены"));
+        panel.add(new JLabel("Сохранить изменения?"));
+
+        JButton okButton = new JButton("Да");
+        JButton cancelButton = new JButton("Нет");
+        okButton.addActionListener(new SaveChangesButtonListener());
+        cancelButton.addActionListener(new DiscardChangesButtonListener());
+
+        panel.add(okButton);
+        panel.add(cancelButton);
+        dialog.add(panel);
+        dialog.setLocationRelativeTo(null);
+        return dialog;
     }
 
     /* Listeners */
@@ -262,6 +302,31 @@ public class OrderCreationForm extends JFrame {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
+        }
+    }
+
+    private class CancelButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            closeWindow();
+        }
+    }
+
+    private class SaveChangesButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                saveChanges();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    private class DiscardChangesButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
         }
     }
 

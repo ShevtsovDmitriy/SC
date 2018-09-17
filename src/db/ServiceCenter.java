@@ -1,9 +1,11 @@
 package db;
 
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import entities.*;
-import entities.dictionary.*;
+import entities.dictionary.DeviceType;
+import entities.dictionary.EquipmentPart;
+import entities.dictionary.Manufacturer;
+import entities.dictionary.SparePart;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,10 +23,18 @@ public class ServiceCenter {
         return  client.getId();
     }
 
+    public void updateClient(Client client) throws SQLException {
+        dao.CLIENT_DAO.update(client);
+    }
+
     public int createDevice(DeviceType type, Manufacturer manufacturer, String model, String notes, String condition) throws SQLException {
         Device device = new Device(type, manufacturer, model, notes, condition);
         dao.DEVICE_DAO.create(device);
         return device.getId();
+    }
+
+    public void updateDevice(Device device) throws SQLException {
+        dao.DEVICE_DAO.update(device);
     }
 
     public int createOrder(int clientId, int deviceId, Collection<Integer> defectIds, Collection<Integer> equipmentIds) throws SQLException {
@@ -94,6 +104,18 @@ public class ServiceCenter {
             }
         }
     }
+
+
+    public void setNewEquipments(Order order, List<EquipmentPart> equipmentParts) throws SQLException {
+        for(EquipmentPart equipmentPart: equipmentParts){
+            QueryBuilder<Equipment, String> queryBuilder = dao.EQUIPMENT_DAO.queryBuilder();
+            queryBuilder.where().eq("order", order.getId()).and().eq("equipmentPart", equipmentPart.getId());
+            if (dao.EQUIPMENT_DAO.iterator(queryBuilder.prepare()).first() == null) {
+                dao.EQUIPMENT_DAO.create(new Equipment(order, dao.EQUIPMENT_PART_DAO.queryForId(String.valueOf(equipmentPart.getId()))));
+            }
+        }
+    }
+
 
     public void setNewDefects(Order order, String defectsString) throws SQLException {
         List<Integer> defectIds = DictionaryHelper.getInstance().getDefects(defectsString);

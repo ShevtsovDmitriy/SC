@@ -290,31 +290,31 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="83186" class="javax.swing.JTextArea" binding="equipmentPartsTextArea">
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="50"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
                       <component id="7488b" class="javax.swing.JButton" binding="addEquipmentButton">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <text value="+"/>
                         </properties>
+                      </component>
+                      <component id="5ce48" class="javax.swing.JList" binding="equipmentPartsList">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="50"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
                       </component>
                       <component id="c58af" class="javax.swing.JButton" binding="deleteEquipmentButton">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <text value="-"/>
                         </properties>
                       </component>
-                      <hspacer id="96dad">
+                      <hspacer id="8c29a">
                         <constraints>
                           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -335,12 +335,13 @@
           <text value="OK"/>
         </properties>
       </component>
-      <component id="e0703" class="javax.swing.JButton" binding="button5" default-binding="true">
+      <component id="e0703" class="javax.swing.JButton" binding="cancelButton">
         <constraints>
           <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Button"/>
+          <enabled value="true"/>
+          <text value="Cancel"/>
         </properties>
       </component>
     </children>
