@@ -6,10 +6,7 @@ import db.ServiceCenter;
 import entities.Client;
 import entities.Device;
 import entities.Order;
-import entities.dictionary.Defect;
-import entities.dictionary.DeviceType;
-import entities.dictionary.EquipmentPart;
-import entities.dictionary.Manufacturer;
+import entities.dictionary.*;
 import tables.StatusesTableModel;
 
 import javax.swing.*;
@@ -45,13 +42,17 @@ public class OrderCreationForm extends JFrame {
     private JPanel equipmentsPannel;
     private JButton addEquipmentButton;
     private JButton deleteEquipmentButton;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
+    private JButton addAcceptedStatusbutton;
+    private JButton addInServiceStatusButtonbutton;
+    private JButton addReadyStatusButton;
     private JButton okButton;
     private JButton cancelButton;
     private JList equipmentPartsList;
     private JFormattedTextField orderDateTextField;
+    private JButton addOutStatusButton;
+    private JButton addStatusButton;
+    private JComboBox statusComboBox;
+    private JButton removeStatusButton;
 
     private int orderId;
     private Order order;
@@ -89,14 +90,11 @@ public class OrderCreationForm extends JFrame {
         addAllDeviceTypes();
         addAllManufacturers();
         addAllDefects();
+        addAllStatuses();
         deviceTypeCombobox.setSelectedIndex(-1);
         manufacturerComboBox.setSelectedIndex(-1);
         defectComboBox.setSelectedIndex(-1);
-        defectComboBox.addActionListener(e -> {
-            defectsTextArea.append(((JComboBox) e.getSource()).getSelectedItem().toString());
-            defectsTextArea.append("\n");
-
-        });
+        statusComboBox.setSelectedIndex(0);
     }
 
     private void setListeners(){
@@ -105,6 +103,13 @@ public class OrderCreationForm extends JFrame {
         okButton.addActionListener(new OkButtonListener());
         cancelButton.addActionListener(new CancelButtonListener());
         deleteEquipmentButton.addActionListener(new RemoveEquipmentFromListButtonListener());
+        defectComboBox.addActionListener(e -> {
+            defectsTextArea.append(((JComboBox) e.getSource()).getSelectedItem().toString());
+            defectsTextArea.append("\n");
+
+        });
+        addStatusButton.addActionListener(new AddStatusButtonListener());
+        removeStatusButton.addActionListener(new RemoveStatusButtonListener());
 
         findInDictionaryButton.addActionListener(new TestListener());
     }
@@ -136,8 +141,6 @@ public class OrderCreationForm extends JFrame {
         DateFormat df = DateFormat.getDateTimeInstance (DateFormat.DEFAULT,DateFormat.DEFAULT,local);
         orderDateTextField.setValue(df.format(order.getDate()));
 
-
-
     }
 
     @SuppressWarnings("unchecked")
@@ -158,6 +161,13 @@ public class OrderCreationForm extends JFrame {
     private void addAllDefects() throws SQLException {
         for (Defect defect : DictionaryHelper.getInstance().getDefects()) {
             defectComboBox.addItem(defect.getName());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void addAllStatuses() throws SQLException {
+        for (Status status : DictionaryHelper.getInstance().getStatuses()) {
+            statusComboBox.addItem(status.getName());
         }
     }
 
@@ -274,6 +284,11 @@ public class OrderCreationForm extends JFrame {
         listModel.remove(selectedElement);
     }
 
+    private void addStatus(Status status){
+        ((StatusesTableModel)statusesTable.getModel()).addStatus(status);
+        statusesTable.revalidate();
+    }
+
     /* Listeners */
     private class MyButtonListener implements ActionListener {
 
@@ -357,6 +372,24 @@ public class OrderCreationForm extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+        }
+    }
+
+    private class AddStatusButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addStatus(DictionaryHelper.getInstance().getStatus(statusComboBox.getSelectedIndex()));
+        }
+    }
+
+    private class RemoveStatusButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int rowIndex = statusesTable.getSelectedRow();
+            if (rowIndex >= 0 && rowIndex < statusesTable.getModel().getRowCount()) {
+                ((StatusesTableModel) statusesTable.getModel()).removeStatus(rowIndex);
+            }
+            statusesTable.revalidate();
         }
     }
 

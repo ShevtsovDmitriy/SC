@@ -2,14 +2,12 @@ package tables;
 
 import entities.Order;
 import entities.OrderStatus;
+import entities.dictionary.Status;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import java.text.DateFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public class StatusesTableModel extends AbstractTableModel {
 
@@ -58,7 +56,7 @@ public class StatusesTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+        return columnIndex == 0;
     }
 
     @Override
@@ -92,5 +90,15 @@ public class StatusesTableModel extends AbstractTableModel {
         listeners.remove(listener);
     }
 
+    public void addStatus(Status status){
+        statuses.add(new OrderStatus(order, status, new Date()));
+    }
 
+    public void removeStatus(int rowIndex){
+        statuses.remove(rowIndex);
+    }
+
+    public List<OrderStatus> getStatuses() {
+        return statuses;
+    }
 }

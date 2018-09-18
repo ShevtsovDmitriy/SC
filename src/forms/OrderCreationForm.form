@@ -235,7 +235,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="94930" binding="statusesPannel" layout-manager="GridLayoutManager" row-count="2" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="94930" binding="statusesPannel" layout-manager="GridLayoutManager" row-count="3" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -243,42 +243,71 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="97948" class="javax.swing.JButton" binding="button1" default-binding="true">
+                      <component id="97948" class="javax.swing.JButton" binding="addAcceptedStatusbutton">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <text value="Принят"/>
                         </properties>
                       </component>
-                      <component id="ad4a1" class="javax.swing.JTable" binding="statusesTable">
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <preferred-size width="250" height="50"/>
-                            <maximum-size width="250" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="45ed6" class="javax.swing.JButton" binding="button2" default-binding="true">
+                      <component id="45ed6" class="javax.swing.JButton" binding="addInServiceStatusButtonbutton">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <text value="В ремонте"/>
                         </properties>
                       </component>
-                      <hspacer id="a0331">
-                        <constraints>
-                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                      </hspacer>
-                      <component id="debcc" class="javax.swing.JButton" binding="button3" default-binding="true">
+                      <component id="debcc" class="javax.swing.JButton" binding="addReadyStatusButton">
                         <constraints>
                           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <text value="Готово"/>
+                        </properties>
+                      </component>
+                      <component id="dbd3a" class="javax.swing.JButton" binding="addOutStatusButton">
+                        <constraints>
+                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Выдано"/>
+                        </properties>
+                      </component>
+                      <component id="8b8d" class="javax.swing.JButton" binding="addStatusButton">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Добавить"/>
+                        </properties>
+                      </component>
+                      <component id="fc77a" class="javax.swing.JComboBox" binding="statusComboBox">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <scrollpane id="8e10">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="ad4a1" class="javax.swing.JTable" binding="statusesTable">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <component id="1c8d9" class="javax.swing.JButton" binding="removeStatusButton">
+                        <constraints>
+                          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Удалить"/>
                         </properties>
                       </component>
                     </children>

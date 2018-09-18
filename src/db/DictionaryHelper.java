@@ -90,6 +90,10 @@ public class DictionaryHelper {
         return statuses == null?statuses = dao.STATUS_DAO.queryForAll():statuses;
     }
 
+    public Status getStatus(int index){
+        return statuses.get(index);
+    }
+
     public int getStatusIndex(Status status){
         for(int  i = 0; i < statuses.size(); i++){
             if (statuses.get(i).getId() == status.getId()){
