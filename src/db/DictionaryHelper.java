@@ -1,10 +1,7 @@
 package db;
 
 import com.j256.ormlite.stmt.QueryBuilder;
-import entities.dictionary.Defect;
-import entities.dictionary.DeviceType;
-import entities.dictionary.EquipmentPart;
-import entities.dictionary.Manufacturer;
+import entities.dictionary.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +21,7 @@ public class DictionaryHelper {
     private List<DeviceType> deviceTypes;
     private List<Manufacturer> manufacturers;
     private List<Defect> defects;
+    private List<Status> statuses;
 
     private DaoHelper dao = DaoHelper.getInstance();
 
@@ -86,6 +84,19 @@ public class DictionaryHelper {
         QueryBuilder<EquipmentPart, String> queryBuilder = dao.EQUIPMENT_PART_DAO.queryBuilder();
         queryBuilder.where().in("id", parts);
         return dao.EQUIPMENT_PART_DAO.query(queryBuilder.prepare());
+    }
+
+    public List<Status> getStatuses() throws SQLException {
+        return statuses == null?statuses = dao.STATUS_DAO.queryForAll():statuses;
+    }
+
+    public int getStatusIndex(Status status){
+        for(int  i = 0; i < statuses.size(); i++){
+            if (statuses.get(i).getId() == status.getId()){
+                return i;
+            }
+        }
+        return -1;
     }
 
     /* private methods */

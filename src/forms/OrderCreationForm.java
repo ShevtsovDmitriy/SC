@@ -19,8 +19,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class OrderCreationForm extends JFrame {
 
@@ -63,6 +65,8 @@ public class OrderCreationForm extends JFrame {
         setSize(1200, 700);
         OrderCreationController.getController().clearAll();
         isChanged = false;
+
+
         try {
            fillForms();
         } catch (SQLException e) {
@@ -78,7 +82,6 @@ public class OrderCreationForm extends JFrame {
             fillFields();
         }
 
-        orderDateTextField.setValue(order.getLastStatus().getDate());
 
     }
 
@@ -129,6 +132,9 @@ public class OrderCreationForm extends JFrame {
         StatusesTableModel tableModel = new StatusesTableModel(order);
         statusesTable.setModel(tableModel);
 
+        Locale local = new Locale("ru","RU");
+        DateFormat df = DateFormat.getDateTimeInstance (DateFormat.DEFAULT,DateFormat.DEFAULT,local);
+        orderDateTextField.setValue(df.format(order.getDate()));
 
 
 

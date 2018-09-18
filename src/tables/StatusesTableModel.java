@@ -4,14 +4,14 @@ import entities.Order;
 import entities.OrderStatus;
 
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 import java.text.DateFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class StatusesTableModel implements TableModel {
+public class StatusesTableModel extends AbstractTableModel {
 
     private Set<TableModelListener> listeners = new HashSet<>();
     private List<OrderStatus> statuses;
@@ -58,20 +58,21 @@ public class StatusesTableModel implements TableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+        return true;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        OrderStatus status = statuses.get(rowIndex);
+        OrderStatus orderStatus = statuses.get(rowIndex);
         switch (columnIndex) {
             case 0: {
                 Locale local = new Locale("ru","RU");
                 DateFormat df = DateFormat.getDateTimeInstance (DateFormat.DEFAULT,DateFormat.DEFAULT,local);
-                return df.format(status.getDate());
+                return df.format(orderStatus.getDate());
             }
-            case 1:
-                return status.getStatus().getName();
+            case 1: {
+                return orderStatus.getStatus().getName();
+            }
         }
         return "";
     }
@@ -90,4 +91,6 @@ public class StatusesTableModel implements TableModel {
     public void removeTableModelListener(TableModelListener listener) {
         listeners.remove(listener);
     }
+
+
 }
