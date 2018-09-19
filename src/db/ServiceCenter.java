@@ -11,7 +11,6 @@ import entities.dictionary.SparePart;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 public class ServiceCenter {
@@ -38,11 +37,20 @@ public class ServiceCenter {
         dao.DEVICE_DAO.update(device);
     }
 
-    public int createOrder(int clientId, int deviceId, Collection<Integer> defectIds, Collection<Integer> equipmentIds) throws SQLException {
+    public List<Device> getAllDevisesForClient(Client client) throws SQLException {
+        QueryBuilder<Order, String> queryBuilder = dao.ORDER_DAO.queryBuilder();
+        queryBuilder.where().eq("client", client.getId());
+        List<Order> clientOrders = dao.ORDER_DAO.query(queryBuilder.prepare());
+        List<Device> clientDevices = new ArrayList<>(clientOrders.size());
+        clientOrders.forEach(e -> clientDevices.add(e.getDevice()));
+        return clientDevices;
+    }
+
+    public Order createOrder(int clientId, int deviceId, Collection<Integer> defectIds, Collection<Integer> equipmentIds) throws SQLException {
         Client client = getClient(clientId);
         Device device = getDevice(deviceId);
         Order order = new Order(client, device);
-        int orderId = dao.ORDER_DAO.create(order);
+        dao.ORDER_DAO.create(order);
 
         for(Integer defectId: defectIds){
             dao.DEVICE_DEFECT_DAO.create(new DeviceDefect(order, dao.DEFECT_DAO.queryForId(defectId.toString())));
@@ -51,9 +59,7 @@ public class ServiceCenter {
             dao.EQUIPMENT_DAO.create(new Equipment(order, dao.EQUIPMENT_PART_DAO.queryForId(equipmentId.toString())));
         }
 
-        dao.ORDER_STATUS_DAO.create(new OrderStatus(order, dao.STATUS_DAO.queryForId("1"), new Date()));
-
-        return orderId;
+        return order;
     }
 
     public void addSpareToOrder(Order order, SparePart sparePart) throws SQLException {
@@ -64,12 +70,29 @@ public class ServiceCenter {
         dao.DEVICE_DEFECT_DAO.create(new DeviceDefect(order, dao.DEFECT_DAO.queryForId(Integer.toString(defectId))));
     }
 
-    public void addEquipmentToOrder(Order order, int defectId) throws SQLException {
-        dao.EQUIPMENT_DAO.create(new Equipment(order, dao.EQUIPMENT_PART_DAO.queryForId(Integer.toString(defectId))));
+    public void addEquipmentToOrder(Order order, int equipmentId) throws SQLException {
+        dao.EQUIPMENT_DAO.create(new Equipment(order, dao.EQUIPMENT_PART_DAO.queryForId(Integer.toString(equipmentId))));
     }
 
-    public void addJobToOrder(Order order, int defectId) throws SQLException {
-        dao.DEVICE_DEFECT_DAO.create(new DeviceDefect(order, dao.DEFECT_DAO.queryForId(Integer.toString(defectId))));
+    public void addJobToOrder(Order order, int jobId) throws SQLException {
+        dao.DEVICE_DEFECT_DAO.create(new DeviceDefect(order, dao.DEFECT_DAO.queryForId(Integer.toString(jobId))));
+    }
+
+    public void addStatusesToOrder(Order order, List<OrderStatus> statuses) throws SQLException {
+        List<Integer> statusIds = new ArrayList<>(statuses.size());
+        statuses.forEach(e -> statusIds.add(e.getStatus().getId()));
+        DeleteBuilder<OrderStatus, String> deleteBuilder = dao.ORDER_STATUS_DAO.deleteBuilder();
+        deleteBuilder.where().eq("order", order.getId()).and().notIn("status", statusIds);
+        deleteBuilder.delete();
+
+        for(OrderStatus status: statuses){
+            QueryBuilder<OrderStatus, String> queryBuilder = dao.ORDER_STATUS_DAO.queryBuilder();
+            queryBuilder.where().eq("order", order.getId()).and().eq("status", status.getStatus().getId());
+            if (dao.ORDER_STATUS_DAO.iterator(queryBuilder.prepare()).first() == null) {
+                dao.ORDER_STATUS_DAO.create(new OrderStatus(order, dao.STATUS_DAO.queryForId(String.valueOf(status.getStatus().getId())), status.getDate()));
+            }
+        }
+
     }
 
     public Client getClient(int id) throws SQLException {

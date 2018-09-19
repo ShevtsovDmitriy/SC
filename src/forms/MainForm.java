@@ -50,6 +50,7 @@ public class MainForm extends JFrame {
                         try {
                             ((OrderTableModel)table1.getModel()).refresh();
                             table1.revalidate();
+                            table1.updateUI();
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }

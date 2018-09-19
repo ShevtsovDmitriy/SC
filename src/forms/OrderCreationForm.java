@@ -10,6 +10,7 @@ import entities.dictionary.*;
 import tables.StatusesTableModel;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +43,7 @@ public class OrderCreationForm extends JFrame {
     private JPanel equipmentsPannel;
     private JButton addEquipmentButton;
     private JButton deleteEquipmentButton;
-    private JButton addAcceptedStatusbutton;
+    private JButton editStatusbutton;
     private JButton addInServiceStatusButtonbutton;
     private JButton addReadyStatusButton;
     private JButton okButton;
@@ -63,10 +64,10 @@ public class OrderCreationForm extends JFrame {
         ServiceCenter sc = new ServiceCenter();
         order = sc.getOrder(orderId);
         setContentPane(pannel1);
-        setSize(1200, 700);
+        setSize(1000, 700);
         OrderCreationController.getController().clearAll();
         isChanged = false;
-
+        setResizable(false);
 
         try {
            fillForms();
@@ -95,6 +96,9 @@ public class OrderCreationForm extends JFrame {
         manufacturerComboBox.setSelectedIndex(-1);
         defectComboBox.setSelectedIndex(-1);
         statusComboBox.setSelectedIndex(0);
+
+        DefaultListModel listModel = new DefaultListModel();
+        equipmentPartsList.setModel(listModel);
     }
 
     private void setListeners(){
@@ -110,6 +114,10 @@ public class OrderCreationForm extends JFrame {
         });
         addStatusButton.addActionListener(new AddStatusButtonListener());
         removeStatusButton.addActionListener(new RemoveStatusButtonListener());
+        addInServiceStatusButtonbutton.addActionListener(new AddInServiceStatusButtonListener());
+        addReadyStatusButton.addActionListener(new AddReadyStatusButtonListener());
+        addOutStatusButton.addActionListener(new AddOutStatusButtonListener());
+        editStatusbutton.addActionListener(new EditStatusButtonListener());
 
         findInDictionaryButton.addActionListener(new TestListener());
     }
@@ -127,8 +135,7 @@ public class OrderCreationForm extends JFrame {
             defects.append("\n");
         });
         defectsTextArea.setText(defects.toString());
-        DefaultListModel listModel = new DefaultListModel();
-        equipmentPartsList.setModel(listModel);
+        DefaultListModel listModel = (DefaultListModel) equipmentPartsList.getModel();
         order.getEquipments().forEach(v -> {
             listModel.addElement(v.getEquipmentPart());
             OrderCreationController.getController().addEquipment(v.getEquipmentPart().getId());
@@ -212,11 +219,16 @@ public class OrderCreationForm extends JFrame {
                     ""
             );
 
-            sc.createOrder(client,
+            order = sc.createOrder(client,
                     device,
                     DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()),
                     OrderCreationController.getController().getEquipments()
             );
+
+            sc.addStatusesToOrder(order, ((StatusesTableModel)statusesTable.getModel()).getStatuses());
+
+
+
         } else {
             Client client = order.getClient();
             client.setFio(clientNameTextField.getText());
@@ -239,7 +251,7 @@ public class OrderCreationForm extends JFrame {
             }
             sc.setNewEquipments(order, equipmentParts);
             sc.setNewDefects(order, defectsTextArea.getText());
-
+            sc.addStatusesToOrder(order, ((StatusesTableModel)statusesTable.getModel()).getStatuses());
 
         }
 
@@ -285,7 +297,14 @@ public class OrderCreationForm extends JFrame {
     }
 
     private void addStatus(Status status){
-        ((StatusesTableModel)statusesTable.getModel()).addStatus(status);
+        TableModel tableModel =  statusesTable.getModel();
+        if (tableModel instanceof StatusesTableModel) {
+            ((StatusesTableModel) statusesTable.getModel()).addStatus(status);
+        } else {
+            StatusesTableModel statusesTableModel = new StatusesTableModel();
+            statusesTableModel.addStatus(status);
+            statusesTable.setModel(statusesTableModel);
+        }
         statusesTable.revalidate();
     }
 
@@ -382,6 +401,27 @@ public class OrderCreationForm extends JFrame {
         }
     }
 
+    private class AddInServiceStatusButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addStatus(DictionaryHelper.getInstance().getInServiceStatus());
+        }
+    }
+
+    private class AddReadyStatusButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addStatus(DictionaryHelper.getInstance().getReadyStatus());
+        }
+    }
+
+    private class AddOutStatusButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addStatus(DictionaryHelper.getInstance().getOutStatus());
+        }
+    }
+
     private class RemoveStatusButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -390,6 +430,18 @@ public class OrderCreationForm extends JFrame {
                 ((StatusesTableModel) statusesTable.getModel()).removeStatus(rowIndex);
             }
             statusesTable.revalidate();
+        }
+    }
+
+    private class EditStatusButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int rowIndex = statusesTable.getSelectedRow();
+            if (rowIndex >= 0 && rowIndex < statusesTable.getModel().getRowCount()) {
+                ((StatusesTableModel) statusesTable.getModel()).getStatuses().get(rowIndex).setStatus(DictionaryHelper.getInstance().getStatus(statusComboBox.getSelectedIndex()));
+            }
+            statusesTable.revalidate();
+            statusesTable.updateUI();
         }
     }
 

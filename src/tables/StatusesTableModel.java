@@ -22,6 +22,11 @@ public class StatusesTableModel extends AbstractTableModel {
         }
     }
 
+    public StatusesTableModel(){
+        order = null;
+        statuses = new ArrayList<>(4);
+    }
+
     @Override
     public int getRowCount() {
         return statuses.size();
@@ -37,7 +42,7 @@ public class StatusesTableModel extends AbstractTableModel {
         switch (columnIndex) {
             case 0:
                 return "Дата";
-            case 2:
+            case 1:
                 return "Статус";
         }
         return "";

@@ -31,6 +31,11 @@ public class OrderStatus {
         this.status = status;
     }
 
+    public OrderStatus(Status status, Date date) {
+        this.status = status;
+        this.date = date;
+    }
+
     public Order getOrder() {
         return order;
     }

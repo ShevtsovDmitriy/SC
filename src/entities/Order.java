@@ -192,4 +192,5 @@ public class Order {
     public void setEquipments(ForeignCollection<Equipment> equipments) {
         this.equipments = equipments;
     }
+
 }

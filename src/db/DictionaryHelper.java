@@ -94,6 +94,33 @@ public class DictionaryHelper {
         return statuses.get(index);
     }
 
+    public Status getInServiceStatus(){
+        for (Status status: statuses){
+            if ("В ремонте".equals(status.getName())){
+                return status;
+            }
+        }
+        return  statuses.iterator().next();
+    }
+
+    public Status getReadyStatus(){
+        for (Status status: statuses){
+            if ("Готово".equals(status.getName())){
+                return status;
+            }
+        }
+        return  statuses.iterator().next();
+    }
+
+    public Status getOutStatus(){
+        for (Status status: statuses){
+            if ("Выдан".equals(status.getName())){
+                return status;
+            }
+        }
+        return  statuses.iterator().next();
+    }
+
     public int getStatusIndex(Status status){
         for(int  i = 0; i < statuses.size(); i++){
             if (statuses.get(i).getId() == status.getId()){
