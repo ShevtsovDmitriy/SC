@@ -1,5 +1,7 @@
 package controllers;
 
+import entities.Client;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class OrderCreationController {
     }
 
     private List<Integer> equipments;
+    private Client client;
 
     public List<Integer> getEquipments() {
         return equipments;
@@ -38,5 +41,11 @@ public class OrderCreationController {
         equipments.removeIf(e -> e.equals(Integer.valueOf(equipment)));
     }
 
+    public Client getClient() {
+        return client;
+    }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

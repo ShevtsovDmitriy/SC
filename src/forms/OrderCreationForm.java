@@ -58,16 +58,19 @@ public class OrderCreationForm extends JFrame {
     private int orderId;
     private Order order;
     private boolean isChanged;
+    private ServiceCenter sc;
+    private boolean isClientSelected;
 
     public OrderCreationForm(int orderId) throws HeadlessException, SQLException {
+        sc = new ServiceCenter();
         this.orderId = orderId;
-        ServiceCenter sc = new ServiceCenter();
         order = sc.getOrder(orderId);
         setContentPane(pannel1);
         setSize(1000, 700);
         OrderCreationController.getController().clearAll();
         isChanged = false;
         setResizable(false);
+        isClientSelected = false;
 
         try {
            fillForms();
@@ -118,8 +121,7 @@ public class OrderCreationForm extends JFrame {
         addReadyStatusButton.addActionListener(new AddReadyStatusButtonListener());
         addOutStatusButton.addActionListener(new AddOutStatusButtonListener());
         editStatusbutton.addActionListener(new EditStatusButtonListener());
-
-        findInDictionaryButton.addActionListener(new TestListener());
+        findInDictionaryButton.addActionListener(new FindInDictionaryButtonListener());
     }
 
     private void fillFields() throws SQLException {
@@ -147,6 +149,8 @@ public class OrderCreationForm extends JFrame {
         Locale local = new Locale("ru","RU");
         DateFormat df = DateFormat.getDateTimeInstance (DateFormat.DEFAULT,DateFormat.DEFAULT,local);
         orderDateTextField.setValue(df.format(order.getDate()));
+
+
 
     }
 
@@ -207,7 +211,7 @@ public class OrderCreationForm extends JFrame {
         if (!checkFields()){
             return;
         }
-        ServiceCenter sc = new ServiceCenter();
+
         if (isCreation()) {
 
             int client = sc.createClient(clientNameTextField.getText(), clientPhoneTextField.getText(), clientUrlTextField.getText(), "");
@@ -308,6 +312,22 @@ public class OrderCreationForm extends JFrame {
         statusesTable.revalidate();
     }
 
+    private boolean isCreation(){
+        return orderId < 0;
+    }
+
+    private void setClientFromDictionary() throws SQLException {
+        isClientSelected = true;
+        Client client = OrderCreationController.getController().getClient();
+        clientNameTextField.setText(client.getFio());
+        clientPhoneTextField.setText(client.getPhone());
+        clientUrlTextField.setText(client.getUrl());
+        for (Device device: sc.getAllDevisesForClient(client)){
+            deviceComboBox.addItem(device.getManufacturer().getName() + " " + device.getModel());
+        }
+        deviceComboBox.setSelectedIndex(-1);
+    }
+
     /* Listeners */
     private class MyButtonListener implements ActionListener {
 
@@ -338,10 +358,6 @@ public class OrderCreationForm extends JFrame {
             }
 
         }
-    }
-
-    private boolean isCreation(){
-        return orderId < 0;
     }
 
     private class OkButtonListener implements ActionListener{
@@ -442,6 +458,28 @@ public class OrderCreationForm extends JFrame {
             }
             statusesTable.revalidate();
             statusesTable.updateUI();
+        }
+    }
+
+    private class FindInDictionaryButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                ClientSelectionForm clientSelectionForm = new ClientSelectionForm();
+                clientSelectionForm.setVisible(true);
+                clientSelectionForm.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        try {
+                            setClientFromDictionary();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
