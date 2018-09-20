@@ -6,21 +6,18 @@ import db.ServiceCenter;
 import entities.Client;
 import entities.Device;
 import entities.Order;
+import entities.OrderStatus;
 import entities.dictionary.*;
 import tables.StatusesTableModel;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
 public class OrderCreationForm extends JFrame {
 
@@ -54,6 +51,7 @@ public class OrderCreationForm extends JFrame {
     private JButton addStatusButton;
     private JComboBox statusComboBox;
     private JButton removeStatusButton;
+    private JTextArea notesTextArea;
 
     private int orderId;
     private Order order;
@@ -120,6 +118,9 @@ public class OrderCreationForm extends JFrame {
         addOutStatusButton.addActionListener(new AddOutStatusButtonListener());
         editStatusbutton.addActionListener(new EditStatusButtonListener());
         findInDictionaryButton.addActionListener(new FindInDictionaryButtonListener());
+        clientNameTextField.addFocusListener(new TextFieldFocusListener());
+        deviceTypeCombobox.addFocusListener(new ComboBoxFocusListener());
+        manufacturerComboBox.addFocusListener(new ComboBoxFocusListener());
 
     }
 
@@ -147,7 +148,7 @@ public class OrderCreationForm extends JFrame {
         Locale local = new Locale("ru","RU");
         DateFormat df = DateFormat.getDateTimeInstance (DateFormat.DEFAULT,DateFormat.DEFAULT,local);
         orderDateTextField.setValue(df.format(order.getDate()));
-
+        notesTextArea.setText(order.getNotes());
 
 
     }
@@ -234,9 +235,14 @@ public class OrderCreationForm extends JFrame {
                     DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()),
                     OrderCreationController.getController().getEquipments()
             );
-
-            sc.addStatusesToOrder(order, ((StatusesTableModel)statusesTable.getModel()).getStatuses());
-
+            order.setNotes(notesTextArea.getText());
+            TableModel tableModel =  statusesTable.getModel();
+            if (tableModel instanceof StatusesTableModel) {
+                sc.addStatusesToOrder(order, ((StatusesTableModel) statusesTable.getModel()).getStatuses());
+            } else {
+                sc.addStatusesToOrder(order, Collections.singletonList(new OrderStatus(DictionaryHelper.getInstance().getAcceptedStatus(), new Date())));
+            }
+            sc.updateOrder(order);
 
 
         } else {
@@ -250,7 +256,6 @@ public class OrderCreationForm extends JFrame {
             if (isDeviceSelected()){
                 device = OrderCreationController.getController().getDevice();
                 order.setDevice(device);
-                sc.updateOrder(order);
             } else {
                 device = order.getDevice();
             }
@@ -268,8 +273,14 @@ public class OrderCreationForm extends JFrame {
             }
             sc.setNewEquipments(order, equipmentParts);
             sc.setNewDefects(order, defectsTextArea.getText());
-            sc.addStatusesToOrder(order, ((StatusesTableModel)statusesTable.getModel()).getStatuses());
-
+            TableModel tableModel =  statusesTable.getModel();
+            if (tableModel instanceof StatusesTableModel) {
+                sc.addStatusesToOrder(order, ((StatusesTableModel) statusesTable.getModel()).getStatuses());
+            } else {
+                sc.addStatusesToOrder(order, Collections.singletonList(new OrderStatus(DictionaryHelper.getInstance().getAcceptedStatus(), new Date())));
+            }
+            order.setNotes(notesTextArea.getText());
+            sc.updateOrder(order);
         }
 
         dispose();
@@ -277,7 +288,7 @@ public class OrderCreationForm extends JFrame {
     }
 
     private void closeWindow(){
-        if (!isChanged){
+        if (!isCreation() || isChanged){
             JDialog dialog = createConfirmDialog();
             dialog.setVisible(true);
         }
@@ -524,6 +535,36 @@ public class OrderCreationForm extends JFrame {
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();
+            }
+        }
+    }
+
+    private class TextFieldFocusListener implements FocusListener{
+        @Override
+        public void focusGained(FocusEvent e) {
+
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            JTextField textField = (JTextField)e.getSource();
+            if (!textField.getText().isEmpty()){
+                textField.setBackground(new Color(255, 255 , 255));
+            }
+        }
+    }
+
+    private class ComboBoxFocusListener implements FocusListener{
+        @Override
+        public void focusGained(FocusEvent e) {
+
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            JComboBox comboBox = (JComboBox)e.getSource();
+            if (comboBox.getSelectedIndex() >= 0){
+                comboBox.setBackground(new Color(238, 238 , 238));
             }
         }
     }

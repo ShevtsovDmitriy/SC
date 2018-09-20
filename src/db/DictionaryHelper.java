@@ -94,6 +94,15 @@ public class DictionaryHelper {
         return statuses.get(index);
     }
 
+    public Status getAcceptedStatus(){
+        for (Status status: statuses){
+            if ("Принят".equals(status.getName())){
+                return status;
+            }
+        }
+        return  statuses.iterator().next();
+    }
+
     public Status getInServiceStatus(){
         for (Status status: statuses){
             if ("В ремонте".equals(status.getName())){
