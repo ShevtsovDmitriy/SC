@@ -92,4 +92,9 @@ public class Device {
     public void setCondition(String condition) {
         this.condition = condition;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Device && ((Device) obj).getId() == this.getId();
+    }
 }

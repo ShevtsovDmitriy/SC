@@ -18,18 +18,12 @@ public class MainForm extends JFrame {
         setContentPane(panel1);
         setVisible(true);
         setSize(640, 480);
-        //setExtendedState(MAXIMIZED_BOTH);
         button1.addActionListener(new MyButtonListener());
 
         TableModel model = new OrderTableModel();
         table1.setModel(model);
         table1.addMouseListener(new TableMouseListener());
 
-        //getContentPane().add(new JScrollPane(table1));
-
-        //setPreferredSize(new Dimension(260, 220));
-        //pack();
-        //setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,6 +37,7 @@ public class MainForm extends JFrame {
             OrderCreationForm orderCreationForm = null;
             try {
                 orderCreationForm = new OrderCreationForm(-1);
+                orderCreationForm.setTitle("Создать заказ");
                 orderCreationForm.setVisible(true);
                 orderCreationForm.addWindowListener(new WindowAdapter() {
                     @Override
@@ -71,6 +66,7 @@ public class MainForm extends JFrame {
             if (e.getClickCount() == 2){
                 try {
                     OrderCreationForm orderCreationForm = new OrderCreationForm((Integer) table1.getValueAt(table1.getSelectedRow(), 0));
+                    orderCreationForm.setTitle("Редактировать заказ");
                     orderCreationForm.setVisible(true);
                 } catch (SQLException e1) {
                     e1.printStackTrace();

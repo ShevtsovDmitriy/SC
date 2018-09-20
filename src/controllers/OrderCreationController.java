@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Client;
+import entities.Device;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class OrderCreationController {
 
     private List<Integer> equipments;
     private Client client;
+    private Device device;
 
     public List<Integer> getEquipments() {
         return equipments;
@@ -47,5 +49,13 @@ public class OrderCreationController {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
     }
 }

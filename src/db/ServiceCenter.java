@@ -42,7 +42,10 @@ public class ServiceCenter {
         queryBuilder.where().eq("client", client.getId());
         List<Order> clientOrders = dao.ORDER_DAO.query(queryBuilder.prepare());
         List<Device> clientDevices = new ArrayList<>(clientOrders.size());
-        clientOrders.forEach(e -> clientDevices.add(e.getDevice()));
+        clientOrders.forEach(e -> {
+            if(!clientDevices.contains(e.getDevice())){
+                clientDevices.add(e.getDevice());
+            }});
         return clientDevices;
     }
 

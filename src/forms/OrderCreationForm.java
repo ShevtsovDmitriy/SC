@@ -59,7 +59,6 @@ public class OrderCreationForm extends JFrame {
     private Order order;
     private boolean isChanged;
     private ServiceCenter sc;
-    private boolean isClientSelected;
 
     public OrderCreationForm(int orderId) throws HeadlessException, SQLException {
         sc = new ServiceCenter();
@@ -70,7 +69,6 @@ public class OrderCreationForm extends JFrame {
         OrderCreationController.getController().clearAll();
         isChanged = false;
         setResizable(false);
-        isClientSelected = false;
 
         try {
            fillForms();
@@ -122,15 +120,15 @@ public class OrderCreationForm extends JFrame {
         addOutStatusButton.addActionListener(new AddOutStatusButtonListener());
         editStatusbutton.addActionListener(new EditStatusButtonListener());
         findInDictionaryButton.addActionListener(new FindInDictionaryButtonListener());
+
     }
 
     private void fillFields() throws SQLException {
-        clientNameTextField.setText(order.getClient().getFio());
-        clientPhoneTextField.setText(order.getClient().getPhone());
-        clientUrlTextField.setText(order.getClient().getUrl());
-        deviceTypeCombobox.setSelectedIndex(DictionaryHelper.getInstance().getDeviceTypeIndex(order.getDevice().getType()));
-        manufacturerComboBox.setSelectedIndex(DictionaryHelper.getInstance().getManufacturerIndex(order.getDevice().getManufacturer()));
-        modelTextField.setText(order.getDevice().getModel());
+        OrderCreationController.getController().setClient(order.getClient());
+        OrderCreationController.getController().setDevice(order.getDevice());
+        setClientFromDictionary();
+        setDeviceFromClient();
+
         StringBuilder defects = new StringBuilder();
         order.getDefects().forEach(v -> {
             defects.append(v.getName());
@@ -213,16 +211,24 @@ public class OrderCreationForm extends JFrame {
         }
 
         if (isCreation()) {
+            int client;
+            int device;
+            if (isClientSelected()){
+                client = OrderCreationController.getController().getClient().getId();
+            }else {
+                client = sc.createClient(clientNameTextField.getText(), clientPhoneTextField.getText(), clientUrlTextField.getText(), "");
+            }
 
-            int client = sc.createClient(clientNameTextField.getText(), clientPhoneTextField.getText(), clientUrlTextField.getText(), "");
-
-            int device = sc.createDevice(DictionaryHelper.getInstance().getDeviceType(deviceTypeCombobox.getSelectedIndex()),
-                    DictionaryHelper.getInstance().getManufacturer(manufacturerComboBox.getSelectedIndex()),
-                    modelTextField.getText(),
-                    "",
-                    ""
-            );
-
+            if (isDeviceSelected()){
+                device = OrderCreationController.getController().getDevice().getId();
+            }else {
+                device = sc.createDevice(DictionaryHelper.getInstance().getDeviceType(deviceTypeCombobox.getSelectedIndex()),
+                        DictionaryHelper.getInstance().getManufacturer(manufacturerComboBox.getSelectedIndex()),
+                        modelTextField.getText(),
+                        "",
+                        ""
+                );
+            }
             order = sc.createOrder(client,
                     device,
                     DictionaryHelper.getInstance().getDefects(defectsTextArea.getText()),
@@ -316,8 +322,15 @@ public class OrderCreationForm extends JFrame {
         return orderId < 0;
     }
 
+    private boolean isClientSelected(){
+        return OrderCreationController.getController().getClient() != null;
+    }
+
+    private boolean isDeviceSelected(){
+        return OrderCreationController.getController().getDevice() != null;
+    }
+
     private void setClientFromDictionary() throws SQLException {
-        isClientSelected = true;
         Client client = OrderCreationController.getController().getClient();
         clientNameTextField.setText(client.getFio());
         clientPhoneTextField.setText(client.getPhone());
@@ -326,7 +339,16 @@ public class OrderCreationForm extends JFrame {
             deviceComboBox.addItem(device.getManufacturer().getName() + " " + device.getModel());
         }
         deviceComboBox.setSelectedIndex(-1);
+        deviceComboBox.addActionListener(new SelectDeviceInComboBoxListener());
     }
+
+    private void setDeviceFromClient(){
+        Device device = OrderCreationController.getController().getDevice();
+        deviceTypeCombobox.setSelectedIndex(DictionaryHelper.getInstance().getDeviceTypeIndex(device.getType()));
+        manufacturerComboBox.setSelectedIndex(DictionaryHelper.getInstance().getManufacturerIndex(device.getManufacturer()));
+        modelTextField.setText(device.getModel());
+    }
+
 
     /* Listeners */
     private class MyButtonListener implements ActionListener {
@@ -477,6 +499,22 @@ public class OrderCreationForm extends JFrame {
                         }
                     }
                 });
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    private class SelectDeviceInComboBoxListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                int index = deviceComboBox.getSelectedIndex();
+                if (index >= 0 && index < sc.getAllDevisesForClient(OrderCreationController.getController().getClient()).size()){
+                    Device device = sc.getAllDevisesForClient(OrderCreationController.getController().getClient()).get(index);
+                    OrderCreationController.getController().setDevice(device);
+                    setDeviceFromClient();
+                }
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
