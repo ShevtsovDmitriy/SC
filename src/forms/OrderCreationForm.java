@@ -246,7 +246,14 @@ public class OrderCreationForm extends JFrame {
             client.setUrl(clientUrlTextField.getText());
             sc.updateClient(client);
 
-            Device device = order.getDevice();
+            Device device;
+            if (isDeviceSelected()){
+                device = OrderCreationController.getController().getDevice();
+                order.setDevice(device);
+                sc.updateOrder(order);
+            } else {
+                device = order.getDevice();
+            }
             device.setType(DictionaryHelper.getInstance().getDeviceType(deviceTypeCombobox.getSelectedIndex()));
             device.setManufacturer(DictionaryHelper.getInstance().getManufacturer(manufacturerComboBox.getSelectedIndex()));
             device.setModel(modelTextField.getText());

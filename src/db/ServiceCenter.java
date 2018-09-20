@@ -65,6 +65,10 @@ public class ServiceCenter {
         return order;
     }
 
+    public void updateOrder(Order order) throws SQLException {
+        dao.ORDER_DAO.update(order);
+    }
+
     public void addSpareToOrder(Order order, SparePart sparePart) throws SQLException {
         dao.ORDER_SPARE_DAO.create(new OrderSpare(order, sparePart));
     }
