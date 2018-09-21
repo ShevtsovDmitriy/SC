@@ -1,11 +1,13 @@
 package forms;
 
+import controllers.UserSessionController;
 import tables.OrderTableModel;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class MainForm extends JFrame {
@@ -14,7 +16,8 @@ public class MainForm extends JFrame {
     private JLabel label1;
     private JTable table1;
 
-    public MainForm() throws HeadlessException, ClassNotFoundException, SQLException {
+    public MainForm() throws HeadlessException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
+        UserSessionController.getInstance().login("Admin", "admin");
         setContentPane(panel1);
         setVisible(true);
         setSize(640, 480);
@@ -81,6 +84,8 @@ public class MainForm extends JFrame {
         try {
             new MainForm();
         } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 

@@ -52,6 +52,9 @@ public class OrderCreationForm extends JFrame {
     private JComboBox statusComboBox;
     private JButton removeStatusButton;
     private JTextArea notesTextArea;
+    private JButton button1;
+    private JButton button2;
+    private JTable table1;
 
     private int orderId;
     private Order order;

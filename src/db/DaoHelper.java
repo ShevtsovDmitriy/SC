@@ -48,6 +48,7 @@ public class DaoHelper {
     public Dao<Manufacturer, String> MANUFACTURER_DAO;
     public Dao<SparePart, String> SPARE_PART_DAO;
     public Dao<Status, String> STATUS_DAO;
+    public Dao<User, String> USER_DAO;
 
     private void createDaos() throws SQLException {
         CLIENT_DAO = DaoManager.createDao(connectionSource, Client.class);
@@ -70,6 +71,7 @@ public class DaoHelper {
         MANUFACTURER_DAO = DaoManager.createDao(connectionSource, Manufacturer.class);
         SPARE_PART_DAO = DaoManager.createDao(connectionSource, SparePart.class);
         STATUS_DAO = DaoManager.createDao(connectionSource, Status.class);
+        USER_DAO = DaoManager.createDao(connectionSource, User.class);
     }
 
 }

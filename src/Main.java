@@ -1,11 +1,7 @@
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
-import db.ServiceCenter;
-import entities.dictionary.DeviceType;
-import entities.dictionary.Manufacturer;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Main {
 
@@ -14,9 +10,14 @@ public class Main {
                 null;
         try {
             connectionSource = new JdbcConnectionSource("jdbc:sqlite:sc.s3db");
-
+            /*TableUtils.createTable(connectionSource, User.class);
 
             ServiceCenter serviceCenter = new ServiceCenter();
+            serviceCenter.createUser("Admin", "admin", UserRole.ADMIN);
+*/
+
+/*
+
             int client = serviceCenter.createClient("Test Client", "123456789", "vk.com", "note");
             DeviceType type = db.DaoHelper.getInstance().DEVICE_TYPE_DAO.queryForId("1");
             Manufacturer manufacturer = db.DaoHelper.getInstance().MANUFACTURER_DAO.queryForId("1");
@@ -29,7 +30,7 @@ public class Main {
             equipments.add(2);
             serviceCenter.createOrder(client, device, defects, equipments);
 
-
+*/
 /*
             Order order = serviceCenter.getOrder(1);
             String s1 = order.getClient().getFio();
@@ -85,8 +86,6 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
 
 
     }
