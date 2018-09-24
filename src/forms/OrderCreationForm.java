@@ -8,6 +8,7 @@ import entities.Device;
 import entities.Order;
 import entities.OrderStatus;
 import entities.dictionary.*;
+import tables.OrderJobsTableModel;
 import tables.StatusesTableModel;
 
 import javax.swing.*;
@@ -52,9 +53,9 @@ public class OrderCreationForm extends JFrame {
     private JComboBox statusComboBox;
     private JButton removeStatusButton;
     private JTextArea notesTextArea;
-    private JButton button1;
+    private JButton addJobButton;
     private JButton button2;
-    private JTable table1;
+    private JTable jobsTable;
 
     private int orderId;
     private Order order;
@@ -125,6 +126,7 @@ public class OrderCreationForm extends JFrame {
         deviceTypeCombobox.addFocusListener(new ComboBoxFocusListener());
         manufacturerComboBox.addFocusListener(new ComboBoxFocusListener());
 
+        addJobButton.addActionListener(new AddJobButtonListener());
     }
 
     private void fillFields() throws SQLException {
@@ -153,6 +155,9 @@ public class OrderCreationForm extends JFrame {
         orderDateTextField.setValue(df.format(order.getDate()));
         notesTextArea.setText(order.getNotes());
 
+        OrderJobsTableModel jobTableModel = new OrderJobsTableModel(order);
+        jobsTable.setModel(jobTableModel);
+        jobsTable.getColumnModel().getColumn(0).setPreferredWidth(500);
 
     }
 
@@ -337,6 +342,16 @@ public class OrderCreationForm extends JFrame {
             statusesTable.setModel(statusesTableModel);
         }
         statusesTable.revalidate();
+    }
+
+    private void addJob(){
+        try {
+            JobSelectionForm jobSelectionForm = new JobSelectionForm();
+            jobSelectionForm.setVisible(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private boolean isCreation(){
@@ -572,4 +587,10 @@ public class OrderCreationForm extends JFrame {
         }
     }
 
+    private class AddJobButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            addJob();
+        }
+    }
 }

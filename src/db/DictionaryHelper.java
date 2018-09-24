@@ -139,6 +139,10 @@ public class DictionaryHelper {
         return -1;
     }
 
+    public List<Job> getAllJobs() throws SQLException {
+        return dao.JOB_DAO.queryForAll();
+    }
+
     /* private methods */
     private Defect createDefect(String defectName) throws SQLException {
         Defect defect = new Defect(defectName);

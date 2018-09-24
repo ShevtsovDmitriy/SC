@@ -62,4 +62,9 @@ public class Job {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public String[] getPath(){
+        return category.split("/");
+    }
+
 }

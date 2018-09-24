@@ -4,6 +4,11 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.Job;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /* Выполненные работы */
 @DatabaseTable(tableName = "order_jobs")
 public class OrderJob {
@@ -12,12 +17,13 @@ public class OrderJob {
     private Order order;
     @DatabaseField(columnName  = "job", foreign = true, canBeNull = false, foreignAutoRefresh = true)
     private Job job;
+    @DatabaseField(columnName  = "user", foreign = true, canBeNull = false, foreignAutoRefresh = true)
+    private User user;
     @DatabaseField
     private double price;
     @DatabaseField
     private double quantity;
-    @DatabaseField(columnName  = "user", foreign = true, canBeNull = false, foreignAutoRefresh = true)
-    private User user;
+
 
     public OrderJob() {
     }
@@ -46,6 +52,13 @@ public class OrderJob {
         this.job = job;
     }
 
+    public String getStringPrice() {
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
+        otherSymbols.setDecimalSeparator('.');
+        NumberFormat nf = new DecimalFormat("#.######", otherSymbols);
+        return nf.format(price);
+    }
+
     public double getPrice() {
         return price;
     }
@@ -56,6 +69,13 @@ public class OrderJob {
 
     public double getQuantity() {
         return quantity;
+    }
+
+    public String getStringQuantity() {
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
+        otherSymbols.setDecimalSeparator('.');
+        NumberFormat nf = new DecimalFormat("#.######", otherSymbols);
+        return nf.format(quantity);
     }
 
     public void setQuantity(double quantity) {
@@ -69,4 +89,7 @@ public class OrderJob {
     public void setUser(User user) {
         this.user = user;
     }
+
+
+
 }

@@ -143,8 +143,8 @@ public class Order {
         this.defects.add(defect);
     }
 
-    public ForeignCollection<OrderJob> getJobs() {
-        return jobs;
+    public List<OrderJob> getJobs() {
+        return new ArrayList<>(jobs);
     }
 
     public void addJob(OrderJob job) {
