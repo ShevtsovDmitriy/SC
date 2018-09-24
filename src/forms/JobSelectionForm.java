@@ -2,17 +2,22 @@ package forms;
 
 import db.DictionaryHelper;
 import entities.dictionary.Job;
+import tables.JobsTableModel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
 
 public class JobSelectionForm extends JFrame {
-    private JTree cathegoryTree;
-    private JTable table1;
+    private JTree categoryTree;
+    private JTable jobsTable;
     private JPanel jobSelectionPane;
+    private JScrollPane jobsScrollPane;
 
     public JobSelectionForm() throws SQLException {
 
@@ -23,7 +28,8 @@ public class JobSelectionForm extends JFrame {
         }
 
         DefaultTreeModel treeModel1 = new DefaultTreeModel(root, true);
-        cathegoryTree.setModel(treeModel1);
+        categoryTree.setModel(treeModel1);
+        categoryTree.addMouseListener(new CategoryListMouseListener());
         setContentPane(jobSelectionPane);
         setSize(600, 600);
     }
@@ -40,6 +46,31 @@ public class JobSelectionForm extends JFrame {
         if(!nodeFound){
             for (int i = level; i < job.getPath().length; i++){
                 node.add(new DefaultMutableTreeNode(job.getPath()[i]));
+            }
+        }
+    }
+
+    private class CategoryListMouseListener extends MouseAdapter
+    {
+        public void mouseClicked(MouseEvent e)
+        {
+            TreePath path = categoryTree.getSelectionModel().getSelectionPath();
+            if (path != null){
+                StringBuilder category = new StringBuilder();
+                for (int i = 1; i < path.getPathCount(); i++) {
+                    category.append(((DefaultMutableTreeNode) path.getPath()[i]).getUserObject().toString());
+                    if (i != path.getPathCount() - 1) {
+                        category.append("/");
+                    }
+                }
+
+                try {
+                    JobsTableModel jobsTableModel = new JobsTableModel(DictionaryHelper.getInstance().getJobsOfCategory(category.toString()));
+                    jobsTable.setModel(jobsTableModel);
+                    jobsTable.revalidate();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
     }

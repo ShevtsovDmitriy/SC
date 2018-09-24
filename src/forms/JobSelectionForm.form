@@ -15,20 +15,20 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="267c7" class="javax.swing.JTree" binding="cathegoryTree">
+          <component id="267c7" class="javax.swing.JTree" binding="categoryTree">
             <constraints/>
             <properties/>
           </component>
         </children>
       </scrollpane>
-      <scrollpane id="27766">
+      <scrollpane id="27766" binding="jobsScrollPane">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="fb6ec" class="javax.swing.JTable" binding="table1" default-binding="true">
+          <component id="fb6ec" class="javax.swing.JTable" binding="jobsTable">
             <constraints/>
             <properties/>
           </component>

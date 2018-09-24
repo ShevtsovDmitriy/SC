@@ -143,6 +143,12 @@ public class DictionaryHelper {
         return dao.JOB_DAO.queryForAll();
     }
 
+    public List<Job> getJobsOfCategory(String category) throws SQLException {
+        QueryBuilder<Job, String> queryBuilder = dao.JOB_DAO.queryBuilder();
+        queryBuilder.where().like("category", category + "%");
+        return dao.JOB_DAO.query(queryBuilder.prepare());
+    }
+
     /* private methods */
     private Defect createDefect(String defectName) throws SQLException {
         Defect defect = new Defect(defectName);
