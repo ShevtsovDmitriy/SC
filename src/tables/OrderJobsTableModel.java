@@ -58,7 +58,7 @@ public class OrderJobsTableModel implements TableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+        return false;
     }
 
     @Override
@@ -100,5 +100,13 @@ public class OrderJobsTableModel implements TableModel {
 
     public OrderJob getJob(int index) {
         return jobs.get(index);
+    }
+
+    public List<OrderJob> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<OrderJob> jobs) {
+        this.jobs = jobs;
     }
 }

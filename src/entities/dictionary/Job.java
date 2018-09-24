@@ -2,8 +2,6 @@ package entities.dictionary;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.math.BigDecimal;
 /* Выполненная работа */
 @DatabaseTable(tableName = "jobs")
 public class Job {
@@ -13,14 +11,14 @@ public class Job {
     @DatabaseField
     private String name;
     @DatabaseField
-    private BigDecimal price;
+    private double price;
     @DatabaseField
     private String category;
 
     public Job() {
     }
 
-    public Job(String name, BigDecimal price, String category) {
+    public Job(String name, double price, String category) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -47,11 +45,11 @@ public class Job {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

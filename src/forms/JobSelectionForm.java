@@ -1,5 +1,6 @@
 package forms;
 
+import controllers.OrderCreationController;
 import db.DictionaryHelper;
 import entities.dictionary.Job;
 import tables.JobsTableModel;
@@ -30,6 +31,9 @@ public class JobSelectionForm extends JFrame {
         DefaultTreeModel treeModel1 = new DefaultTreeModel(root, true);
         categoryTree.setModel(treeModel1);
         categoryTree.addMouseListener(new CategoryListMouseListener());
+
+        jobsTable.addMouseListener(new TableMouseListener());
+
         setContentPane(jobSelectionPane);
         setSize(600, 600);
     }
@@ -72,6 +76,21 @@ public class JobSelectionForm extends JFrame {
                     e1.printStackTrace();
                 }
             }
+        }
+    }
+
+    private class TableMouseListener extends MouseAdapter
+    {
+        public void mouseClicked(MouseEvent e)
+        {
+            if (e.getClickCount() == 2) {
+                int row = jobsTable.getSelectedRow();
+                Job job = ((JobsTableModel)jobsTable.getModel()).getJob(row);
+                OrderCreationController.getController().addJob(job);
+                dispose();
+            }
+
+
         }
     }
 

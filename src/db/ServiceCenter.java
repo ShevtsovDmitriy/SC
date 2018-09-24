@@ -2,11 +2,9 @@ package db;
 
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
+import controllers.UserSessionController;
 import entities.*;
-import entities.dictionary.DeviceType;
-import entities.dictionary.EquipmentPart;
-import entities.dictionary.Manufacturer;
-import entities.dictionary.SparePart;
+import entities.dictionary.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -149,8 +147,12 @@ public class ServiceCenter {
                 dao.DEVICE_DEFECT_DAO.create(new DeviceDefect(order, dao.DEFECT_DAO.queryForId(defectId.toString())));
             }
         }
+    }
 
-
+    public void addJobsToOrder(Order order, List<Job> jobs) throws SQLException {
+        for (Job job: jobs) {
+            dao.ORDER_JOB_DAO.create(new OrderJob(order, job, job.getPrice(), 1, UserSessionController.getInstance().getUser()));
+        }
     }
 
 

@@ -2,6 +2,7 @@ package controllers;
 
 import entities.Client;
 import entities.Device;
+import entities.dictionary.Job;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class OrderCreationController {
     private List<Integer> equipments;
     private Client client;
     private Device device;
+    private List<Job> jobs;
 
     public List<Integer> getEquipments() {
         return equipments;
@@ -57,5 +59,20 @@ public class OrderCreationController {
 
     public void setDevice(Device device) {
         this.device = device;
+    }
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
+    }
+
+    public void addJob(Job job){
+        if (jobs == null){
+            jobs = new ArrayList<>();
+        }
+        jobs.add(job);
     }
 }

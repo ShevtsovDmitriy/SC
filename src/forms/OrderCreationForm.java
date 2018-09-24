@@ -348,6 +348,21 @@ public class OrderCreationForm extends JFrame {
         try {
             JobSelectionForm jobSelectionForm = new JobSelectionForm();
             jobSelectionForm.setVisible(true);
+            jobSelectionForm.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    List<Job> jobs = OrderCreationController.getController().getJobs();
+                    if (jobs != null){
+                        try {
+                            sc.addJobsToOrder(order, jobs);
+                            ((OrderJobsTableModel)jobsTable.getModel()).setJobs(order.getJobs());
+                            jobsTable.revalidate();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            });
         } catch (SQLException e) {
             e.printStackTrace();
         }

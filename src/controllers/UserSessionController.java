@@ -56,6 +56,7 @@ public class UserSessionController {
 
     }
 
-
-
+    public User getUser() {
+        return user;
+    }
 }

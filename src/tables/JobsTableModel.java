@@ -47,7 +47,7 @@ public class JobsTableModel implements TableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+        return false;
     }
 
     @Override
@@ -80,4 +80,6 @@ public class JobsTableModel implements TableModel {
     public Job getJob(int index) {
         return jobs.get(index);
     }
+
+
 }
