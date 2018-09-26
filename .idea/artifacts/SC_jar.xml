@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="SC:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SC_jar</output-path>
+    <root id="archive" name="SC.jar">
+      <element id="module-output" name="SC" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/sqlite-jdbc-3.8.10.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/ormlite-jdbc-5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/ormlite-core-5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jcalendar-0.8.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
