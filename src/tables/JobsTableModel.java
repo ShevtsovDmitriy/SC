@@ -5,8 +5,12 @@ import entities.dictionary.Job;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class JobsTableModel implements TableModel {
@@ -56,8 +60,12 @@ public class JobsTableModel implements TableModel {
         switch (columnIndex) {
             case 0:
                 return job.getName();
-            case 1:
-                return job.getPrice();
+            case 1: {
+                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
+                otherSymbols.setDecimalSeparator('.');
+                NumberFormat nf = new DecimalFormat("#.######", otherSymbols);
+                return nf.format(job.getPrice());
+            }
         }
         return null;
     }

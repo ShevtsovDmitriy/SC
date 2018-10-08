@@ -106,6 +106,10 @@ public class OrderJobsTableModel implements TableModel {
         return jobs;
     }
 
+    public void addJobs(List<OrderJob> jobs){
+        this.jobs.addAll(jobs);
+    }
+
     public void setJobs(List<OrderJob> jobs) {
         this.jobs = jobs;
     }

@@ -1,12 +1,10 @@
 package forms;
 
 import controllers.OrderCreationController;
+import controllers.UserSessionController;
 import db.DictionaryHelper;
 import db.ServiceCenter;
-import entities.Client;
-import entities.Device;
-import entities.Order;
-import entities.OrderStatus;
+import entities.*;
 import entities.dictionary.*;
 import tables.OrderJobsTableModel;
 import tables.StatusesTableModel;
@@ -250,6 +248,7 @@ public class OrderCreationForm extends JFrame {
             } else {
                 sc.addStatusesToOrder(order, Collections.singletonList(new OrderStatus(DictionaryHelper.getInstance().getAcceptedStatus(), new Date())));
             }
+            sc.addJobsToOrder(((OrderJobsTableModel)jobsTable.getModel()).getJobs());
             sc.updateOrder(order);
 
 
@@ -288,6 +287,7 @@ public class OrderCreationForm extends JFrame {
                 sc.addStatusesToOrder(order, Collections.singletonList(new OrderStatus(DictionaryHelper.getInstance().getAcceptedStatus(), new Date())));
             }
             order.setNotes(notesTextArea.getText());
+            sc.addJobsToOrder(((OrderJobsTableModel)jobsTable.getModel()).getJobs());
             sc.updateOrder(order);
         }
 
@@ -351,16 +351,13 @@ public class OrderCreationForm extends JFrame {
             jobSelectionForm.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    List<Job> jobs = OrderCreationController.getController().getJobs();
-                    if (jobs != null){
-                        try {
-                            sc.addJobsToOrder(order, jobs);
-                            ((OrderJobsTableModel)jobsTable.getModel()).setJobs(order.getJobs());
-                            jobsTable.revalidate();
-                        } catch (SQLException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
+            List<Job> jobs = OrderCreationController.getController().getJobs();
+            if (jobs != null){
+                List<OrderJob> orderJobs = new ArrayList<>(jobs.size());
+                jobs.forEach(v -> orderJobs.add(new OrderJob(order, v, v.getPrice(), 1, UserSessionController.getInstance().getUser())));
+                ((OrderJobsTableModel)jobsTable.getModel()).addJobs(orderJobs);
+                jobsTable.revalidate();
+            }
                 }
             });
         } catch (SQLException e) {

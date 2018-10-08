@@ -2,9 +2,11 @@ package db;
 
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
-import controllers.UserSessionController;
 import entities.*;
-import entities.dictionary.*;
+import entities.dictionary.DeviceType;
+import entities.dictionary.EquipmentPart;
+import entities.dictionary.Manufacturer;
+import entities.dictionary.SparePart;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -149,9 +151,13 @@ public class ServiceCenter {
         }
     }
 
-    public void addJobsToOrder(Order order, List<Job> jobs) throws SQLException {
-        for (Job job: jobs) {
-            dao.ORDER_JOB_DAO.create(new OrderJob(order, job, job.getPrice(), 1, UserSessionController.getInstance().getUser()));
+    public void addJobsToOrder(List<OrderJob> jobs) throws SQLException {
+        for (OrderJob job: jobs) {
+            QueryBuilder<OrderJob, String> queryBuilder = dao.ORDER_JOB_DAO.queryBuilder();
+            queryBuilder.where().eq("order", job.getOrder().getId()).and().eq("job", job.getJob().getId());
+            if (dao.ORDER_JOB_DAO.iterator(queryBuilder.prepare()).first() == null){
+                dao.ORDER_JOB_DAO.create(job);
+            }
         }
     }
 
