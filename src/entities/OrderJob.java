@@ -82,6 +82,10 @@ public class OrderJob {
         this.quantity = quantity;
     }
 
+    public void addOne(){
+        this.quantity++;
+    }
+
     public User getUser() {
         return user;
     }
@@ -90,6 +94,8 @@ public class OrderJob {
         this.user = user;
     }
 
-
-
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof OrderJob && this.getOrder().getId() == ((OrderJob)obj).getOrder().getId() && this.getJob().getId() == ((OrderJob)obj).getJob().getId();
+    }
 }

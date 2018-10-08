@@ -52,7 +52,7 @@ public class OrderCreationForm extends JFrame {
     private JButton removeStatusButton;
     private JTextArea notesTextArea;
     private JButton addJobButton;
-    private JButton button2;
+    private JButton removeJobButton;
     private JTable jobsTable;
 
     private int orderId;
@@ -125,6 +125,7 @@ public class OrderCreationForm extends JFrame {
         manufacturerComboBox.addFocusListener(new ComboBoxFocusListener());
 
         addJobButton.addActionListener(new AddJobButtonListener());
+        removeJobButton.addActionListener(new RemoveJobButtonListener());
     }
 
     private void fillFields() throws SQLException {
@@ -248,7 +249,7 @@ public class OrderCreationForm extends JFrame {
             } else {
                 sc.addStatusesToOrder(order, Collections.singletonList(new OrderStatus(DictionaryHelper.getInstance().getAcceptedStatus(), new Date())));
             }
-            sc.addJobsToOrder(((OrderJobsTableModel)jobsTable.getModel()).getJobs());
+            sc.setNewJobs(((OrderJobsTableModel)jobsTable.getModel()).getJobs());
             sc.updateOrder(order);
 
 
@@ -287,7 +288,7 @@ public class OrderCreationForm extends JFrame {
                 sc.addStatusesToOrder(order, Collections.singletonList(new OrderStatus(DictionaryHelper.getInstance().getAcceptedStatus(), new Date())));
             }
             order.setNotes(notesTextArea.getText());
-            sc.addJobsToOrder(((OrderJobsTableModel)jobsTable.getModel()).getJobs());
+            sc.setNewJobs(((OrderJobsTableModel)jobsTable.getModel()).getJobs());
             sc.updateOrder(order);
         }
 
@@ -354,8 +355,15 @@ public class OrderCreationForm extends JFrame {
             List<Job> jobs = OrderCreationController.getController().getJobs();
             if (jobs != null){
                 List<OrderJob> orderJobs = new ArrayList<>(jobs.size());
-                jobs.forEach(v -> orderJobs.add(new OrderJob(order, v, v.getPrice(), 1, UserSessionController.getInstance().getUser())));
-                ((OrderJobsTableModel)jobsTable.getModel()).addJobs(orderJobs);
+                jobs.forEach(v -> {
+                    OrderJob orderJob = new OrderJob(order, v, v.getPrice(), 1, UserSessionController.getInstance().getUser());
+                    if (orderJobs.contains(orderJob)){
+                        orderJobs.get(orderJobs.indexOf(orderJob)).addOne();
+                    }else {
+                        orderJobs.add(orderJob);
+                    }
+                });
+                ((OrderJobsTableModel)jobsTable.getModel()).setJobs(orderJobs);
                 jobsTable.revalidate();
             }
                 }
@@ -603,6 +611,17 @@ public class OrderCreationForm extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             addJob();
+        }
+    }
+
+    private class RemoveJobButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int rowIndex = jobsTable.getSelectedRow();
+            if (rowIndex >= 0 && rowIndex < jobsTable.getModel().getRowCount()) {
+                ((OrderJobsTableModel) jobsTable.getModel()).removeJob(rowIndex);
+            }
+            jobsTable.revalidate();
         }
     }
 }

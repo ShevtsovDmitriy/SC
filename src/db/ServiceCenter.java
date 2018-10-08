@@ -151,7 +151,14 @@ public class ServiceCenter {
         }
     }
 
-    public void addJobsToOrder(List<OrderJob> jobs) throws SQLException {
+    public void setNewJobs(List<OrderJob> jobs) throws SQLException {
+        List<Integer> jobsIds = new ArrayList<>(jobs.size());
+        jobs.forEach(v -> jobsIds.add(v.getJob().getId()));
+
+        DeleteBuilder<OrderJob, String> deleteBuilder = dao.ORDER_JOB_DAO.deleteBuilder();
+        deleteBuilder.where().eq("order", jobs.iterator().next().getOrder().getId()).and().notIn("job", jobsIds);
+        deleteBuilder.delete();
+
         for (OrderJob job: jobs) {
             QueryBuilder<OrderJob, String> queryBuilder = dao.ORDER_JOB_DAO.queryBuilder();
             queryBuilder.where().eq("order", job.getOrder().getId()).and().eq("job", job.getJob().getId());

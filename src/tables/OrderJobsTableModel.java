@@ -113,4 +113,8 @@ public class OrderJobsTableModel implements TableModel {
     public void setJobs(List<OrderJob> jobs) {
         this.jobs = jobs;
     }
+
+    public void removeJob(int rowIndex){
+        jobs.remove(rowIndex);
+    }
 }
