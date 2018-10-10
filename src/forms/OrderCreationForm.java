@@ -249,7 +249,7 @@ public class OrderCreationForm extends JFrame {
             } else {
                 sc.addStatusesToOrder(order, Collections.singletonList(new OrderStatus(DictionaryHelper.getInstance().getAcceptedStatus(), new Date())));
             }
-            sc.setNewJobs(((OrderJobsTableModel)jobsTable.getModel()).getJobs());
+            sc.setNewJobs(order, ((OrderJobsTableModel)jobsTable.getModel()).getJobs());
             sc.updateOrder(order);
 
 
@@ -288,7 +288,7 @@ public class OrderCreationForm extends JFrame {
                 sc.addStatusesToOrder(order, Collections.singletonList(new OrderStatus(DictionaryHelper.getInstance().getAcceptedStatus(), new Date())));
             }
             order.setNotes(notesTextArea.getText());
-            sc.setNewJobs(((OrderJobsTableModel)jobsTable.getModel()).getJobs());
+            sc.setNewJobs(order, ((OrderJobsTableModel)jobsTable.getModel()).getJobs());
             sc.updateOrder(order);
         }
 
