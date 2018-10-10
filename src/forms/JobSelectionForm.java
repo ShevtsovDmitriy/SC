@@ -19,6 +19,9 @@ public class JobSelectionForm extends JFrame {
     private JTable jobsTable;
     private JPanel jobSelectionPane;
     private JScrollPane jobsScrollPane;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
 
     public JobSelectionForm() throws SQLException {
 
