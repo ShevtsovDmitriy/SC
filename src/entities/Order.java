@@ -7,10 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.Defect;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /* Заказ */
 @DatabaseTable(tableName = "orders")
@@ -164,7 +161,7 @@ public class Order {
     }
 
     public OrderStatus getLastStatus(){
-        return statuses.stream().max(OrderStatus::compareTo).get();
+        return statuses.stream().max(Comparator.comparing(OrderStatus::getDate)).get();
     }
 
     public void addStatus(OrderStatus status) {

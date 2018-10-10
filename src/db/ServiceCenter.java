@@ -152,6 +152,9 @@ public class ServiceCenter {
     }
 
     public void setNewJobs(List<OrderJob> jobs) throws SQLException {
+        if (jobs == null || jobs.isEmpty()){
+            return;
+        }
         List<Integer> jobsIds = new ArrayList<>(jobs.size());
         jobs.forEach(v -> jobsIds.add(v.getJob().getId()));
 

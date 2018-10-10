@@ -60,10 +60,4 @@ public class OrderStatus {
         this.date = date;
     }
 
-
-    public static int compareTo(OrderStatus orderStatus, OrderStatus orderStatus1) {
-
-        return orderStatus.getDate().compareTo(orderStatus1.getDate());
-
-    }
 }
