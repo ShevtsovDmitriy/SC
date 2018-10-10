@@ -164,13 +164,7 @@ public class Order {
     }
 
     public OrderStatus getLastStatus(){
-        OrderStatus status = statuses.iterator().next();
-        for (OrderStatus orderStatus: statuses){
-            if (orderStatus.getDate().after(status.getDate())){
-                status = orderStatus;
-            }
-        }
-        return status;
+        return statuses.stream().max(OrderStatus::compareTo).get();
     }
 
     public void addStatus(OrderStatus status) {
