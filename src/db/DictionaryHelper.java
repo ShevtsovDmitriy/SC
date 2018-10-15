@@ -149,6 +149,10 @@ public class DictionaryHelper {
         return dao.JOB_DAO.query(queryBuilder.prepare());
     }
 
+    public void addJob(Job job) throws SQLException {
+        dao.JOB_DAO.create(job);
+    }
+
     /* private methods */
     private Defect createDefect(String defectName) throws SQLException {
         Defect defect = new Defect(defectName);

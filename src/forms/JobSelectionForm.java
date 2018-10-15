@@ -9,8 +9,8 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,9 +19,9 @@ public class JobSelectionForm extends JFrame {
     private JTable jobsTable;
     private JPanel jobSelectionPane;
     private JScrollPane jobsScrollPane;
-    private JButton button1;
+    private JButton selectJobButton;
     private JButton button2;
-    private JButton button3;
+    private JButton addJobButton;
 
     public JobSelectionForm() throws SQLException {
 
@@ -36,6 +36,9 @@ public class JobSelectionForm extends JFrame {
         categoryTree.addMouseListener(new CategoryListMouseListener());
 
         jobsTable.addMouseListener(new TableMouseListener());
+
+        selectJobButton.addActionListener(new SelectJobButtonListener());
+        addJobButton.addActionListener(new AddJobButtonListener());
 
         setContentPane(jobSelectionPane);
         setSize(600, 600);
@@ -55,6 +58,38 @@ public class JobSelectionForm extends JFrame {
                 node.add(new DefaultMutableTreeNode(job.getPath()[i]));
             }
         }
+    }
+
+
+    private JDialog createJobCreationDialog(){
+        JDialog dialog = new JDialog(this, "Создание новой работы", true);
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        dialog.setSize(600, 130);
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        JTextField nameField = new JTextField("Наименование");
+        nameField.setPreferredSize(new Dimension(150, 24));
+        nameField.addFocusListener(new TextFieldFocusListener("Наименование"));
+        JTextField costField = new JTextField("Стоимость");
+        costField.setPreferredSize(new Dimension(150, 24));
+        costField.addFocusListener(new TextFieldFocusListener("Стоимость"));
+        panel.add(nameField);
+        panel.add(costField);
+        //TODO: add all fields and repair focus
+        JButton okButton = new JButton("Да");
+        JButton cancelButton = new JButton("Нет");
+        //okButton.addActionListener(new OrderCreationForm.SaveChangesButtonListener());
+        //cancelButton.addActionListener(new OrderCreationForm.DiscardChangesButtonListener());
+
+        panel.add(okButton);
+        panel.add(cancelButton);
+
+        dialog.add(panel);
+        //dialog.getRootPane().setDefaultButton(cancelButton);
+        dialog.setLocationRelativeTo(null);
+        okButton.requestFocusInWindow();
+
+        return dialog;
     }
 
     private class CategoryListMouseListener extends MouseAdapter
@@ -94,6 +129,53 @@ public class JobSelectionForm extends JFrame {
             }
 
 
+        }
+    }
+
+    private class SelectJobButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int row = jobsTable.getSelectedRow();
+            if (row >= 0 && row < jobsTable.getModel().getRowCount()){
+                Job job = ((JobsTableModel) jobsTable.getModel()).getJob(row);
+                OrderCreationController.getController().addJob(job);
+                dispose();
+            }
+        }
+    }
+
+    private class AddJobButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JDialog dialog = createJobCreationDialog();
+            dialog.setVisible(true);
+        }
+    }
+
+    private class TextFieldFocusListener implements FocusListener {
+
+        private String text;
+
+        public TextFieldFocusListener(String text) {
+            this.text = text;
+        }
+
+
+        @Override
+        public void focusGained(FocusEvent e) {
+            JTextField field = (JTextField)e.getSource();
+            if(text.equals(field.getText())){
+                field.setText(null);
+            }
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            JTextField field = (JTextField)e.getSource();
+            if(field.getText() == null || field.getText().isEmpty()){
+                field.setText(text);
+            }
         }
     }
 

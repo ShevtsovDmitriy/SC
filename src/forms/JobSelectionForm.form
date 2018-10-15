@@ -42,12 +42,12 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="1a91f" class="javax.swing.JButton" binding="button1" default-binding="true">
+          <component id="1a91f" class="javax.swing.JButton" binding="selectJobButton">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <text value="Выбрать"/>
             </properties>
           </component>
           <component id="20de2" class="javax.swing.JButton" binding="button2" default-binding="true">
@@ -58,12 +58,12 @@
               <text value="Button"/>
             </properties>
           </component>
-          <component id="f585" class="javax.swing.JButton" binding="button3" default-binding="true">
+          <component id="f585" class="javax.swing.JButton" binding="addJobButton">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <text value="Добавить"/>
             </properties>
           </component>
           <hspacer id="842e7">
