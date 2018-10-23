@@ -15,11 +15,11 @@ public class StoreEntity {
     @DatabaseField(columnName  = "sparePart", foreign = true, canBeNull = false, foreignAutoRefresh = true)
     private SparePart sparePart;
     @DatabaseField
-    private int count;
+    private double count;
     @DatabaseField
-    private float buyPrice;
+    private double buyPrice;
     @DatabaseField
-    private float salePrice;
+    private double salePrice;
     @ForeignCollectionField(eager = false)
     private ForeignCollection<SparePhoto> photos;
 
@@ -49,27 +49,27 @@ public class StoreEntity {
         this.sparePart = sparePart;
     }
 
-    public int getCount() {
+    public double getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(double count) {
         this.count = count;
     }
 
-    public float getBuyPrice() {
+    public double getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(float buyPrice) {
+    public void setBuyPrice(double buyPrice) {
         this.buyPrice = buyPrice;
     }
 
-    public float getSalePrice() {
+    public double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(float salePrice) {
+    public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
 
@@ -81,4 +81,7 @@ public class StoreEntity {
         this.photos.add(photo);
     }
 
+    public String[] getPath(){
+        return sparePart.getCategory().split("/");
+    }
 }

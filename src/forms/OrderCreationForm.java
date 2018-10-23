@@ -54,6 +54,9 @@ public class OrderCreationForm extends JFrame {
     private JButton addJobButton;
     private JButton removeJobButton;
     private JTable jobsTable;
+    private JButton addSpareButton;
+    private JButton deleteSpareButton;
+    private JScrollPane sparePartsTable;
 
     private int orderId;
     private Order order;

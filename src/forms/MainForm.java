@@ -13,8 +13,8 @@ import java.sql.SQLException;
 public class MainForm extends JFrame {
     private JButton button1;
     private JPanel panel1;
-    private JLabel label1;
     private JTable table1;
+    private JButton storeButton;
 
     public MainForm() throws HeadlessException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         UserSessionController.getInstance().login("Admin", "admin");
@@ -26,6 +26,8 @@ public class MainForm extends JFrame {
         TableModel model = new OrderTableModel();
         table1.setModel(model);
         table1.addMouseListener(new TableMouseListener());
+
+        storeButton.addActionListener(new StoreButtonListener());
 
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -77,6 +79,19 @@ public class MainForm extends JFrame {
             }
 
 
+        }
+    }
+
+    private class StoreButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                StoreForm storeForm = new StoreForm();
+                storeForm.setTitle("Склад");
+                storeForm.setVisible(true);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 

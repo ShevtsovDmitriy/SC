@@ -15,8 +15,17 @@ public class SparePart {
     private String category;
     @DatabaseField
     private float defaultPrice;
+    @DatabaseField
+    private float manufacturer;
 
     public SparePart() {
+    }
+
+    public SparePart(String name, String category, float defaultPrice, float manufacturer) {
+        this.name = name;
+        this.category = category;
+        this.defaultPrice = defaultPrice;
+        this.manufacturer = manufacturer;
     }
 
     public SparePart(String name, String category, float defaultPrice) {
@@ -60,5 +69,13 @@ public class SparePart {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public float getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(float manufacturer) {
+        this.manufacturer = manufacturer;
     }
 }

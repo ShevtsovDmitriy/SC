@@ -3,11 +3,7 @@ package entities;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.Job;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Locale;
+import utils.Utils;
 
 /* Выполненные работы */
 @DatabaseTable(tableName = "order_jobs")
@@ -53,10 +49,7 @@ public class OrderJob {
     }
 
     public String getStringPrice() {
-        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
-        otherSymbols.setDecimalSeparator('.');
-        NumberFormat nf = new DecimalFormat("#.######", otherSymbols);
-        return nf.format(price);
+        return Utils.formatDouble(price);
     }
 
     public double getPrice() {
@@ -72,10 +65,7 @@ public class OrderJob {
     }
 
     public String getStringQuantity() {
-        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
-        otherSymbols.setDecimalSeparator('.');
-        NumberFormat nf = new DecimalFormat("#.######", otherSymbols);
-        return nf.format(quantity);
+        return Utils.formatDouble(quantity);
     }
 
     public void setQuantity(double quantity) {
@@ -98,4 +88,5 @@ public class OrderJob {
     public boolean equals(Object obj) {
         return obj instanceof OrderJob && this.getOrder().getId() == ((OrderJob)obj).getOrder().getId() && this.getJob().getId() == ((OrderJob)obj).getJob().getId();
     }
+
 }

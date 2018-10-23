@@ -25,7 +25,7 @@ public class JobSelectionForm extends JFrame {
 
     public JobSelectionForm() throws SQLException {
 
-        buildCathegoryesTree();
+        buildCategoriesTree();
         categoryTree.addMouseListener(new CategoryListMouseListener());
 
         jobsTable.addMouseListener(new TableMouseListener());
@@ -38,7 +38,7 @@ public class JobSelectionForm extends JFrame {
         setSize(600, 600);
     }
 
-    private void buildCathegoryesTree() throws SQLException {
+    private void buildCategoriesTree() throws SQLException {
         List<Job> jobs = DictionaryHelper.getInstance().getAllJobs();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Все");
         for (Job job: jobs){
@@ -172,7 +172,7 @@ public class JobSelectionForm extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String name = dialog.getName();
             String cost = dialog.getCost();
-            String cathegory = dialog.getCathegory();
+            String category = dialog.getCategory();
             Color red = new Color(255, 0, 40);
             boolean flag = true;
             if (name.isEmpty()){
@@ -183,8 +183,8 @@ public class JobSelectionForm extends JFrame {
                 dialog.getCostField().setBackground(red);
                 flag = false;
             }
-            if (cathegory.isEmpty()){
-                dialog.getCathegoryField().setBackground(red);
+            if (category.isEmpty()){
+                dialog.getCategoryField().setBackground(red);
                 flag = false;
             }
             if (!flag){
@@ -192,9 +192,9 @@ public class JobSelectionForm extends JFrame {
             }
 
             try {
-                DictionaryHelper.getInstance().addJob(new Job(name, Double.parseDouble(cost), cathegory));
+                DictionaryHelper.getInstance().addJob(new Job(name, Double.parseDouble(cost), category));
                 fillTable();
-                buildCathegoryesTree();
+                buildCategoriesTree();
                 dialog.dispose();
             } catch (SQLException e1) {
                 e1.printStackTrace();
@@ -220,7 +220,7 @@ public class JobSelectionForm extends JFrame {
     private class JobCreationDialog extends JDialog{
         private JTextField nameField;
         private JTextField costField;
-        private JTextField cathegoryField;
+        private JTextField categoryField;
 
         public JobCreationDialog(Frame owner, String title, boolean modal) {
             super(owner, title, modal);
@@ -234,12 +234,12 @@ public class JobSelectionForm extends JFrame {
             costField = new JTextField("Стоимость");
             costField.setPreferredSize(new Dimension(150, 24));
             costField.addFocusListener(new TextFieldFocusListener("Стоимость"));
-            cathegoryField = new JTextField("Категория");
-            cathegoryField.setPreferredSize(new Dimension(300, 24));
-            cathegoryField.addFocusListener(new TextFieldFocusListener("Категория"));
+            categoryField = new JTextField("Категория");
+            categoryField.setPreferredSize(new Dimension(300, 24));
+            categoryField.addFocusListener(new TextFieldFocusListener("Категория"));
             panel.add(nameField);
             panel.add(costField);
-            panel.add(cathegoryField);
+            panel.add(categoryField);
             TreePath path = categoryTree.getSelectionModel().getSelectionPath();
             if (path != null){
                 StringBuilder category = new StringBuilder();
@@ -249,7 +249,7 @@ public class JobSelectionForm extends JFrame {
                         category.append("/");
                     }
                 }
-                cathegoryField.setText(category.toString());
+                categoryField.setText(category.toString());
             }
             JButton okButton = new JButton("Добавить");
             JButton cancelButton = new JButton("Отмена");
@@ -273,8 +273,8 @@ public class JobSelectionForm extends JFrame {
             return costField;
         }
 
-        public JTextField getCathegoryField() {
-            return cathegoryField;
+        public JTextField getCategoryField() {
+            return categoryField;
         }
 
         public String getName() {
@@ -285,8 +285,8 @@ public class JobSelectionForm extends JFrame {
             return costField.getText();
         }
 
-        public String getCathegory() {
-            return cathegoryField.getText();
+        public String getCategory() {
+            return categoryField.getText();
         }
 
     }
@@ -300,7 +300,7 @@ public class JobSelectionForm extends JFrame {
                 try {
                     DictionaryHelper.getInstance().removeJob(((JobsTableModel) jobsTable.getModel()).getJob(rowIndex));
                     fillTable();
-                    buildCathegoryesTree();
+                    buildCategoriesTree();
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
