@@ -20,11 +20,25 @@ public class JobSelectionForm extends JFrame {
     private JPanel jobSelectionPane;
     private JScrollPane jobsScrollPane;
     private JButton selectJobButton;
-    private JButton button2;
+    private JButton deleteButton;
     private JButton addJobButton;
 
     public JobSelectionForm() throws SQLException {
 
+        buildCathegoryesTree();
+        categoryTree.addMouseListener(new CategoryListMouseListener());
+
+        jobsTable.addMouseListener(new TableMouseListener());
+
+        selectJobButton.addActionListener(new SelectJobButtonListener());
+        addJobButton.addActionListener(new AddJobButtonListener());
+        deleteButton.addActionListener(new DeleteJobButtonListener());
+
+        setContentPane(jobSelectionPane);
+        setSize(600, 600);
+    }
+
+    private void buildCathegoryesTree() throws SQLException {
         List<Job> jobs = DictionaryHelper.getInstance().getAllJobs();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Все");
         for (Job job: jobs){
@@ -33,15 +47,6 @@ public class JobSelectionForm extends JFrame {
 
         DefaultTreeModel treeModel1 = new DefaultTreeModel(root, true);
         categoryTree.setModel(treeModel1);
-        categoryTree.addMouseListener(new CategoryListMouseListener());
-
-        jobsTable.addMouseListener(new TableMouseListener());
-
-        selectJobButton.addActionListener(new SelectJobButtonListener());
-        addJobButton.addActionListener(new AddJobButtonListener());
-
-        setContentPane(jobSelectionPane);
-        setSize(600, 600);
     }
 
     private void addJobToTree(Job job, DefaultMutableTreeNode node, int level){
@@ -62,63 +67,38 @@ public class JobSelectionForm extends JFrame {
 
 
     private JDialog createJobCreationDialog(){
-        JDialog dialog = new JDialog(this, "Создание новой работы", true);
-        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        dialog.setSize(600, 130);
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        JTextField nameField = new JTextField("Наименование");
-        nameField.setPreferredSize(new Dimension(150, 24));
-        nameField.addFocusListener(new TextFieldFocusListener("Наименование"));
-        JTextField costField = new JTextField("Стоимость");
-        costField.setPreferredSize(new Dimension(150, 24));
-        costField.addFocusListener(new TextFieldFocusListener("Стоимость"));
-        panel.add(nameField);
-        panel.add(costField);
-        //TODO: add all fields and repair focus
-        JButton okButton = new JButton("Да");
-        JButton cancelButton = new JButton("Нет");
-        //okButton.addActionListener(new OrderCreationForm.SaveChangesButtonListener());
-        //cancelButton.addActionListener(new OrderCreationForm.DiscardChangesButtonListener());
-
-        panel.add(okButton);
-        panel.add(cancelButton);
-
-        dialog.add(panel);
-        //dialog.getRootPane().setDefaultButton(cancelButton);
-        dialog.setLocationRelativeTo(null);
-        okButton.requestFocusInWindow();
-
-        return dialog;
+        return new JobCreationDialog(this, "Создание новой работы", true);
     }
 
-    private class CategoryListMouseListener extends MouseAdapter
-    {
-        public void mouseClicked(MouseEvent e)
-        {
-            TreePath path = categoryTree.getSelectionModel().getSelectionPath();
-            if (path != null){
-                StringBuilder category = new StringBuilder();
-                for (int i = 1; i < path.getPathCount(); i++) {
-                    category.append(((DefaultMutableTreeNode) path.getPath()[i]).getUserObject().toString());
-                    if (i != path.getPathCount() - 1) {
-                        category.append("/");
-                    }
-                }
-
-                try {
-                    JobsTableModel jobsTableModel = new JobsTableModel(DictionaryHelper.getInstance().getJobsOfCategory(category.toString()));
-                    jobsTable.setModel(jobsTableModel);
-                    jobsTable.revalidate();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
+    private void fillTable() {
+        TreePath path = categoryTree.getSelectionModel().getSelectionPath();
+        if (path != null) {
+            StringBuilder category = new StringBuilder();
+            for (int i = 1; i < path.getPathCount(); i++) {
+                category.append(((DefaultMutableTreeNode) path.getPath()[i]).getUserObject().toString());
+                if (i != path.getPathCount() - 1) {
+                    category.append("/");
                 }
             }
+            try {
+                JobsTableModel jobsTableModel = new JobsTableModel(DictionaryHelper.getInstance().getJobsOfCategory(category.toString()));
+                jobsTable.setModel(jobsTableModel);
+                jobsTable.revalidate();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+
         }
     }
 
-    private class TableMouseListener extends MouseAdapter
-    {
+    private class CategoryListMouseListener extends MouseAdapter {
+        public void mouseClicked(MouseEvent e)
+        {
+            fillTable();
+        }
+    }
+
+    private class TableMouseListener extends MouseAdapter {
         public void mouseClicked(MouseEvent e)
         {
             if (e.getClickCount() == 2) {
@@ -176,6 +156,156 @@ public class JobSelectionForm extends JFrame {
             if(field.getText() == null || field.getText().isEmpty()){
                 field.setText(text);
             }
+            field.setBackground(new Color(255, 255 , 255));
+        }
+    }
+
+    private class OkButtonListener implements ActionListener {
+
+        JobCreationDialog dialog;
+
+        public OkButtonListener(JobCreationDialog dialog) {
+            this.dialog = dialog;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String name = dialog.getName();
+            String cost = dialog.getCost();
+            String cathegory = dialog.getCathegory();
+            Color red = new Color(255, 0, 40);
+            boolean flag = true;
+            if (name.isEmpty()){
+                dialog.getNameField().setBackground(red);
+                flag = false;
+            }
+            if (!cost.matches("(([-+])?[0-9]+(\\.[0-9]+)?)+")){
+                dialog.getCostField().setBackground(red);
+                flag = false;
+            }
+            if (cathegory.isEmpty()){
+                dialog.getCathegoryField().setBackground(red);
+                flag = false;
+            }
+            if (!flag){
+                return;
+            }
+
+            try {
+                DictionaryHelper.getInstance().addJob(new Job(name, Double.parseDouble(cost), cathegory));
+                fillTable();
+                buildCathegoryesTree();
+                dialog.dispose();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+
+
+        }
+    }
+
+    private class CancelButtonListener implements ActionListener {
+        JDialog dialog;
+
+        public CancelButtonListener(JDialog dialog) {
+            this.dialog = dialog;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dialog.dispose();
+        }
+    }
+
+    private class JobCreationDialog extends JDialog{
+        private JTextField nameField;
+        private JTextField costField;
+        private JTextField cathegoryField;
+
+        public JobCreationDialog(Frame owner, String title, boolean modal) {
+            super(owner, title, modal);
+            this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            this.setSize(900, 130);
+            JPanel panel = new JPanel();
+            panel.setLayout(new FlowLayout());
+            nameField = new JTextField("Наименование");
+            nameField.setPreferredSize(new Dimension(150, 24));
+            nameField.addFocusListener(new TextFieldFocusListener("Наименование"));
+            costField = new JTextField("Стоимость");
+            costField.setPreferredSize(new Dimension(150, 24));
+            costField.addFocusListener(new TextFieldFocusListener("Стоимость"));
+            cathegoryField = new JTextField("Категория");
+            cathegoryField.setPreferredSize(new Dimension(300, 24));
+            cathegoryField.addFocusListener(new TextFieldFocusListener("Категория"));
+            panel.add(nameField);
+            panel.add(costField);
+            panel.add(cathegoryField);
+            TreePath path = categoryTree.getSelectionModel().getSelectionPath();
+            if (path != null){
+                StringBuilder category = new StringBuilder();
+                for (int i = 1; i < path.getPathCount(); i++) {
+                    category.append(((DefaultMutableTreeNode) path.getPath()[i]).getUserObject().toString());
+                    if (i != path.getPathCount() - 1) {
+                        category.append("/");
+                    }
+                }
+                cathegoryField.setText(category.toString());
+            }
+            JButton okButton = new JButton("Добавить");
+            JButton cancelButton = new JButton("Отмена");
+            okButton.addActionListener(new OkButtonListener(this));
+            cancelButton.addActionListener(new CancelButtonListener(this));
+
+            panel.add(okButton);
+            panel.add(cancelButton);
+
+            this.add(panel);
+            //dialog.getRootPane().setDefaultButton(cancelButton);
+            this.setLocationRelativeTo(null);
+            okButton.requestFocusInWindow();
+        }
+
+        public JTextField getNameField() {
+            return nameField;
+        }
+
+        public JTextField getCostField() {
+            return costField;
+        }
+
+        public JTextField getCathegoryField() {
+            return cathegoryField;
+        }
+
+        public String getName() {
+            return nameField.getText();
+        }
+
+        public String getCost() {
+            return costField.getText();
+        }
+
+        public String getCathegory() {
+            return cathegoryField.getText();
+        }
+
+    }
+
+    private class DeleteJobButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int rowIndex = jobsTable.getSelectedRow();
+            if (rowIndex >= 0 && rowIndex < jobsTable.getModel().getRowCount()) {
+                try {
+                    DictionaryHelper.getInstance().removeJob(((JobsTableModel) jobsTable.getModel()).getJob(rowIndex));
+                    fillTable();
+                    buildCathegoryesTree();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            jobsTable.revalidate();
         }
     }
 

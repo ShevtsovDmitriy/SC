@@ -153,6 +153,10 @@ public class DictionaryHelper {
         dao.JOB_DAO.create(job);
     }
 
+    public void removeJob(Job job) throws SQLException {
+        dao.JOB_DAO.delete(job);
+    }
+
     /* private methods */
     private Defect createDefect(String defectName) throws SQLException {
         Defect defect = new Defect(defectName);

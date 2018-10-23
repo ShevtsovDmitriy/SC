@@ -50,12 +50,12 @@
               <text value="Выбрать"/>
             </properties>
           </component>
-          <component id="20de2" class="javax.swing.JButton" binding="button2" default-binding="true">
+          <component id="20de2" class="javax.swing.JButton" binding="deleteButton">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <text value="Удалить"/>
             </properties>
           </component>
           <component id="f585" class="javax.swing.JButton" binding="addJobButton">
