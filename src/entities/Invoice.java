@@ -6,7 +6,9 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import entities.dictionary.InvoiceType;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /* Накладная */
 @DatabaseTable(tableName = "invoices")
@@ -22,6 +24,11 @@ public class Invoice {
     private ForeignCollection<InvoiceSpare> spares;
 
     public Invoice() {
+    }
+
+    public Invoice(Date date, InvoiceType type) {
+        this.date = date;
+        this.type = type;
     }
 
     public Invoice(InvoiceType type) {
@@ -52,8 +59,8 @@ public class Invoice {
         this.type = type;
     }
 
-    public ForeignCollection<InvoiceSpare> getSpares() {
-        return spares;
+    public List<InvoiceSpare> getSpares() {
+        return new ArrayList<>(spares);
     }
 
     public void addSpare(InvoiceSpare spare) {

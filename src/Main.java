@@ -1,8 +1,7 @@
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import entities.OrderSpare;
-import entities.StoreEntity;
+import entities.InvoiceSpare;
 
 import java.sql.SQLException;
 
@@ -13,8 +12,7 @@ public class Main {
                 null;
         try {
             connectionSource = new JdbcConnectionSource("jdbc:sqlite:sc.s3db");
-            TableUtils.createTable(connectionSource, StoreEntity.class);
-            TableUtils.createTable(connectionSource, OrderSpare.class);
+            TableUtils.createTable(connectionSource, InvoiceSpare.class);
 /*
             ServiceCenter serviceCenter = new ServiceCenter();
             serviceCenter.createUser("Admin", "admin", UserRole.ADMIN);

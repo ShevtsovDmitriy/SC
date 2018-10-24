@@ -12,6 +12,12 @@ public class InvoiceSpare {
     private Invoice invoice;
     @DatabaseField(columnName  = "sparePart", foreign = true, canBeNull = false, foreignAutoRefresh = true)
     private SparePart sparePart;
+    @DatabaseField
+    private double count;
+    @DatabaseField
+    private double buyPrice;
+    @DatabaseField
+    private double salePrice;
 
     public InvoiceSpare() {
     }
@@ -36,4 +42,29 @@ public class InvoiceSpare {
     public void setSparePart(SparePart sparePart) {
         this.sparePart = sparePart;
     }
+
+    public double getCount() {
+        return count;
+    }
+
+    public void setCount(double count) {
+        this.count = count;
+    }
+
+    public double getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(double buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
+    public double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        this.salePrice = salePrice;
+    }
+
 }

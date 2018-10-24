@@ -6,6 +6,8 @@ import entities.StoreEntity;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class StoreForm extends JFrame {
         setContentPane(storePane);
         setSize(600, 600);
         buildCategoriesTree();
-
+        addEntityButton.addActionListener(new AddEntityButtonListener());
     }
 
     private void buildCategoriesTree() throws SQLException {
@@ -51,5 +53,22 @@ public class StoreForm extends JFrame {
         }
     }
 
+
+
+private class AddEntityButtonListener implements ActionListener{
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        InvoicesForm invoicesForm;
+        try {
+            invoicesForm = new InvoicesForm();
+            invoicesForm.setTitle("Накладные");
+            invoicesForm.setVisible(true);
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+
+    }
+}
 
 }
