@@ -82,6 +82,6 @@ public class StoreEntity {
     }
 
     public String[] getPath(){
-        return sparePart.getCategory().split("/");
+        return sparePart.getPath();
     }
 }

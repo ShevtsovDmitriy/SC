@@ -47,8 +47,11 @@ public class StoreForm extends JFrame {
             }
         }
         if(!nodeFound){
+            DefaultMutableTreeNode buferNode = node;
             for (int i = level; i < storeEntity.getPath().length; i++){
-                node.add(new DefaultMutableTreeNode(storeEntity.getPath()[i]));
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(storeEntity.getPath()[i]);
+                buferNode.add(newNode);
+                buferNode = newNode;
             }
         }
     }

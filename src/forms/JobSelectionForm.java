@@ -59,8 +59,11 @@ public class JobSelectionForm extends JFrame {
             }
         }
         if(!nodeFound){
+            DefaultMutableTreeNode buferNode = node;
             for (int i = level; i < job.getPath().length; i++){
-                node.add(new DefaultMutableTreeNode(job.getPath()[i]));
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(job.getPath()[i]);
+                buferNode.add(newNode);
+                buferNode = newNode;
             }
         }
     }

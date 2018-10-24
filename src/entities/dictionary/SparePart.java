@@ -14,14 +14,14 @@ public class SparePart {
     @DatabaseField
     private String category;
     @DatabaseField
-    private float defaultPrice;
+    private double defaultPrice;
     @DatabaseField
-    private float manufacturer;
+    private String manufacturer;
 
     public SparePart() {
     }
 
-    public SparePart(String name, String category, float defaultPrice, float manufacturer) {
+    public SparePart(String name, String category, double defaultPrice, String manufacturer) {
         this.name = name;
         this.category = category;
         this.defaultPrice = defaultPrice;
@@ -55,11 +55,11 @@ public class SparePart {
         this.name = name;
     }
 
-    public float getDefaultPrice() {
+    public double getDefaultPrice() {
         return defaultPrice;
     }
 
-    public void setDefaultPrice(float defaultPrice) {
+    public void setDefaultPrice(double defaultPrice) {
         this.defaultPrice = defaultPrice;
     }
 
@@ -71,11 +71,16 @@ public class SparePart {
         this.category = category;
     }
 
-    public float getManufacturer() {
+    public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(float manufacturer) {
+    public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
+
+    public String[] getPath(){
+        return getCategory().split("/");
+    }
+
 }

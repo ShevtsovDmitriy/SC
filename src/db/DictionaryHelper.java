@@ -157,6 +157,16 @@ public class DictionaryHelper {
         dao.JOB_DAO.delete(job);
     }
 
+    public List<SparePart> getSpareParts() throws SQLException {
+        return dao.SPARE_PART_DAO.queryForAll();
+    }
+
+    public List<SparePart> getSparesOfCategory(String category) throws SQLException {
+        QueryBuilder<SparePart, String> queryBuilder = dao.SPARE_PART_DAO.queryBuilder();
+        queryBuilder.where().like("category", category + "%");
+        return dao.SPARE_PART_DAO.query(queryBuilder.prepare());
+    }
+
     /* private methods */
     private Defect createDefect(String defectName) throws SQLException {
         Defect defect = new Defect(defectName);

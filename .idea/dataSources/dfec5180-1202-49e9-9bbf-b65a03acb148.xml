@@ -16,384 +16,381 @@
     <table id="10" parent="2" name="devices"/>
     <table id="11" parent="2" name="equipment_parts"/>
     <table id="12" parent="2" name="equipments"/>
-    <table id="13" parent="2" name="invoices"/>
-    <table id="14" parent="2" name="jobs"/>
-    <table id="15" parent="2" name="manufacturers"/>
-    <table id="16" parent="2" name="order_jobs"/>
-    <table id="17" parent="2" name="order_spare_parts"/>
-    <table id="18" parent="2" name="order_statuses"/>
-    <table id="19" parent="2" name="orders"/>
-    <table id="20" parent="2" name="photos"/>
-    <table id="21" parent="2" name="spare_parts"/>
-    <table id="22" parent="2" name="spare_photos"/>
-    <table id="23" parent="2" name="sqlite_master">
+    <table id="13" parent="2" name="invoice_spares"/>
+    <table id="14" parent="2" name="invoices"/>
+    <table id="15" parent="2" name="jobs"/>
+    <table id="16" parent="2" name="manufacturers"/>
+    <table id="17" parent="2" name="order_jobs"/>
+    <table id="18" parent="2" name="order_spare_parts"/>
+    <table id="19" parent="2" name="order_statuses"/>
+    <table id="20" parent="2" name="orders"/>
+    <table id="21" parent="2" name="photos"/>
+    <table id="22" parent="2" name="spare_parts"/>
+    <table id="23" parent="2" name="spare_photos"/>
+    <table id="24" parent="2" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="24" parent="2" name="sqlite_sequence">
+    <table id="25" parent="2" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <table id="25" parent="2" name="statuses"/>
-    <table id="26" parent="2" name="store_entities"/>
-    <table id="27" parent="2" name="users"/>
-    <column id="28" parent="6" name="id">
+    <table id="26" parent="2" name="statuses"/>
+    <table id="27" parent="2" name="store_entities"/>
+    <table id="28" parent="2" name="users"/>
+    <column id="29" parent="6" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="29" parent="6" name="fio">
+    <column id="30" parent="6" name="fio">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="30" parent="6" name="phone">
+    <column id="31" parent="6" name="phone">
       <Position>3</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="31" parent="6" name="url">
+    <column id="32" parent="6" name="url">
       <Position>4</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="32" parent="6" name="note">
+    <column id="33" parent="6" name="note">
       <Position>5</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <key id="33" parent="6">
+    <key id="34" parent="6">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="34" parent="7" name="id">
+    <column id="35" parent="7" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="35" parent="7" name="name">
+    <column id="36" parent="7" name="name">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <key id="36" parent="7">
+    <key id="37" parent="7">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="37" parent="8" name="order">
+    <column id="38" parent="8" name="order">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="38" parent="8" name="defect">
+    <column id="39" parent="8" name="defect">
       <Position>2</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="39" parent="9" name="id">
+    <column id="40" parent="9" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="40" parent="9" name="name">
+    <column id="41" parent="9" name="name">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <key id="41" parent="9">
+    <key id="42" parent="9">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="42" parent="10" name="id">
+    <column id="43" parent="10" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="43" parent="10" name="type">
+    <column id="44" parent="10" name="type">
       <Position>2</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="44" parent="10" name="manufacturer">
+    <column id="45" parent="10" name="manufacturer">
       <Position>3</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="45" parent="10" name="model">
+    <column id="46" parent="10" name="model">
       <Position>4</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="46" parent="10" name="notes">
+    <column id="47" parent="10" name="notes">
       <Position>5</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="47" parent="10" name="condition">
+    <column id="48" parent="10" name="condition">
       <Position>6</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <key id="48" parent="10">
+    <key id="49" parent="10">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="49" parent="11" name="id">
+    <column id="50" parent="11" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="50" parent="11" name="name">
+    <column id="51" parent="11" name="name">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <key id="51" parent="11">
+    <key id="52" parent="11">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="52" parent="12" name="order">
+    <column id="53" parent="12" name="order">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="53" parent="12" name="equipmentPart">
+    <column id="54" parent="12" name="equipmentPart">
       <Position>2</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="54" parent="13" name="id">
+    <column id="55" parent="13" name="invoice">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
-      <SequenceIdentity>1</SequenceIdentity>
+      <NotNull>1</NotNull>
     </column>
-    <column id="55" parent="13" name="date">
+    <column id="56" parent="13" name="sparePart">
       <Position>2</Position>
-      <DataType>TIMESTAMP|0</DataType>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <column id="56" parent="13" name="type">
+    <column id="57" parent="13" name="count">
       <Position>3</Position>
-      <DataType>VARCHAR|0</DataType>
+      <DataType>DOUBLE PRECISION|0</DataType>
     </column>
-    <key id="57" parent="13">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="58" parent="14" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="59" parent="14" name="name">
-      <Position>2</Position>
-      <DataType>VARCHAR|0</DataType>
-    </column>
-    <column id="60" parent="14" name="price">
-      <Position>3</Position>
-      <DataType>VARCHAR|0</DataType>
-    </column>
-    <column id="61" parent="14" name="category">
-      <Position>4</Position>
-      <DataType>VARCHAR|0</DataType>
-    </column>
-    <key id="62" parent="14">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="63" parent="15" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="64" parent="15" name="name">
-      <Position>2</Position>
-      <DataType>VARCHAR|0</DataType>
-    </column>
-    <key id="65" parent="15">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="66" parent="16" name="order">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="67" parent="16" name="job">
-      <Position>2</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="68" parent="16" name="user">
-      <Position>3</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="69" parent="16" name="price">
+    <column id="58" parent="13" name="buyPrice">
       <Position>4</Position>
       <DataType>DOUBLE PRECISION|0</DataType>
     </column>
-    <column id="70" parent="16" name="quantity">
+    <column id="59" parent="13" name="salePrice">
       <Position>5</Position>
       <DataType>DOUBLE PRECISION|0</DataType>
     </column>
-    <column id="71" parent="17" name="order">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="72" parent="17" name="sparePart">
-      <Position>2</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="73" parent="17" name="price">
-      <Position>3</Position>
-      <DataType>DOUBLE PRECISION|0</DataType>
-    </column>
-    <column id="74" parent="17" name="quantity">
-      <Position>4</Position>
-      <DataType>DOUBLE PRECISION|0</DataType>
-    </column>
-    <column id="75" parent="18" name="order">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="76" parent="18" name="status">
-      <Position>2</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="77" parent="18" name="date">
-      <Position>3</Position>
-      <DataType>TIMESTAMP|0</DataType>
-    </column>
-    <column id="78" parent="19" name="id">
+    <column id="60" parent="14" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="79" parent="19" name="client">
+    <column id="61" parent="14" name="date">
+      <Position>2</Position>
+      <DataType>TIMESTAMP|0</DataType>
+    </column>
+    <column id="62" parent="14" name="type">
+      <Position>3</Position>
+      <DataType>VARCHAR|0</DataType>
+    </column>
+    <key id="63" parent="14">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="64" parent="15" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="65" parent="15" name="name">
+      <Position>2</Position>
+      <DataType>VARCHAR|0</DataType>
+    </column>
+    <column id="66" parent="15" name="price">
+      <Position>3</Position>
+      <DataType>VARCHAR|0</DataType>
+    </column>
+    <column id="67" parent="15" name="category">
+      <Position>4</Position>
+      <DataType>VARCHAR|0</DataType>
+    </column>
+    <key id="68" parent="15">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="69" parent="16" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="70" parent="16" name="name">
+      <Position>2</Position>
+      <DataType>VARCHAR|0</DataType>
+    </column>
+    <key id="71" parent="16">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="72" parent="17" name="order">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="73" parent="17" name="job">
       <Position>2</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="80" parent="19" name="device">
+    <column id="74" parent="17" name="user">
       <Position>3</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="81" parent="19" name="notes">
+    <column id="75" parent="17" name="price">
+      <Position>4</Position>
+      <DataType>DOUBLE PRECISION|0</DataType>
+    </column>
+    <column id="76" parent="17" name="quantity">
+      <Position>5</Position>
+      <DataType>DOUBLE PRECISION|0</DataType>
+    </column>
+    <column id="77" parent="18" name="order">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="78" parent="18" name="sparePart">
+      <Position>2</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="79" parent="18" name="price">
+      <Position>3</Position>
+      <DataType>DOUBLE PRECISION|0</DataType>
+    </column>
+    <column id="80" parent="18" name="quantity">
+      <Position>4</Position>
+      <DataType>DOUBLE PRECISION|0</DataType>
+    </column>
+    <column id="81" parent="19" name="order">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="82" parent="19" name="status">
+      <Position>2</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="83" parent="19" name="date">
+      <Position>3</Position>
+      <DataType>TIMESTAMP|0</DataType>
+    </column>
+    <column id="84" parent="20" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="85" parent="20" name="client">
+      <Position>2</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="86" parent="20" name="device">
+      <Position>3</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="87" parent="20" name="notes">
       <Position>4</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="82" parent="19" name="warranty">
+    <column id="88" parent="20" name="warranty">
       <Position>5</Position>
       <DataType>BOOLEAN|0</DataType>
     </column>
-    <column id="83" parent="19" name="date">
+    <column id="89" parent="20" name="date">
       <Position>6</Position>
       <DataType>TIMESTAMP|0</DataType>
     </column>
-    <column id="84" parent="19" name="user">
+    <column id="90" parent="20" name="user">
       <Position>7</Position>
       <DataType>INT|0</DataType>
     </column>
-    <key id="85" parent="19">
+    <key id="91" parent="20">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="86" parent="20" name="order">
+    <column id="92" parent="21" name="order">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="87" parent="20" name="link">
+    <column id="93" parent="21" name="link">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="88" parent="21" name="id">
+    <column id="94" parent="22" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="89" parent="21" name="name">
+    <column id="95" parent="22" name="name">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="90" parent="21" name="category">
+    <column id="96" parent="22" name="category">
       <Position>3</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="91" parent="21" name="defaultPrice">
+    <column id="97" parent="22" name="defaultPrice">
       <Position>4</Position>
-      <DataType>FLOAT|0</DataType>
+      <DataType>DOUBLE PRECISION|0</DataType>
     </column>
-    <column id="92" parent="21" name="manufacturer">
+    <column id="98" parent="22" name="manufacturer">
       <Position>5</Position>
-      <DataType>FLOAT|0</DataType>
+      <DataType>VARCHAR|0</DataType>
     </column>
-    <key id="93" parent="21">
+    <key id="99" parent="22">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="94" parent="22" name="storeEntity">
+    <column id="100" parent="23" name="storeEntity">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="95" parent="22" name="link">
+    <column id="101" parent="23" name="link">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="96" parent="23" name="type">
+    <column id="102" parent="24" name="type">
       <Position>1</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="97" parent="23" name="name">
+    <column id="103" parent="24" name="name">
       <Position>2</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="98" parent="23" name="tbl_name">
+    <column id="104" parent="24" name="tbl_name">
       <Position>3</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="99" parent="23" name="rootpage">
+    <column id="105" parent="24" name="rootpage">
       <Position>4</Position>
       <DataType>integer|0</DataType>
     </column>
-    <column id="100" parent="23" name="sql">
+    <column id="106" parent="24" name="sql">
       <Position>5</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="101" parent="24" name="name">
+    <column id="107" parent="25" name="name">
       <Position>1</Position>
     </column>
-    <column id="102" parent="24" name="seq">
+    <column id="108" parent="25" name="seq">
       <Position>2</Position>
     </column>
-    <column id="103" parent="25" name="id">
+    <column id="109" parent="26" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="104" parent="25" name="name">
+    <column id="110" parent="26" name="name">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
-    </column>
-    <key id="105" parent="25">
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="106" parent="26" name="id">
-      <Position>1</Position>
-      <DataType>INTEGER|0</DataType>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="107" parent="26" name="sparePart">
-      <Position>2</Position>
-      <DataType>INTEGER|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="108" parent="26" name="count">
-      <Position>3</Position>
-      <DataType>DOUBLE PRECISION|0</DataType>
-    </column>
-    <column id="109" parent="26" name="buyPrice">
-      <Position>4</Position>
-      <DataType>DOUBLE PRECISION|0</DataType>
-    </column>
-    <column id="110" parent="26" name="salePrice">
-      <Position>5</Position>
-      <DataType>DOUBLE PRECISION|0</DataType>
     </column>
     <key id="111" parent="26">
       <ColNames>id</ColNames>
@@ -404,19 +401,45 @@
       <DataType>INTEGER|0</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="113" parent="27" name="name">
+    <column id="113" parent="27" name="sparePart">
+      <Position>2</Position>
+      <DataType>INTEGER|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="114" parent="27" name="count">
+      <Position>3</Position>
+      <DataType>DOUBLE PRECISION|0</DataType>
+    </column>
+    <column id="115" parent="27" name="buyPrice">
+      <Position>4</Position>
+      <DataType>DOUBLE PRECISION|0</DataType>
+    </column>
+    <column id="116" parent="27" name="salePrice">
+      <Position>5</Position>
+      <DataType>DOUBLE PRECISION|0</DataType>
+    </column>
+    <key id="117" parent="27">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="118" parent="28" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="119" parent="28" name="name">
       <Position>2</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="114" parent="27" name="password">
+    <column id="120" parent="28" name="password">
       <Position>3</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <column id="115" parent="27" name="role">
+    <column id="121" parent="28" name="role">
       <Position>4</Position>
       <DataType>VARCHAR|0</DataType>
     </column>
-    <key id="116" parent="27">
+    <key id="122" parent="28">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>

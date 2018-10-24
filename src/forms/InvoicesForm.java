@@ -1,16 +1,14 @@
 package forms;
 
+import controllers.InvoiceController;
 import controllers.StoreController;
-import entities.Invoice;
+import exceptions.InvoiceAlreadyOpenedException;
 import tables.InvoiceSparesTableModel;
 import tables.InvoicesTableModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 
 public class InvoicesForm extends JFrame {
@@ -28,6 +26,7 @@ public class InvoicesForm extends JFrame {
         addInvoiceButton.addActionListener(new AddInvoiceButtonListener());
         printInvoices();
         invoicesTable.addMouseListener(new InvoiceTableMouseAdapter());
+        addSpareButton.addActionListener(new AddSpareButtonListener());
     }
 
     private void printInvoices() throws SQLException {
@@ -55,16 +54,36 @@ public class InvoicesForm extends JFrame {
     private class InvoiceTableMouseAdapter extends MouseAdapter{
         @Override
         public void mouseClicked(MouseEvent e) {
-            Invoice invoice = ((InvoicesTableModel)invoicesTable.getModel()).getInvoices().get(invoicesTable.getSelectedRow());
-            InvoiceSparesTableModel invoiceSparesTableModel = new InvoiceSparesTableModel(invoice.getSpares());
-            invoiceDetailsTable.setModel(invoiceSparesTableModel);
-            invoiceDetailsTable.revalidate();
+            try {
+                InvoiceController.getInstance().saveInvoice();
+                InvoiceController.getInstance().setInvoice(((InvoicesTableModel)invoicesTable.getModel()).getInvoices().get(invoicesTable.getSelectedRow()));
+                InvoiceSparesTableModel invoiceSparesTableModel = new InvoiceSparesTableModel(InvoiceController.getInstance().getInvoice().getSpares());
+                invoiceDetailsTable.setModel(invoiceSparesTableModel);
+                invoiceDetailsTable.revalidate();
+            } catch (SQLException | InvoiceAlreadyOpenedException e1) {
+            e1.printStackTrace();
+        }
         }
     }
 
     private class AddSpareButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            try {
+                SpareSelectionForm spareSelectionForm = new SpareSelectionForm();
+                spareSelectionForm.setTitle("Выберите деталь для добавления");
+                spareSelectionForm.setVisible(true);
+                spareSelectionForm.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        InvoiceSparesTableModel invoiceSparesTableModel = new InvoiceSparesTableModel(InvoiceController.getInstance().getInvoice().getSpares());
+                        invoiceDetailsTable.setModel(invoiceSparesTableModel);
+                        invoiceDetailsTable.revalidate();
+                    }
+                });
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
 
         }
     }

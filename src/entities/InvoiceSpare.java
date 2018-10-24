@@ -22,6 +22,14 @@ public class InvoiceSpare {
     public InvoiceSpare() {
     }
 
+    public InvoiceSpare(Invoice invoice, SparePart sparePart, double count, double buyPrice, double salePrice) {
+        this.invoice = invoice;
+        this.sparePart = sparePart;
+        this.count = count;
+        this.buyPrice = buyPrice;
+        this.salePrice = salePrice;
+    }
+
     public InvoiceSpare(Invoice invoice, SparePart sparePart) {
         this.invoice = invoice;
         this.sparePart = sparePart;
