@@ -57,7 +57,7 @@ public class InvoicesForm extends JFrame {
             try {
                 InvoiceController.getInstance().saveInvoice();
                 InvoiceController.getInstance().setInvoice(((InvoicesTableModel)invoicesTable.getModel()).getInvoices().get(invoicesTable.getSelectedRow()));
-                InvoiceSparesTableModel invoiceSparesTableModel = new InvoiceSparesTableModel(InvoiceController.getInstance().getInvoice().getSpares());
+                InvoiceSparesTableModel invoiceSparesTableModel = new InvoiceSparesTableModel(InvoiceController.getInstance().getInvoice().getSparesList());
                 invoiceDetailsTable.setModel(invoiceSparesTableModel);
                 invoiceDetailsTable.revalidate();
             } catch (SQLException | InvoiceAlreadyOpenedException e1) {
@@ -76,7 +76,7 @@ public class InvoicesForm extends JFrame {
                 spareSelectionForm.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
-                        InvoiceSparesTableModel invoiceSparesTableModel = new InvoiceSparesTableModel(InvoiceController.getInstance().getInvoice().getSpares());
+                        InvoiceSparesTableModel invoiceSparesTableModel = new InvoiceSparesTableModel(InvoiceController.getInstance().getInvoice().getSparesList());
                         invoiceDetailsTable.setModel(invoiceSparesTableModel);
                         invoiceDetailsTable.revalidate();
                     }

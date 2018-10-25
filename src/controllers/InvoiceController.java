@@ -7,6 +7,8 @@ import entities.dictionary.SparePart;
 import exceptions.InvoiceAlreadyOpenedException;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class InvoiceController {
     private static InvoiceController ourInstance = new InvoiceController();
@@ -21,6 +23,7 @@ public class InvoiceController {
 
     private Invoice invoice;
     private boolean isInvoiceOpened;
+
 
     public Invoice getInvoice() {
         return invoice;
@@ -47,8 +50,17 @@ public class InvoiceController {
         }
     }
 
-    public void addSpare(SparePart sparePart){
-        invoice.addSpare(new InvoiceSpare(invoice, sparePart, 1, sparePart.getDefaultPrice(), sparePart.getDefaultPrice()));
+    public void addSpare(SparePart sparePart) throws SQLException {
+        int count = 1;
+        List<InvoiceSpare> invoiceSpareList = invoice.getSpares().stream().filter(invoiceSpare -> invoiceSpare.getSparePart().equals(sparePart)).collect(Collectors.toList());
+        if (!invoiceSpareList.isEmpty()){
+            invoiceSpareList.iterator().next().plusOne();
+            invoice.getSpares().update(invoiceSpareList.iterator().next());
+        } else {
+            InvoiceSpare spare = new InvoiceSpare(invoice, sparePart, count, sparePart.getDefaultPrice(), sparePart.getDefaultPrice());
+            invoice.addSpare(spare);
+        }
+
     }
 
 }

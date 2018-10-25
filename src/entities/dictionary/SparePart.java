@@ -83,4 +83,8 @@ public class SparePart {
         return getCategory().split("/");
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof SparePart && this.id == ((SparePart)obj).id;
+    }
 }

@@ -59,8 +59,16 @@ public class Invoice {
         this.type = type;
     }
 
-    public List<InvoiceSpare> getSpares() {
+    public List<InvoiceSpare> getSparesList() {
         return new ArrayList<>(spares);
+    }
+
+    public ForeignCollection<InvoiceSpare> getSpares() {
+        return spares;
+    }
+
+    public void setSpares(ForeignCollection<InvoiceSpare> spares) {
+        this.spares = spares;
     }
 
     public void addSpare(InvoiceSpare spare) {

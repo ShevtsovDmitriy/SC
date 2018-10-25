@@ -40,6 +40,7 @@ public class DaoHelper {
     public Dao<Photo, String> PHOTO_DAO;
     public Dao<SparePhoto, String> SPARE_PHOTO_DAO;
     public Dao<StoreEntity, String> STORE_ENTITY_DAO;
+    public Dao<InvoiceSpare, String> INVOICE_SPARE_DAO;
 
     public Dao<Defect, String> DEFECT_DAO;
     public Dao<DeviceType, String> DEVICE_TYPE_DAO;
@@ -63,6 +64,7 @@ public class DaoHelper {
         PHOTO_DAO = DaoManager.createDao(connectionSource, Photo.class);
         SPARE_PHOTO_DAO = DaoManager.createDao(connectionSource, SparePhoto.class);
         STORE_ENTITY_DAO = DaoManager.createDao(connectionSource, StoreEntity.class);
+        INVOICE_SPARE_DAO = DaoManager.createDao(connectionSource, InvoiceSpare.class);
 
         DEFECT_DAO = DaoManager.createDao(connectionSource, Defect.class);
         DEVICE_TYPE_DAO = DaoManager.createDao(connectionSource, DeviceType.class);

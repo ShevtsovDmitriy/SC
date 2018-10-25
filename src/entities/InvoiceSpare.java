@@ -8,6 +8,8 @@ import entities.dictionary.SparePart;
 @DatabaseTable(tableName = "invoice_spares")
 public class InvoiceSpare {
 
+    @DatabaseField(generatedId = true)
+    private int id;
     @DatabaseField(columnName  = "invoice", foreign = true, canBeNull = false, foreignAutoRefresh = true)
     private Invoice invoice;
     @DatabaseField(columnName  = "sparePart", foreign = true, canBeNull = false, foreignAutoRefresh = true)
@@ -73,6 +75,10 @@ public class InvoiceSpare {
 
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
+    }
+
+    public void plusOne(){
+        count++;
     }
 
 }

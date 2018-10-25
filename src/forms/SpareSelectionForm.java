@@ -93,10 +93,16 @@ public class SpareSelectionForm extends JFrame {
         public void mouseClicked(MouseEvent e)
         {
             if (e.getClickCount() == 2) {
-                int row = sparePartsTable.getSelectedRow();
-                SparePart sparePart = ((SparePartsTableModel)sparePartsTable.getModel()).getSparePart(row);
-                InvoiceController.getInstance().addSpare(sparePart);
-                dispose();
+                try {
+                    int row = sparePartsTable.getSelectedRow();
+                    SparePart sparePart = ((SparePartsTableModel)sparePartsTable.getModel()).getSparePart(row);
+                    InvoiceController.getInstance().addSpare(sparePart);
+                    dispose();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+
+
             }
 
 
