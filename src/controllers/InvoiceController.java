@@ -54,11 +54,14 @@ public class InvoiceController {
         int count = 1;
         List<InvoiceSpare> invoiceSpareList = invoice.getSpares().stream().filter(invoiceSpare -> invoiceSpare.getSparePart().equals(sparePart)).collect(Collectors.toList());
         if (!invoiceSpareList.isEmpty()){
-            invoiceSpareList.iterator().next().plusOne();
-            invoice.getSpares().update(invoiceSpareList.iterator().next());
+            InvoiceSpare spare =  invoiceSpareList.iterator().next();
+            spare.plusOne();
+            invoice.getSpares().update(spare);
+            StoreController.getController().addEntityToStock(spare.getSparePart(), 1, sparePart.getDefaultPrice(), sparePart.getDefaultPrice());
         } else {
             InvoiceSpare spare = new InvoiceSpare(invoice, sparePart, count, sparePart.getDefaultPrice(), sparePart.getDefaultPrice());
             invoice.addSpare(spare);
+            StoreController.getController().addEntityToStock(spare.getSparePart(), 1, sparePart.getDefaultPrice(), sparePart.getDefaultPrice());
         }
 
     }

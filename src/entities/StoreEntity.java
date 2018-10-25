@@ -26,7 +26,7 @@ public class StoreEntity {
     public StoreEntity() {
     }
 
-    public StoreEntity(SparePart sparePart, int count, float buyPrice, float salePrice) {
+    public StoreEntity(SparePart sparePart, double count, double buyPrice, double salePrice) {
         this.sparePart = sparePart;
         this.count = count;
         this.buyPrice = buyPrice;
@@ -83,5 +83,9 @@ public class StoreEntity {
 
     public String[] getPath(){
         return sparePart.getPath();
+    }
+
+    public void add(double count){
+        this.count += count;
     }
 }

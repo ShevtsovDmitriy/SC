@@ -2,18 +2,19 @@ package forms;
 
 import controllers.StoreController;
 import entities.StoreEntity;
+import tables.StoreTableModel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.tree.TreePath;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.List;
 
 public class StoreForm extends JFrame {
     private JTree categoryTree;
-    private JTable table1;
+    private JTable storeTable;
     private JButton addEntityButton;
     private JButton button2;
     private JButton button3;
@@ -21,9 +22,10 @@ public class StoreForm extends JFrame {
 
     public StoreForm() throws SQLException {
         setContentPane(storePane);
-        setSize(600, 600);
+        setSize(900, 600);
         buildCategoriesTree();
         addEntityButton.addActionListener(new AddEntityButtonListener());
+        categoryTree.addMouseListener(new CategoryListMouseListener());
     }
 
     private void buildCategoriesTree() throws SQLException {
@@ -56,7 +58,34 @@ public class StoreForm extends JFrame {
         }
     }
 
+    private void fillTable() {
+        TreePath path = categoryTree.getSelectionModel().getSelectionPath();
+        if (path != null) {
+            StringBuilder category = new StringBuilder();
+            for (int i = 1; i < path.getPathCount(); i++) {
+                category.append(((DefaultMutableTreeNode) path.getPath()[i]).getUserObject().toString());
+                if (i != path.getPathCount() - 1) {
+                    category.append("/");
+                }
+            }
+            try {
+                StoreTableModel storeTableModel = new StoreTableModel(StoreController.getController().getStoreEntitiesOfCategory(category.toString()));
+                storeTable.setModel(storeTableModel);
+                storeTable.getColumnModel().getColumn(0).setPreferredWidth(400);
+                storeTable.revalidate();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
 
+        }
+    }
+
+    private class CategoryListMouseListener extends MouseAdapter {
+        public void mouseClicked(MouseEvent e)
+        {
+            fillTable();
+        }
+    }
 
 private class AddEntityButtonListener implements ActionListener{
 
@@ -67,6 +96,20 @@ private class AddEntityButtonListener implements ActionListener{
             invoicesForm = new InvoicesForm();
             invoicesForm.setTitle("Накладные");
             invoicesForm.setVisible(true);
+            invoicesForm.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    try {
+                        TreePath path = categoryTree.getSelectionModel().getSelectionPath();
+                        fillTable();
+                        buildCategoriesTree();
+                        categoryTree.getSelectionModel().setSelectionPath(path);
+                        categoryTree.revalidate();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
         } catch (SQLException e1) {
             e1.printStackTrace();
         }

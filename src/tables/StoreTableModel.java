@@ -6,7 +6,6 @@ import utils.Utils;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,8 +16,8 @@ public class StoreTableModel extends AbstractTableModel {
 
     List<StoreEntity> storeEntities;
 
-    public StoreTableModel() throws SQLException {
-
+    public StoreTableModel(List<StoreEntity> storeEntities) {
+        this.storeEntities = storeEntities;
     }
 
     @Override

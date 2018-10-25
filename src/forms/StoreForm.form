@@ -10,7 +10,10 @@
     <children>
       <scrollpane id="fa738">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="250" height="-1"/>
+            <maximum-size width="250" height="-1"/>
+          </grid>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -28,7 +31,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="d9e49" class="javax.swing.JTable" binding="table1" default-binding="true">
+          <component id="d9e49" class="javax.swing.JTable" binding="storeTable">
             <constraints/>
             <properties/>
           </component>
