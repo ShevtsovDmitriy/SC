@@ -1,10 +1,14 @@
 package tables;
 
+import controllers.InvoiceController;
+import controllers.StoreController;
 import entities.InvoiceSpare;
+import exceptions.InconsistentDataInStoreException;
 import utils.Utils;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,6 +77,9 @@ public class InvoiceSparesTableModel implements TableModel {
     }
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if (columnIndex > 0 && columnIndex < 4){
+            return true;
+        }
         return false;
     }
 
@@ -81,6 +88,32 @@ public class InvoiceSparesTableModel implements TableModel {
     }
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        InvoiceSpare spare = spares.get(rowIndex);
+        if (!value.toString().matches("(([-+])?[0-9]+(\\.[0-9]+)?)+")){
+            return;
+        }
+        boolean isCountChanges = false;
+        double oldBuyPrice = spare.getBuyPrice();
+        double oldSalePrice = spare.getSalePrice();
+        double oldCount = spare.getCount();
+        switch (columnIndex) {
+            case 1:
+                spare.setBuyPrice(Double.parseDouble(value.toString()));
+                break;
+            case 2:
+                spare.setSalePrice(Double.parseDouble(value.toString()));
+                break;
+            case 3:
+                spare.setCount(Double.parseDouble(value.toString()));
+                isCountChanges = true;
+                break;
+        }
+        try {
+            InvoiceController.getInstance().updateInvoiceSpare(spare);
+            StoreController.getController().updateEntityInStock(spare.getSparePart(), oldCount, spare.getCount(), oldBuyPrice, spare.getBuyPrice(), oldSalePrice, spare.getSalePrice(), isCountChanges);
+        } catch (SQLException | InconsistentDataInStoreException e) {
+            e.printStackTrace();
+        }
 
     }
 

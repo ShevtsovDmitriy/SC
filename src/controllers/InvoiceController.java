@@ -66,4 +66,8 @@ public class InvoiceController {
 
     }
 
+    public void updateInvoiceSpare(InvoiceSpare invoiceSpare) throws SQLException {
+        DaoHelper.getInstance().INVOICE_SPARE_DAO.update(invoiceSpare);
+    }
+
 }

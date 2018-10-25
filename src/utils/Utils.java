@@ -14,11 +14,5 @@ public class Utils {
         return nf.format(d);
     }
 
-    public static String formatFloat(Float d){
-        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
-        otherSymbols.setDecimalSeparator('.');
-        NumberFormat nf = new DecimalFormat("#.######", otherSymbols);
-        return nf.format(d);
-    }
 
 }

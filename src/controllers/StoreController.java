@@ -5,6 +5,7 @@ import entities.Invoice;
 import entities.StoreEntity;
 import entities.dictionary.InvoiceType;
 import entities.dictionary.SparePart;
+import exceptions.InconsistentDataInStoreException;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -44,7 +45,7 @@ public class StoreController {
         dao.INVOICE_DAO.create(new Invoice(new Date(), InvoiceType.PURCHASE));
     }
 
-    public void addEntityToStock(SparePart sparePart, double count, double buyPrice, double salePrice) throws SQLException {
+    public void addEntityToStock(SparePart sparePart, double count,  double buyPrice, double salePrice) throws SQLException {
         List<StoreEntity> entities = getAllGoodsInStock().stream()
                 .filter(e -> e.getSparePart().getId()== sparePart.getId() && e.getBuyPrice() == buyPrice && e.getSalePrice() == salePrice)
                 .collect(Collectors.toList());
@@ -55,8 +56,40 @@ public class StoreController {
         } else {
             dao.STORE_ENTITY_DAO.create(new StoreEntity(sparePart, count, buyPrice, salePrice));
         }
+    }
 
-
+    public void updateEntityInStock(SparePart sparePart, double count, double newCount, double buyPrice, double newBuyPrice, double salePrice, double newSalePrice, boolean isCountChanges) throws SQLException, InconsistentDataInStoreException {
+        List<StoreEntity> entities = getAllGoodsInStock().stream()
+                .filter(e -> e.getSparePart().getId()== sparePart.getId() && e.getBuyPrice() == buyPrice && e.getSalePrice() == salePrice)
+                .collect(Collectors.toList());
+        if (!entities.isEmpty() && ! isCountChanges){
+            if (entities.size() > 1){
+                throw new InconsistentDataInStoreException("В магазине существует несколько одинаковых товаров");
+            }
+            StoreEntity entity = entities.iterator().next();
+            if (entity.getCount() < count){
+                entity.setBuyPrice(newBuyPrice);
+                entity.setSalePrice(newSalePrice);
+                dao.STORE_ENTITY_DAO.update(entity);
+            }else {
+                entity.setCount(entity.getCount() - count);
+                dao.STORE_ENTITY_DAO.update(entity);
+                dao.STORE_ENTITY_DAO.create(new StoreEntity(sparePart, count, newBuyPrice, newSalePrice));
+            }
+        } else if (entities.isEmpty() && isCountChanges){
+            if (newCount > count){
+                dao.STORE_ENTITY_DAO.create(new StoreEntity(sparePart, newCount - count, newBuyPrice, newSalePrice));
+            }
+        } else if (!entities.isEmpty()){
+            StoreEntity entity = entities.iterator().next();
+            if (newCount > count){
+                entity.setCount(newCount - count + entity.getCount());
+            } else if (newCount < entity.getCount()){
+                entity.setCount(entity.getCount() - (count - newCount));
+            } else {
+                dao.STORE_ENTITY_DAO.delete(entity);
+            }
+        }
     }
 
 }
